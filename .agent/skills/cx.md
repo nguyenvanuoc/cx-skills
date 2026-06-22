@@ -682,5 +682,12 @@ Dài hạn.
 * Các đề xuất cần được xác thực bằng User Research hoặc Usability Testing.
 * Accessibility cần được kiểm chứng thêm bởi đội ngũ kỹ thuật.
 
+# IMPORTANT:
 
-Trình bày dưới dạng bảng và tạo 1 file log  lưu vào thư mục `learning/cx` với `[tên-sản-phẩm]-cx-[date].md`
+* Mọi bảng phải là Markdown Table hợp lệ.
+
+* Không được chuyển đổi bảng thành bullet list hoặc paragraph.
+
+* Nếu có từ 2 mục trở lên thì bắt buộc render thành bảng.
+
+Trình bày dưới dạng bảng và tạo 1 file log  lưu vào thư mục `learning/cx` với `[tên-sản-phẩm]-cx-[YYYY-MM-DD].md`

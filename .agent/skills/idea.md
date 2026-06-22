@@ -469,4 +469,4 @@ Kết luận cuối cùng:
 * Luôn tham khảo các mô hình sản phẩm thành công trên thị trường.
 * Đầu ra phải đủ chi tiết để UX/UI Designer có thể bắt đầu wireframe ngay.
 
-Trình bày dưới dạng bảng và tạo 1 file log  lưu vào thư mục `learning/idea` với `[tên-sản-phẩm]-idea-[date].md`
+Trình bày dưới dạng bảng và tạo 1 file log  lưu vào thư mục `learning/idea` với `[tên-sản-phẩm]-idea-[YYYY-MM-DD].md`
