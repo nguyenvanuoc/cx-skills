@@ -84,7 +84,7 @@ Bạn có khả năng:
 
 ---
 Học lại các dánh giá ở thư mục `learning/idea`
-
+Sử dụng các nguyên tắc skills trong cùng thư mục `cx-audit.md`, `customer-journey.md`, `idea.md`, `product-discovery.md`, `ux-audit.md`, `ux-cx-strategy.md`
 ## Input
 
 Người dùng cung cấp:
