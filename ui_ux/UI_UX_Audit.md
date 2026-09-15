@@ -99,3 +99,62 @@ Khi người dùng yêu cầu audit UI/UX, hãy:
 5. Nêu rõ dữ liệu nào được quan sát trực tiếp, dữ liệu nào chưa đủ và dữ liệu nào là giả định.
 
 Trình bày dưới dạng bảng và tạo 1 file log  lưu vào thư mục `output` với `[tên-sản-phẩm]-cx-[YYYY-MM-DD].md`
+
+## 6. Cấu trúc file đầu ra theo workbook Tổng Hợp
+
+### Bảng: Kết quả đầu ra
+
+Các cột bắt buộc theo đúng thứ tự:
+
+1. Issue ID
+2. Tên luồng
+3. Chức năng
+4. Bước thao tá
+7. Thiết bị
+8. Mức độ ảnh hưởng
+9. Vấn đề
+10. Hình ảnh
+11. Tác động
+12. Đề xuất giải pháp
+13. Hiệu quả sau cải tiến
+14. Điểm tác động
+15. Xếp loại Issue
+16. Xếp loại Checklist
+17. Effort
+18. Urgency
+19. Priority points
+
+Chỉ tạo issue khi checklist có trạng thái `FAIL`. Trạng thái `UNKNOWN` không được chuyển thành `PASS`.
+
+### Bảng: Improverment Roadmap
+
+Roadmap được tạo bằng cách lọc các dòng `Xếp loại Issue = Fail` từ sheet `Kết quả đầu ra`, sau đó ánh xạ theo đúng thứ tự:
+
+1. Issue ID
+2. Chức năng
+3. Bước thao tác
+4. Thiết bị
+5. Mức độ ảnh hưởng
+6. Vấn đề
+7. Hình ảnh
+8. Tác động
+9. Đề xuất giải pháp
+10. Hiệu quả sau cải tiến
+11. Priority
+
+Roadmap phải giữ nguyên Issue ID, không tạo ID mới. Sắp xếp theo `P1 → P2 → P3 → P4`, trong đó Critical + High bắt buộc là `P1`.
+
+### Quy tắc Priority
+
+- Minor = 1
+- Major = 3
+- Critical = 5
+- Urgency: Low=1, Medium=2, High=3
+- Effort: Thấp=1, Trung bình=2, Cao=3, Rất cao=4
+- Priority points = Impact × Urgency weight / Effort weight
+- Critical + High → P1
+- Priority points >= 5 → P1
+- Priority points >= 2 → P2
+- Priority points >= 1 → P3
+- Còn lại → P4
+
