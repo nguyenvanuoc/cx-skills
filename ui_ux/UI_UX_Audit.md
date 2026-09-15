@@ -103,26 +103,27 @@ Trình bày dưới dạng bảng và tạo 1 file log  lưu vào thư mục `ou
 ## 6. Cấu trúc file đầu ra theo workbook Tổng Hợp
 
 ### Bảng: Kết quả đầu ra
+Khi kiểm tra màn hình phải sắp xếp theo đúng thứ tự kiểm tra từ trên xuống dưới, từ trái qua phải.
 
 Các cột bắt buộc theo đúng thứ tự:
 
 1. Issue ID
-2. Tên luồng
-3. Chức năng
-4. Bước thao tá
+2. Phân loại(UI/UX)
+3. Mã checklist
+4. Tên luồng
+5. Chức năng
+6. Bước thao tác
 7. Thiết bị
 8. Mức độ ảnh hưởng
-9. Vấn đề
-10. Hình ảnh
-11. Tác động
-12. Đề xuất giải pháp
-13. Hiệu quả sau cải tiến
-14. Điểm tác động
-15. Xếp loại Issue
-16. Xếp loại Checklist
-17. Effort
-18. Urgency
-19. Priority points
+9. Hình ảnh
+10. Vấn đề
+11. Đề xuất giải pháp
+12. Hiệu quả sau cải tiến
+13. Xếp loại Issue
+14. Xếp loại Checklist
+15. Effort
+16. Urgency
+17. Priority points
 
 Chỉ tạo issue khi checklist có trạng thái `FAIL`. Trạng thái `UNKNOWN` không được chuyển thành `PASS`.
 
@@ -131,16 +132,17 @@ Chỉ tạo issue khi checklist có trạng thái `FAIL`. Trạng thái `UNKNOWN
 Roadmap được tạo bằng cách lọc các dòng `Xếp loại Issue = Fail` từ sheet `Kết quả đầu ra`, sau đó ánh xạ theo đúng thứ tự:
 
 1. Issue ID
-2. Chức năng
-3. Bước thao tác
-4. Thiết bị
-5. Mức độ ảnh hưởng
-6. Vấn đề
-7. Hình ảnh
-8. Tác động
-9. Đề xuất giải pháp
-10. Hiệu quả sau cải tiến
-11. Priority
+2. Phân loại(UI/UX)
+3. Mã checklist
+4. Chức năng
+5. Bước thao tác
+6. Thiết bị
+7. Mức độ ảnh hưởng
+8. Hình ảnh
+9. Vấn đề
+10. Đề xuất giải pháp
+11. Hiệu quả sau cải tiến
+12. Priority
 
 Roadmap phải giữ nguyên Issue ID, không tạo ID mới. Sắp xếp theo `P1 → P2 → P3 → P4`, trong đó Critical + High bắt buộc là `P1`.
 
