@@ -1,0 +1,1040 @@
+---
+name: ui-ux-quality-audit
+description: Bộ Skill đánh giá chất lượng UI/UX từ ảnh chụp màn hình hoặc mô tả sản phẩm, sử dụng thư viện checklist UI, thư viện checklist UX và công thức chấm điểm thống nhất.
+version: 1.0.0
+language: vi
+---
+# UI Checklist Library Skill
+
+## Mục tiêu
+
+Skill này chứa toàn bộ checklist UI 
+
+## Quy tắc sử dụng
+
+- Đây là nguồn checklist UI chuẩn; không tự ý thêm, xóa hoặc sửa nội dung checklist.
+- Giữ nguyên Checklist ID, Phần tử, Phân loại, Mô tả tiêu chí, Nội dung kiểm tra, Pass khi, Nhãn và Cơ sở tham chiếu.
+- Khi người dùng yêu cầu list tất cả, phải hiển thị toàn bộ checklist.
+- Khi người dùng yêu cầu tìm kiếm, tìm trong ID, Phần tử, Phân loại, Mô tả, Nội dung kiểm tra, Pass khi, Nhãn và Cơ sở tham chiếu.
+- Khi người dùng yêu cầu lọc theo nhóm, chỉ trả về các checklist thực sự phù hợp.
+- Khi dùng cho UI Audit, checklist có thể được đánh giá thành PASS / FAIL / N/A / NEEDS VALIDATION.
+- Không tự tạo issue hoặc điểm số nếu người dùng chỉ yêu cầu xem checklist.
+
+## Tổng quan
+
+- Tổng số checklist UI: **81**
+
+## Toàn bộ checklist UI
+
+| STT | ID | Phần tử | Phân loại | Mô tả tiêu chí | Nội dung kiểm tra | Pass khi | Nhãn | Cơ sở tham chiếu |
+|---:|---|---|---|---|---|---|---|---|
+| 1 | UI-LA01 | Layout | Bố cục & Grid | Layout sử dụng hệ lưới thống nhất | Kiểm tra container, column, gutter và các vùng nội dung. | Các khối bám cùng hệ lưới, không lệch hoặc phá vỡ cấu trúc trang. | Cơ bản | ISO 9241-161; File chuẩn dòng 15–16 |
+| 2 | UI-LA02 | Layout | Căn gióng | Các khối nội dung được căn theo cùng mốc, căn đều, căn giữa theo trật tự nhất định | So sánh mép trái, mép phải, baseline và trục giữa của các khối.<br>Kiểm tra căn giữa/căn đều,... có bị lệch không | Không xuất hiện sai lệch thị giác giữa các đối tượng cùng cấp. | Cơ bản | ISO 9241-161; File chuẩn dòng 15–16 |
+| 3 | UI-LA03 | Layout | Phân cấp thị giác | Màn hình có đường dẫn mắt rõ ràng | Kiểm tra thứ tự nhìn từ tiêu đề, nội dung chính đến hành động. | Người xem nhận biết được nội dung chính trước nội dung phụ. | Cơ bản | ISO 9241-161; File chuẩn dòng 17 |
+| 4 | UI-LA04 | Layout | Khoảng cách & Khoảng trắng | Nội dung liên quan được gom nhóm bằng khoảng cách | So sánh khoảng cách trong nhóm và giữa các nhóm. | Khoảng cách trong nhóm nhỏ hơn khoảng cách giữa các nhóm. | Cơ bản | File chuẩn dòng 20, 60 |
+| 5 | UI-LA05 | Layout | Khoảng cách & Khoảng trắng | Khoảng cách tuân thủ spacing scale | Kiểm tra margin, padding và gap so với token hoặc scale thiết kế. | Không sử dụng giá trị tùy tiện; các khoảng cách bám cùng một scale. | Cơ bản | Material 3; File chuẩn dòng 18–21 |
+| 6 | UI-LA06 | Layout | Màu sắc & Tương phản | Đảm bảo độ tương phản | So sánh độ bão hòa và tương phản của background với nội dung chính.<br>Văn bản thông thường (nhỏ hơn 18pt hoặc 24px): Tỷ lệ tương phản tối thiểu là 4,5:1.<br>Văn bản cỡ lớn (từ 18pt / 24px trở lên, hoặc 14pt / 18.5px nếu in đậm): Tỷ lệ tương phản tối thiểu là 3:1.<br>Thành phần phi văn bản (giao diện UI, icon, đường viền): Tỷ lệ tối thiểu là 3:1 | Background hỗ trợ nội dung và không cạnh tranh điểm nhìn. | Cơ bản | WCAG 2.2 SC 1.4.09 |
+| 7 | UI-LA07 | Layout | Responsive | Layout tái bố trí theo viewport | Kiểm tra desktop, tablet, mobile và các breakpoint được hỗ trợ. | Không chồng lấn, mất nội dung hoặc phát sinh cuộn ngang ngoài chủ đích. | Bắt buộc | WCAG 2.2 SC 1.4.10 |
+| 8 | UI-LA08 | Layout | Khả năng tiếp cận thị giác | Giao diện giữ nguyên nội dung khi phóng to | Kiểm tra zoom văn bản và zoom trình duyệt đến mức áp dụng. | Nội dung không bị cắt, che khuất hoặc mất chức năng khi phóng to. | Bắt buộc | WCAG 2.2 SC 1.4.4, 1.4.10 |
+| 9 | UI-SI01 | Sidebar | Trạng thái & Hiệu ứng | Sidebar phân biệt rõ mục hiện tại | Kiểm tra default, hover, focus, active, expanded và collapsed. | Mục hiện tại dễ nhận biết và không chỉ được phân biệt bằng màu. | Bắt buộc | WCAG 2.2 SC 1.4.1, 2.4.7 |
+| 10 | UI-LO01 | Logo | Nhận diện thương hiệu | Logo sử dụng đúng phiên bản | Đối chiếu cấu tạo, màu sắc và biến thể logo với Brand Guideline. | Không dùng sai logo, sai màu hoặc sai cấu trúc. | Bắt buộc | File chuẩn dòng 4 |
+| 11 | UI-LO02 | Logo | Kích thước & Tỷ lệ | Logo giữ đúng tỷ lệ | Kiểm tra tỷ lệ chiều rộng, chiều cao và cách scale. | Logo không bị kéo giãn, bóp méo hoặc crop sai. | Bắt buộc | File chuẩn dòng 4 |
+| 12 | UI-LO03 | Logo | Khoảng cách & Khoảng trắng | Logo có vùng an toàn | Kiểm tra khoảng cách giữa logo với chữ, viền và thành phần lân cận. | Khoảng trống đạt quy định Brand Guideline và logo không bị che khuất. | Cơ bản | File chuẩn dòng 4 |
+| 13 | UI-LO04 | Logo | Responsive | Logo rõ nét ở các kích thước hiển thị | Kiểm tra header, sidebar, mobile, màn đăng nhập và nền khác nhau. | Logo không mờ, mất chi tiết hoặc mất khả năng nhận diện. | Bắt buộc | Apple HIG; File chuẩn dòng 4 |
+| 14 | UI-TY01 | Typography | Nhận diện thương hiệu | Font family đúng nhận diện | Đối chiếu font sử dụng với Brand Guideline hoặc Design System. | Không xuất hiện font ngoài danh mục được cho phép. | Cơ bản | File chuẩn dòng 5 |
+| 15 | UI-TY02 | Typography | Khả năng tiếp cận thị giác | Nội dung văn bản hiển thị rõ ràng và có thể nhận biết | Kiểm tra độ tương phản, độ rõ nét, lỗi font, clipping, chồng chữ và khả năng hiển thị khi phóng to hoặc thay đổi khoảng cách văn bản | Chữ không nhòe, dính, mất dấu, chồng lấn hoặc bị cắt; text đạt contrast tối thiểu theo WCAG; nội dung vẫn đầy đủ khi resize và điều chỉnh text spacing (Phóng to chữ đến 200% không mất nội dung hoặc chức năng) | Cơ bản | WCAG 2.2 |
+| 16 | UI-TY03 | Typography | Typography | Các vai trò chữ có style riêng | Kiểm tra heading, subtitle, body, label, caption, link và status text. | Mỗi vai trò có font-size, weight, line-height và màu được xác định. | Cơ bản | Material 3; File chuẩn dòng 47 |
+| 17 | UI-TY04 | Typography | Phân cấp thị giác | Các cấp chữ thể hiện đúng quan hệ | So sánh heading, subtitle, body và caption trên cùng màn hình. | Cấp trên nổi bật hơn cấp dưới và không có hai cấp hiển thị giống nhau. | Cơ bản | File chuẩn dòng 57 |
+| 18 | UI-TY05 | Typography | Kích thước & Tỷ lệ | Cỡ chữ đủ lớn để đọc | Kiểm tra body, label, caption và nội dung quan trọng. | Đạt typography token; nếu áp dụng quy định nội bộ, body thường là 16px, tối thiểu 14px và trường hợp hẹp không dưới 12px. | Cơ bản | File chuẩn dòng 37; không phải ngưỡng WCAG |
+| 19 | UI-TY06 | Typography | Khoảng cách & Khoảng trắng | Line-height phù hợp với loại nội dung | Kiểm tra line-height của body và heading. Line-height khoảng 1,5 lần font-size đối với font body. 1.1*font-size<=Line-height <=1.4*font-size đối với heading | Các dòng không dính nhau hoặc quá rời; đạt typography token đã quy định. | Cơ bản | WCAG 2.2 SC 1.4.12; File chuẩn dòng 40 |
+| 20 | UI-TY07 | Typography | Khoảng cách & Khoảng trắng | Khoảng cách đoạn văn rõ ràng | Kiểm tra paragraph spacing giữa các đoạn liên tiếp. Giữ khoảng cách đoạn văn trong khoảng từ 0,75x - 1,25x lần kích thước font. Cấu trúc phân đoạn rõ ràng dễ đọc. | Các đoạn được phân biệt rõ và không làm mất nhịp đọc. | Cơ bản | WCAG 2.2 SC 1.4.12; File chuẩn dòng 39 |
+| 21 | UI-TY08 | Typography | Căn gióng | Đoạn văn dài có cách căn phù hợp | Kiểm tra body text nhiều dòng theo chiều ngôn ngữ.<br>- Đoạn văn bản yêu cầu căn trái, không căn đều 2 bên/căn giữa/căn phải (Căn phải chỉ được chấp nhận nếu ứng dụng đó dành cho các ngôn ngữ RTL (right-to-left) như Arabic, Hebrew) <br>- Không thụt đầu dòng, không lẻ chữ | Văn bản LTR ưu tiên căn trái; không căn giữa hoặc justify đoạn dài ngoài chủ đích. | Cơ bản | File chuẩn dòng 38 |
+| 22 | UI-TY09 | Typography | Phong cách thiết kế | Không lạm dụng viết hoa, bold và italic | Kiểm tra paragraph, label và text thông thường. | Không viết hoa toàn bộ đoạn dài; bold và italic chỉ dùng để nhấn mạnh có chủ đích. | Cơ bản | File chuẩn dòng 35–36 |
+| 23 | UI-TY10 | Typography | Màu sắc & Tương phản | Chữ có độ tương phản đạt chuẩn | Đo contrast giữa chữ và nền ở mọi trạng thái. | Text thường đạt tối thiểu 4.5:1; text lớn đạt tối thiểu 3:1, trừ ngoại lệ WCAG. | Bắt buộc | WCAG 2.2 SC 1.4.3 |
+| 24 | UI-TY11 | Typography | Khả năng tiếp cận thị giác | Không chỉ dùng màu để biểu đạt nghĩa của chữ | Kiểm tra link, trạng thái, lỗi và nội dung highlight. | Thông tin còn được phân biệt bằng underline, icon, label hoặc hình thức khác. | Bắt buộc | WCAG 2.2 SC 1.4.1 |
+| 25 | UI-TY12 | Typography | Tính nhất quán | Text cùng vai trò có cùng style | So sánh text cùng chức năng trên các màn hình. | Font, size, weight, màu và spacing thống nhất theo token. | Cơ bản | WCAG 2.2 SC 3.2.4; File chuẩn dòng 47 |
+| 26 | UI-TY13 | Typography | Kích thước & Tỷ lệ | Chiều dài dòng văn bản phù hợp để đọc liên tục | Đếm số ký tự hoặc glyph trên mỗi dòng của đoạn văn dài tại viewport mặc định và khi thay đổi kích thước cửa sổ | Mỗi dòng không vượt quá 80 ký tự hoặc glyph; giao diện nên duy trì khoảng 45–75 ký tự mỗi dòng để hỗ trợ khả năng đọc | Bắt buộc | WCAG 2.2 SC 1.4.8 Visual Presentation (AAA); typography best practice |
+| 27 | UI-TY14 | Typography | Responsive | Chiều dài dòng thích ứng với viewport | Thu nhỏ và phóng to giao diện để kiểm tra độ rộng khối văn bản | Khối chữ co giãn hoặc đổi cột hợp lý; không tạo dòng quá dài và không bắt người dùng cuộn ngang để đọc. Không mất dấu, clipping, chồng chữ hoặc tràn khỏi vùng chứa. | Bắt buộc | WCAG 2.2 SC 1.4.4, 1.4.10 |
+| 28 | UI-IC01 | Icon | Hình ảnh & Iconography | Icon thuộc cùng một ngôn ngữ tạo hình | Các icon trong cùng một ngữ cảnh cần nhất quán về:<br>Outlined hoặc Filled.<br>Rounded hoặc Sharp.<br>Stroke width.<br>Corner style.<br>Mức độ chi tiết.<br>Tỷ lệ hình khối.<br>Visual weight. | Icon cùng nhóm có style thống nhất và toàn bộ thư viện có tính liên hệ. | Cơ bản | File chuẩn dòng 6, 42 |
+| 29 | UI-IC02 | Icon | Kích thước & Tỷ lệ | Kích thước icon phù hợp với vai trò | So sánh icon inline, navigation, action và status. | Icon cùng vai trò có cùng bounding box và kích thước thị giác. | Cơ bản | Material 3; Apple HIG |
+| 30 | UI-IC03 | Icon | Căn gióng | Icon được căn quang học với chữ và vùng chứa | Kiểm tra icon trong button, input, menu và list item. | Icon không bị lệch baseline hoặc lệch tâm thị giác. | Cơ bản | ISO 9241-161; Material 3 |
+| 31 | UI-IC04 | Icon | Màu sắc & Tương phản | Icon chức năng có contrast phù hợp | Đo contrast của icon cần thiết để nhận biết control hoặc trạng thái. | Icon thiết yếu đạt tối thiểu 3:1 so với màu liền kề. | Bắt buộc | WCAG 2.2 SC 1.4.11 |
+| 32 | UI-IC05 | Icon | Tính logic & Quen thuộc | Hình dạng icon phù hợp với ý nghĩa | Kiểm tra icon với quy ước nền tảng và ngữ cảnh sử dụng. | Icon dễ nhận biết | Cơ bản | ISO 9241-161; File chuẩn dòng 65 |
+| 33 | UI-IC06 | Icon | Tính nhất quán | Một chức năng sử dụng cùng một icon | So sánh cùng hành động trên các màn hình khác nhau. | Không dùng nhiều biểu tượng khác nhau cho cùng một chức năng. | Cơ bản | WCAG 2.2 SC 3.2.4 |
+| 34 | UI-HÌ01 | Hình ảnh/Illustration | Nhận diện thương hiệu | Hình ảnh phù hợp phong cách thương hiệu | Kiểm tra tone màu, phong cách vẽ, phối cảnh và mức độ chi tiết. | Các hình cùng nhóm thể hiện cùng phong cách và tinh thần thương hiệu. | Cơ bản | File chuẩn dòng 7, 45 |
+| 35 | UI-HÌ02 | Hình ảnh/Illustration | Kích thước & Tỷ lệ | Hình ảnh giữ đúng tỷ lệ | Kiểm tra crop, scale và aspect ratio. | Hình không méo; chủ thể không bị crop sai hoặc mất chi tiết quan trọng. | Bắt buộc | Apple HIG |
+| 36 | UI-HÌ03 | Hình ảnh/Illustration | Phân cấp thị giác | Chủ thể chính trong ảnh được nhấn mạnh | Kiểm tra độ nét, tương phản, vị trí và lớp hiển thị của chủ thể. | Chủ thể chính được nhận biết trước thành phần trang trí. | Cơ bản | File chuẩn dòng 53 |
+| 37 | UI-HÌ04 | Hình ảnh/Illustration | Màu sắc & Tương phản | Màu ảnh hài hòa với giao diện | So sánh màu của ảnh, banner và illustration với hệ màu sản phẩm. | Hình ảnh không lệch tone hoặc gây xung đột màu với giao diện. | Cơ bản | File chuẩn dòng 28 |
+| 38 | UI-HÌ05 | Hình ảnh/Illustration | Khả năng tiếp cận thị giác | Hình ảnh mang thông tin có mô tả thay thế | Kiểm tra ảnh nội dung, biểu đồ ảnh và illustration có ý nghĩa. | Có text alternative tương đương; ảnh trang trí được bỏ qua đúng cách. | Bắt buộc | WCAG 2.2 SC 1.1.1 |
+| 39 | UI-BU01 | Button | Phong cách thiết kế | Button sử dụng đúng variant | Kiểm tra primary, secondary, tertiary, text và destructive button. | Variant phù hợp với mức độ quan trọng và loại hành động. | Cơ bản | Material 3; WAI-ARIA APG |
+| 40 | UI-BU02 | Button | Phân cấp thị giác | Mỗi nhóm chỉ có một primary action | Kiểm tra button trong form, dialog, card và toolbar. | Chỉ một hành động quan trọng nhất được thể hiện nổi bật trong cùng nhóm. | Cơ bản | File chuẩn dòng 48, 58 |
+| 41 | UI-BU03 | Button | Kích thước & Tỷ lệ | Button có kích thước phù hợp | Kiểm tra chiều cao, chiều rộng tối thiểu và vùng tương tác. | Kích thước bám Design System; target đạt tối thiểu 24×24 CSS px hoặc ngoại lệ WCAG. | Bắt buộc | WCAG 2.2 SC 2.5.8 |
+| 42 | UI-BU04 | Button | Khoảng cách & Khoảng trắng | Padding và khoảng cách icon–label nhất quán | Kiểm tra padding ngang, dọc và gap bên trong button. | Nội dung không sát viền và các button cùng loại dùng cùng token. | Cơ bản | Material 3; File chuẩn dòng 19, 21 |
+| 43 | UI-BU05 | Button | Trạng thái & Hiệu ứng | Button có đủ trạng thái thị giác | Kiểm tra default, hover, focus, pressed, disabled và loading. | Mỗi trạng thái nhận biết được; thay đổi trạng thái không làm button dịch chuyển. | Bắt buộc | WAI-ARIA APG; WCAG 2.2 SC 2.4.7 |
+| 44 | UI-BU06 | Button | Màu sắc & Tương phản | Nội dung và ranh giới button đủ tương phản | Đo contrast của label, icon, border và focus indicator. | Text đạt SC 1.4.3; phần tử phi văn bản thiết yếu đạt SC 1.4.11. | Bắt buộc | WCAG 2.2 SC 1.4.3, 1.4.11 |
+| 45 | UI-BU07 | Button | Tính nhất quán | Button cùng vai trò có cùng style | So sánh màu, radius, padding, font và icon giữa các màn hình. | Không xuất hiện nhiều kiểu button cho cùng một vai trò. | Cơ bản | WCAG 2.2 SC 3.2.4; File chuẩn dòng 42 |
+| 46 | UI-BU08 | Button | Responsive | Label button không bị cắt | Kiểm tra nội dung dài, bản dịch, zoom và mobile. | Button co giãn hoặc xuống dòng đúng quy định; không mất nội dung. | Bắt buộc | WCAG 2.2 SC 1.4.10 |
+| 47 | UI-TE01 | Text field/Input | Phong cách thiết kế | Input có cấu trúc nhận diện rõ | Kiểm tra label, field, placeholder, supporting text, icon và counter. | Người xem phân biệt được label, giá trị, gợi ý và thông báo hỗ trợ. | Cơ bản | Material 3; WAI-ARIA APG |
+| 48 | UI-TE02 | Text field/Input | Tính nhất quán | Vị trí label thống nhất | So sánh label trên, trái hoặc floating label giữa các form. | Các form cùng loại sử dụng cùng một quy tắc đặt label. | Cơ bản | File chuẩn dòng 46 |
+| 49 | UI-TE03 | Text field/Input | Kích thước & Tỷ lệ | Input và button cạnh nhau có chiều cao tương ứng | Kiểm tra các control nằm cùng hàng trong form hoặc toolbar. | Không lệch chiều cao hoặc baseline ngoài chủ đích. | Cơ bản | File chuẩn dòng 43 |
+| 50 | UI-TE04 | Text field/Input | Trạng thái & Hiệu ứng | Input có đủ trạng thái thị giác | Kiểm tra default, hover, focus, filled, disabled, read-only, error và success. | Các trạng thái phân biệt rõ; error không chỉ dựa vào màu. | Bắt buộc | WCAG 2.2 SC 1.4.1, 3.3.1 |
+| 51 | UI-TE05 | Text field/Input | Màu sắc & Tương phản | Border, label và nội dung input đủ tương phản | Kiểm tra field trên các nền và ở mọi trạng thái. | Text đạt SC 1.4.3; ranh giới cần thiết và focus đạt SC 1.4.11. | Bắt buộc | WCAG 2.2 SC 1.4.3, 1.4.11 |
+| 52 | UI-TE06 | Text field/Input | Responsive | Input không vỡ bố cục khi nội dung dài | Kiểm tra label dài, error message, prefix, suffix và bàn phím mobile. | Không chồng lấn, cắt label hoặc che khuất thông báo. | Bắt buộc | WCAG 2.2 SC 1.4.10 |
+| 53 | UI-DR01 | Dropdown/Select | Tính logic & Quen thuộc | Select có hình dạng dễ nhận biết | Kiểm tra trường đóng, dấu hiệu mở danh sách và item được chọn. | Người dùng phân biệt được select với input thông thường. | Cơ bản | ISO 9241-161; WAI-ARIA APG |
+| 54 | UI-DR02 | Dropdown/Select | Trạng thái & Hiệu ứng | Select có đủ trạng thái | Kiểm tra default, hover, focus, expanded, selected, disabled và error. | Trạng thái mở và item được chọn được thể hiện rõ. | Bắt buộc | WAI-ARIA APG Combobox/Listbox |
+| 55 | UI-DR03 | Dropdown/Select | Kích thước & Tỷ lệ | Danh sách có kích thước phù hợp | Kiểm tra chiều cao item, chiều rộng popup và vùng scroll. | Item dễ đọc; popup không hẹp hơn nội dung cần thiết hoặc tràn viewport. | Cơ bản | Material 3; Apple HIG |
+| 56 | UI-DR04 | Dropdown/Select | Màu sắc & Tương phản | Focus và selected item không chỉ dựa vào màu | Kiểm tra outline, icon check, background và text của item. | Focus và lựa chọn vẫn nhận biết được trong chế độ màu hạn chế. | Bắt buộc | WCAG 2.2 SC 1.4.1, 2.4.7 |
+| 57 | UI-CH01 | Checkbox/Radio/Switch | Phong cách thiết kế | Sử dụng đúng loại control lựa chọn | Kiểm tra checkbox cho nhiều lựa chọn, radio cho một lựa chọn và switch cho bật/tắt. | Loại control phù hợp với cấu trúc lựa chọn và Design System. | Cơ bản | WAI-ARIA APG |
+| 58 | UI-CH02 | Checkbox/Radio/Switch | Kích thước & Tỷ lệ | Control và vùng nhấn đủ lớn | Kiểm tra hình điều khiển, label và toàn bộ hit area. | Target đạt tối thiểu 24×24 CSS px hoặc ngoại lệ WCAG. | Bắt buộc | WCAG 2.2 SC 2.5.8 |
+| 59 | UI-CH03 | Checkbox/Radio/Switch | Trạng thái & Hiệu ứng | Control có đầy đủ trạng thái | Kiểm tra unchecked, checked, indeterminate, focus, disabled và error. | Mỗi trạng thái có dấu hiệu thị giác rõ ràng. | Bắt buộc | WAI-ARIA APG |
+| 60 | UI-CH04 | Checkbox/Radio/Switch | Khả năng tiếp cận thị giác | Trạng thái không chỉ thể hiện bằng màu | Kiểm tra checkmark, dot, vị trí thumb, icon và label trạng thái. | Vẫn xác định được trạng thái khi không phân biệt được màu. | Bắt buộc | WCAG 2.2 SC 1.4.1 |
+| 61 | UI-CH05 | Checkbox/Radio/Switch | Tính nhất quán | Màu active thống nhất với hệ thống | So sánh active color và focus style giữa các control lựa chọn. | Các control sử dụng cùng semantic token theo Design System. | Cơ bản | File chuẩn dòng 44 |
+| 62 | UI-CA01 | Card | Phong cách thiết kế | Card sử dụng cùng ngôn ngữ thiết kế | Kiểm tra border, radius, shadow, nền và cấu trúc card. | Card cùng loại có cùng style và phân biệt được với nền trang. | Cơ bản | Material 3; File chuẩn dòng 9, 42 |
+| 63 | UI-CA02 | Card | Khoảng cách & Khoảng trắng | Nội dung card có padding phù hợp | Kiểm tra khoảng cách giữa viền, tiêu đề, nội dung và action. | Nội dung không sát viền; spacing bám token và nhất quán. | Cơ bản | File chuẩn dòng 18 |
+| 64 | UI-CA03 | Card | Phân cấp thị giác | Nội dung chính và phụ trong card rõ ràng | Kiểm tra title, body, metadata, image và action. | Nội dung quan trọng được nhận biết trước metadata và action phụ. | Cơ bản | File chuẩn dòng 51, 56 |
+| 65 | UI-CA04 | Card | Trạng thái & Hiệu ứng | Card tương tác có trạng thái rõ | Kiểm tra hover, focus, selected, pressed và disabled. | Card tương tác phân biệt với card tĩnh; focus indicator nhìn thấy rõ. | Bắt buộc | WCAG 2.2 SC 2.4.7; Material 3 |
+| 66 | UI-ME01 | Menu/Navigation | Tính nhất quán | Navigation giữ nguyên cách nhận diện | So sánh tên, icon, vị trí và style giữa các màn hình. | Thành phần cùng chức năng được nhận diện thống nhất. | Bắt buộc | WCAG 2.2 SC 3.2.3, 3.2.4 |
+| 67 | UI-TA01 | Tab | Trạng thái & Hiệu ứng | Tab hiện tại được phân biệt rõ | Kiểm tra default, hover, focus, selected và disabled. | Tab selected không chỉ khác tab thường bằng màu. | Bắt buộc | WAI-ARIA APG Tabs; WCAG 2.2 SC 1.4.1 |
+| 68 | UI-BR01 | Breadcrumb | Tính logic & Quen thuộc | Breadcrumb thể hiện đúng cấu trúc cấp bậc | Kiểm tra separator, item trung gian và trang hiện tại. | Trang hiện tại dễ nhận biết và không hiển thị như một link có thể điều hướng. | Cơ bản | WAI-ARIA APG Breadcrumb |
+| 69 | UI-PA01 | Pagination | Kích thước & Tỷ lệ | Pagination có vùng tương tác phù hợp | Kiểm tra số trang, previous, next và ellipsis. | Target đủ lớn, khoảng cách rõ và không gây nhấn nhầm. | Bắt buộc | WCAG 2.2 SC 2.5.8 |
+| 70 | UI-ME02 | Menu/Tab/Breadcrumb | Căn gióng | Các item navigation được căn đều | Kiểm tra baseline, icon, label, indicator và khoảng cách item. | Item cùng cấp có cùng chiều cao và căn chỉnh thống nhất. | Cơ bản | Material 3; Apple HIG |
+| 71 | UI-DA01 | Data table | Bố cục & Grid | Cột và hàng sử dụng lưới rõ ràng | Kiểm tra header, body, divider, alignment và vùng scroll. | Dữ liệu bám cột; header liên hệ rõ với nội dung bên dưới. | Cơ bản | ISO 9241-161; Material 3 |
+| 72 | UI-DA02 | Data table | Căn gióng | Dữ liệu được căn theo loại | Kiểm tra text, số, ngày, trạng thái và action trong cột. | Text thường căn trái; số có cùng mốc căn; action được đặt nhất quán. | Cơ bản | ISO 9241-161 |
+| 73 | UI-DA03 | Data table | Trạng thái & Hiệu ứng | Bảng có trạng thái hàng rõ ràng | Kiểm tra hover, selected, expanded, loading, empty và error. | Mỗi trạng thái nhận biết được và không làm thay đổi cấu trúc cột. | Bắt buộc | Material 3; WCAG 2.2 SC 1.4.1 |
+| 74 | UI-DA04 | Data table | Responsive | Bảng xử lý đúng ở màn hình hẹp | Kiểm tra cuộn ngang, sticky column, thu gọn cột hoặc chuyển dạng. | Không mất dữ liệu quan trọng; cơ chế xem thêm rõ ràng và có chủ đích. | Bắt buộc | WCAG 2.2 SC 1.4.10 |
+| 75 | UI-MO01 | Modal/Dialog | Phân cấp thị giác | Dialog nổi bật rõ khỏi lớp nền | Kiểm tra backdrop, elevation, border và quan hệ với trang bên dưới. | Người dùng nhận biết được lớp đang hoạt động; nội dung nền không cạnh tranh thị giác. | Cơ bản | WAI-ARIA APG Dialog; File chuẩn dòng 63 |
+| 76 | UI-MO02 | Modal/Dialog | Khoảng cách & Khoảng trắng | Nội dung dialog có khoảng cách hợp lý | Kiểm tra header, body, footer, close button và các nhóm nội dung. | Nội dung không sát viền; nhóm liên quan gần nhau hơn nhóm không liên quan. | Cơ bản | File chuẩn dòng 18, 60 |
+| 77 | UI-MO03 | Modal/Dialog | Phân cấp thị giác | Action chính và phụ được phân biệt | Kiểm tra Submit, Cancel, destructive action và close action. | Một action chính nổi bật; thứ tự action tuân thủ Design System của nền tảng. | Cơ bản | WAI-ARIA APG; Material 3; Apple HIG |
+| 78 | UI-MO04 | Modal/Dialog | Responsive | Dialog vừa viewport và không che action | Kiểm tra nội dung dài, scroll, mobile và bàn phím ảo. | Header hoặc action cần thiết vẫn truy cập được; dialog không tràn viewport. | Bắt buộc | WCAG 2.2 SC 1.4.10, 2.4.11 |
+| 79 | UI-AL01 | Alert/Toast | Màu sắc & Tương phản | Trạng thái semantic được thể hiện nhất quán | Kiểm tra success, information, warning và error. | Màu, icon và label trạng thái nhất quán; không chỉ dựa vào màu. | Bắt buộc | WCAG 2.2 SC 1.4.1; File chuẩn dòng 62 |
+| 80 | UI-AL02 | Alert/Toast | Trạng thái & Hiệu ứng | Thông báo xuất hiện và biến mất không gây gián đoạn thị giác | Kiểm tra animation, thời gian hiển thị, xếp chồng và vị trí. | Không nhấp nháy; nội dung đọc được; nhiều thông báo không che khuất action quan trọng. | Bắt buộc | WCAG 2.2 SC 2.2.1, 2.3.1, 4.1.3 |
+| 81 | UI-CH06 | Chart/Data visualization | Màu sắc & Tương phản | Dữ liệu biểu đồ không chỉ phân biệt bằng màu | Kiểm tra series, legend, label, pattern và trạng thái highlight. | Các chuỗi dữ liệu phân biệt được bằng label, pattern, marker hoặc hình thức bổ sung; thành phần thiết yếu đạt contrast áp dụng. | Bắt buộc | WCAG 2.2 SC 1.4.1, 1.4.11 |
+
+## Mẫu output khi tra cứu
+
+| ID | Phần tử | Phân loại | Mô tả tiêu chí | Nội dung kiểm tra | Pass khi | Nhãn |
+|---|---|---|---|---|---|---|
+| UI-... | ... | ... | ... | ... | ... | ... |
+
+## Mẫu câu lệnh
+
+- `List toàn bộ checklist UI`
+- `List checklist UI nhóm Layout`
+- `Tìm checklist UI liên quan đến typography`
+- `Lấy checklist UI áp dụng cho màn hình Login`
+- `Tìm checklist UI có nhãn Bắt buộc`
+- `Đánh giá màn hình theo toàn bộ checklist UI trong skill này`
+
+# UX Checklist Library Skill
+
+## Mục tiêu
+
+Skill này chứa toàn bộ checklist UX 
+
+## Quy tắc sử dụng
+
+- Đây là nguồn checklist UX chuẩn; không tự ý thêm, xóa hoặc sửa nội dung checklist.
+- Giữ nguyên Checklist ID, Tiêu chí, Thành phần, Phân loại vấn đề, Mô tả tiêu chí, Nội dung kiểm tra, Pass khi, Nhãn và Cơ sở tham chiếu.
+- Khi người dùng yêu cầu list tất cả, phải hiển thị toàn bộ checklist.
+- Khi người dùng yêu cầu tìm kiếm, tìm trong ID, Tiêu chí, Thành phần, Phân loại vấn đề, Mô tả, Nội dung kiểm tra, Pass khi, Nhãn và Cơ sở tham chiếu.
+- Khi người dùng yêu cầu lọc theo nhóm, chỉ trả về các checklist thực sự phù hợp.
+- Khi dùng cho UX Audit, checklist có thể được đánh giá thành PASS / FAIL / N/A / NEEDS VALIDATION.
+- Không tự tạo issue hoặc điểm số nếu người dùng chỉ yêu cầu xem checklist.
+
+## Tổng quan
+
+- Tổng số checklist UX: **286**
+
+## Toàn bộ checklist UX
+
+| STT | ID | Tiêu chí | Thành phần | Phân loại vấn đề | Mô tả tiêu chí | Nội dung kiểm tra | Pass khi | Nhãn | Cơ sở tham chiếu |
+|---:|---|---|---|---|---|---|---|---|---|
+| 1 | UX-TC01 | TC-Tính dễ tiếp cận | Text | Phân cấp | Thứ tự trình bày nội dung phù hợp với thứ tự người dùng cần tiếp nhận để hiểu và thực hiện nhiệm vụ. | Kiểm tra thứ tự trình bày các khối nội dung trên màn hình so với luồng nhận thức và thao tác của người dùng (thông tin nền → điều kiện → hành động). | Nội dung được tiếp nhận theo trình tự hợp lý.<br>Thông tin cần biết trước xuất hiện trước hành động.<br>Thông tin phụ không cạnh tranh với thông tin chính. | Cơ bản | WCAG 2.2 – 1.3.2 Meaningful Sequence (A) |
+| 2 | UX-TC02 | TC-Tính dễ tiếp cận | Text | Nhận biết & Phân biệt | Màu sắc của các text khớp với các ứng dụng thường dùng khác và mang tính định hướng hành vi, truyền tải cảm xúc và báo hiệu trạng thái hệ thống | Kiểm tra màu sắc dùng cho text (liên kết, cảnh báo, thành công, lỗi...) có nhất quán với quy ước màu phổ biến (đỏ = lỗi/nguy hiểm, xanh lá = thành công, vàng = cảnh báo, xanh dương = liên kết/thông tin). | Màu sắc text truyền đạt đúng trạng thái (thành công/lỗi/cảnh báo/thông tin), khớp với quy ước màu phổ biến của ngành; không dùng màu tùy ý gây hiểu nhầm về trạng thái. | Cơ bản | WCAG 2.2 (nguyên tắc Perceivable/Operable); ISO 9241-210:2019 – Human-centred design for interactive systems |
+| 3 | UX-TC03 | TC-Tính dễ tiếp cận | Text | Nội dung & Hướng dẫn | Nội dung sử dụng từ ngữ quen thuộc với nhóm người dùng mục tiêu; thuật ngữ chuyên môn, từ nội bộ và từ viết tắt được giải thích khi cần thiết. | Kiểm tra từ ngữ sử dụng trong nội dung có phù hợp với vốn từ và mức hiểu biết của nhóm người dùng mục tiêu; rà soát các thuật ngữ chuyên môn, từ nội bộ, từ viết tắt xem có được chú thích/giải thích (tooltip, glossary) khi cần. | Người dùng mục tiêu hiểu được nội dung mà không cần tra cứu thêm; mọi thuật ngữ chuyên môn/từ viết tắt không phổ biến đều có giải thích đi kèm. | Cơ bản | WCAG 2.2 – 3.1.4 Abbreviations (AAA) |
+| 4 | UX-TC04 | TC-Tính dễ tiếp cận | Text | Công nghệ và Trình đọc màn hình | Nội dung đúng ngữ nghĩa, chấm phảy rõ ràng, viết hoa đúng cách, không dùng dấu "cách" để làm khoảng trống, không dùng biểu tượng/ký tự thay thế chữ | Kiểm tra nội dung dùng đúng ngữ nghĩa (heading, list, semantic markup), dấu câu đầy đủ và đúng vị trí, viết hoa đúng quy tắc, không dùng nhiều dấu cách liên tiếp để tạo khoảng trắng, không dùng ký tự/emoji thay thế cho chữ mang nghĩa. | Nội dung được đánh dấu đúng ngữ nghĩa, dấu câu và viết hoa chuẩn mực; không dùng khoảng trắng/ký tự đặc biệt để căn chỉnh hoặc thay thế chữ; screen reader đọc đúng, mạch lạc. | Bắt buộc | WCAG 2.2 – 4.1.2 Name, Role, Value (A) |
+| 5 | UX-TC05 | TC-Tính dễ tiếp cận | Icon | Nhận biết & Phân biệt | Luôn có nhãn chữ đi kèm với icon đối với các tính năng quan trọng hoặc icon ít phổ biến để tránh gây mơ hồ. (trừ các icon quá phổ biến như Kính lúp = Tìm kiếm, Ngôi nhà = Trang chủ) | Kiểm tra các icon đại diện cho tính năng quan trọng hoặc icon không phổ biến có đi kèm nhãn chữ (label) rõ ràng, loại trừ các icon đã là chuẩn phổ biến (kính lúp, ngôi nhà...). | Icon quan trọng hoặc ít quen thuộc luôn có nhãn chữ đi kèm; chỉ icon chuẩn ngành phổ biến mới được dùng độc lập không nhãn. | Cơ bản, Bắt buộc | WCAG 2.2 (nguyên tắc Perceivable/Operable); ISO 9241-210:2019 – Human-centred design for interactive systems \| Material Design 3 (m3.material.io) – Icons; WCAG 2.2 – 1.1.1 Non-text Content (A) |
+| 6 | UX-TC06 | TC-Tính dễ tiếp cận | Icon | Nhận biết & Phân biệt | Ưu tiên các biểu tượng đã thành tiêu chuẩn chung của ngành (ví dụ: cái giỏ/túi xách cho Giỏ hàng, kính lúp cho Tìm kiếm) để tận dụng thói quen cũ của người dùng. | Kiểm tra các icon sử dụng có theo đúng biểu tượng chuẩn phổ biến của ngành (giỏ hàng, kính lúp, chuông thông báo...) thay vì icon tự sáng tạo cho các chức năng phổ thông. | Các chức năng phổ thông dùng icon đã thành chuẩn ngành, không gây nhầm lẫn thói quen người dùng. | Cơ bản | WCAG 2.2 (nguyên tắc Perceivable/Operable); ISO 9241-210:2019 – Human-centred design for interactive systems \| Material Design 3 (m3.material.io) – Icons; WCAG 2.2 – 1.1.1 Non-text Content (A) |
+| 7 | UX-TC07 | TC-Tính dễ tiếp cận | Icon | Nhận biết & Phân biệt | Hình ảnh của icon có khớp với các ứng dụng thường dùng khác và khớp với thực tế | Kiểm tra hình dáng, chi tiết của icon có khớp với hình ảnh thực tế và với các ứng dụng phổ biến khác mà người dùng đã quen thuộc. | Icon dễ nhận diện, không gây hiểu sai về đối tượng hoặc hành động mà nó đại diện. | Cơ bản | WCAG 2.2 (nguyên tắc Perceivable/Operable); ISO 9241-210:2019 – Human-centred design for interactive systems \| Material Design 3 (m3.material.io) – Icons; WCAG 2.2 – 1.1.1 Non-text Content (A) |
+| 8 | UX-TC08 | TC-Tính dễ tiếp cận | Icon | Nhận biết & Phân biệt | Khi dùng icon để thông báo, cảnh báo, không chỉ đổi màu icon mà phải đổi cả hình dáng | Kiểm tra các icon trạng thái/cảnh báo khi thay đổi trạng thái có thay đổi cả hình dạng (không chỉ đổi màu sắc), đảm bảo người khiếm khuyết về màu vẫn phân biệt được. | Mỗi trạng thái có icon với hình dạng riêng biệt, không chỉ phụ thuộc vào màu sắc để truyền đạt thông tin. | Bắt buộc | WCAG 2.2 – 1.4.1 Use of Color (A) \| Material Design 3 (m3.material.io) – Icons; WCAG 2.2 – 1.1.1 Non-text Content (A) |
+| 9 | UX-TC09 | TC-Tính dễ tiếp cận | Icon | Công nghệ và Trình đọc màn hình |  Icon thay thế cho văn bản phải đi kèm với phải cung cấp văn bản thay thế dạng ẩn hỗ trợ cho screen reader | Kiểm tra các icon dùng thay thế cho văn bản (icon-only button/link) có văn bản thay thế ẩn (aria-label/alt text) để screen reader đọc được. | Mọi icon mang chức năng (không chỉ trang trí) đều có văn bản thay thế ẩn mô tả đúng hành động/ý nghĩa cho screen reader. | Bắt buộc | WCAG 2.2 – 1.1.1 Non-text Content (A) \| Material Design 3 (m3.material.io) – Icons; WCAG 2.2 – 1.1.1 Non-text Content (A) |
+| 10 | UX-TC10 | TC-Tính dễ tiếp cận | Icon | Công nghệ và Trình đọc màn hình | Icon chỉ mang tính chất trang trí cần ẩn icon với screen reader | Kiểm tra các icon chỉ mang tính trang trí (không truyền tải thông tin) có được ẩn khỏi screen reader (aria-hidden hoặc alt rỗng). | Icon trang trí không bị screen reader đọc lên, tránh gây nhiễu thông tin cho người dùng khiếm thị. | Bắt buộc | WCAG 2.2 – 1.1.1 Non-text Content (A) \| Material Design 3 (m3.material.io) – Icons; WCAG 2.2 – 1.1.1 Non-text Content (A) |
+| 11 | UX-TC11 | TC-Tính dễ tiếp cận | Minh họa (ảnh/video) | Công nghệ và Trình đọc màn hình | Hình ảnh cần được gắn alt text | Kiểm tra tất cả hình ảnh mang thông tin có thuộc tính alt text mô tả đúng nội dung hình ảnh. | 100% hình ảnh có ý nghĩa đều có alt text chính xác, mô tả đủ nội dung cần truyền tải. | Bắt buộc | WCAG 2.2 – 1.1.1 Non-text Content (A) \| WCAG 2.2 – 1.1.1 Non-text Content (A), 1.2.2 Captions (A) |
+| 12 | UX-TC12 | TC-Tính dễ tiếp cận | Minh họa (ảnh/video) | Nhận biết & Phân biệt | Video kèm âm thanh, âm thanh chính có thể phân biệt được so với âm thanh nền và luôn đi kèm phụ đề. Nội dung âm thanh hoặc video có phương thức tiếp nhận thay thế khi người dùng không thể nghe hoặc xem trong bối cảnh hiện tại. | Kiểm tra video có âm thanh phân biệt được với âm thanh nền, có phụ đề (caption) đi kèm, và có phương thức tiếp nhận thay thế (transcript) khi người dùng không thể nghe/xem. | Video/audio có phụ đề đầy đủ, âm thanh chính rõ hơn âm thanh nền, và có phương án thay thế bằng văn bản. | Bắt buộc | WCAG 2.2 – 1.2.2 Captions (Prerecorded) (A) \| WCAG 2.2 – 1.1.1 Non-text Content (A), 1.2.2 Captions (A) |
+| 13 | UX-TC13 | TC-Tính dễ tiếp cận | Minh họa (ảnh/video) | Nhận biết & Phân biệt | Các phần tử minh họa đảm bảo toàn vẹn để nhận diện và hiểu được | Kiểm tra các thành phần trong hình minh họa (đường nét, chi tiết, độ tương phản) có đủ rõ ràng để nhận diện, không vỡ hình, mờ hoặc chồng lấn. | Hình minh họa hiển thị toàn vẹn, rõ nét; các chi tiết quan trọng dễ nhận biết ở các kích thước hiển thị khác nhau. | Cơ bản | WCAG 2.2 – 1.4.3 Contrast (Minimum) (AA) \| WCAG 2.2 – 1.1.1 Non-text Content (A), 1.2.2 Captions (A) |
+| 14 | UX-TC14 | TC-Tính dễ tiếp cận | Minh họa (ảnh/video) | Nhận biết & Phân biệt | Hình ảnh minh họa đúng với nội dung chủ đề hỗ trợ người dùng nhận biết, không làm sai lệch tinh thần chủ đạo | Kiểm tra hình ảnh minh họa có đúng chủ đề, ngữ cảnh nội dung, hỗ trợ người dùng nhận biết đúng và không truyền tải sai tinh thần/thông điệp. | Hình ảnh minh họa phù hợp và nhất quán với nội dung chủ đạo, không gây hiểu nhầm hoặc phản cảm. | Cơ bản | WCAG 2.2 (nguyên tắc Perceivable/Operable); ISO 9241-210:2019 – Human-centred design for interactive systems \| WCAG 2.2 – 1.1.1 Non-text Content (A), 1.2.2 Captions (A) |
+| 15 | UX-TC15 | TC-Tính dễ tiếp cận | Button | Nhận biết & Phân biệt | Hiển thị đầy đủ các trạng thái Defaul, Acitve, Disable, Press, Hover (với website) | Kiểm tra button hiển thị đầy đủ các trạng thái Default, Active, Disabled, Pressed và Hover (đối với website) với sự khác biệt trực quan rõ ràng. | Tất cả trạng thái của button được phân biệt rõ bằng màu sắc/hiệu ứng; người dùng nhận biết được trạng thái hiện tại. | Cơ bản | WCAG 2.2 (nguyên tắc Perceivable/Operable); ISO 9241-210:2019 – Human-centred design for interactive systems \| Material Design 3 (m3.material.io) – Buttons; Apple Human Interface Guidelines (HIG) – Buttons |
+| 16 | UX-TC16 | TC-Tính dễ tiếp cận | Button | Tương tác & Thao tác | Sử dụng các tương tác phổ thông (VD: Button có thể tương tác bằng 1-click) | Kiểm tra button có thể kích hoạt bằng một thao tác tương tác phổ thông (single-click/single-tap), không yêu cầu thao tác phức tạp không cần thiết. | Người dùng thực hiện được hành động của button chỉ bằng 1 lần click/tap theo đúng quy ước nền tảng. | Cơ bản | WCAG 2.2 (nguyên tắc Perceivable/Operable); ISO 9241-210:2019 – Human-centred design for interactive systems \| Material Design 3 (m3.material.io) – Buttons; Apple Human Interface Guidelines (HIG) – Buttons |
+| 17 | UX-TC17 | TC-Tính dễ tiếp cận | Button | Tương tác & Thao tác | Button có thể tương tác bằng cách click bất cứ điểm nào thuộc container của button (không chỉ click được tại label). | Kiểm tra vùng có thể click của button bao phủ toàn bộ container (kể cả padding), không chỉ giới hạn ở phần label chữ. | Người dùng click được vào bất kỳ điểm nào trong vùng hiển thị của button, không chỉ riêng phần chữ. | Cơ bản | WCAG 2.2 – 2.5.8 Target Size (Minimum) (AA) \| Material Design 3 (m3.material.io) – Buttons; Apple Human Interface Guidelines (HIG) – Buttons |
+| 18 | UX-TC18 | TC-Tính dễ tiếp cận | Switch | Tương tác & Thao tác | Có thể thao tác tắt mở bằng 1 thao tác | Kiểm tra switch có thể bật/tắt chỉ bằng một thao tác tap/click duy nhất. | Trạng thái switch chuyển đổi ngay sau một lần tap/click, không cần thao tác bổ sung. | Cơ bản | WCAG 2.2 (nguyên tắc Perceivable/Operable); ISO 9241-210:2019 – Human-centred design for interactive systems \| Material Design 3 (m3.material.io) – Switch; Apple Human Interface Guidelines (HIG) – Toggles |
+| 19 | UX-TC19 | TC-Tính dễ tiếp cận | Switch | Tương tác & Thao tác | Có thể bật/tắt switch bằng toàn bộ vùng switch và label phù hợp. | Kiểm tra vùng có thể thao tác của switch có bao gồm cả label mô tả đi kèm, không chỉ giới hạn ở phần công tắc. | Người dùng bật/tắt được switch bằng cách click vào cả label lẫn vùng công tắc. | Cơ bản | WCAG 2.2 – 2.5.8 Target Size (Minimum) (AA) \| Material Design 3 (m3.material.io) – Switch; Apple Human Interface Guidelines (HIG) – Toggles |
+| 20 | UX-TC20 | TC-Tính dễ tiếp cận | Checkbox | Tương tác & Thao tác | Có thể chọn bằng 1 thao tác | Kiểm tra checkbox có thể chọn/bỏ chọn chỉ bằng một thao tác click/tap. | Trạng thái checkbox thay đổi ngay sau một lần click/tap. | Cơ bản | WCAG 2.2 (nguyên tắc Perceivable/Operable); ISO 9241-210:2019 – Human-centred design for interactive systems \| Material Design 3 (m3.material.io) – Checkbox |
+| 21 | UX-TC21 | TC-Tính dễ tiếp cận | Checkbox | Tương tác & Thao tác | Checkbox có thể tương tác bằng cách click bất cứ điểm nào thuộc label (giống như click vào icon checkbox). | Kiểm tra checkbox có thể được chọn bằng cách click vào bất kỳ vị trí nào trong label đi kèm, tương tự như click vào icon checkbox. | Click vào label văn bản cũng chọn/bỏ chọn được checkbox tương ứng, không chỉ riêng icon. | Cơ bản | WCAG 2.2 – 2.5.8 Target Size (Minimum) (AA) \| Material Design 3 (m3.material.io) – Checkbox |
+| 22 | UX-TC22 | TC-Tính dễ tiếp cận | Radio | Tương tác & Thao tác | Có thể chọn mở bằng 1 thao tác | Kiểm tra radio button có thể chọn chỉ bằng một thao tác click/tap. | Lựa chọn radio được ghi nhận ngay sau một lần click/tap. | Cơ bản | WCAG 2.2 (nguyên tắc Perceivable/Operable); ISO 9241-210:2019 – Human-centred design for interactive systems \| Material Design 3 (m3.material.io) – Radio button |
+| 23 | UX-TC23 | TC-Tính dễ tiếp cận | Radio | Tương tác & Thao tác | Có thể chọn radio bằng cả biểu tượng và label đi kèm. | Kiểm tra radio button có thể chọn bằng cách click vào cả biểu tượng radio lẫn label văn bản đi kèm. | Click vào icon radio hoặc label đều chọn được lựa chọn tương ứng. | Cơ bản | WCAG 2.2 (nguyên tắc Perceivable/Operable); ISO 9241-210:2019 – Human-centred design for interactive systems \| Material Design 3 (m3.material.io) – Radio button |
+| 24 | UX-TC24 | TC-Tính dễ tiếp cận | Dropdown | Tương tác & Thao tác | Toàn bộ trường có thể mở danh sách, không chỉ riêng icon mũi tên. | Kiểm tra toàn bộ vùng hiển thị của trường dropdown (không chỉ icon mũi tên) có thể click để mở danh sách lựa chọn. | Người dùng mở được danh sách dropdown khi click vào bất kỳ đâu trong vùng trường, không chỉ riêng icon mũi tên. | Cơ bản | WCAG 2.2 – 2.5.8 Target Size (Minimum) (AA) \| Material Design 3 (m3.material.io) – Menus; GOV.UK Design System – Select component |
+| 25 | UX-TC25 | TC-Tính dễ tiếp cận | Dropdown | Nhận biết & Phân biệt | Cung cấp tìm kiếm cho danh sách dài >10 lựa chọn | Kiểm tra dropdown có danh sách lựa chọn lớn hơn 10 mục có cung cấp ô tìm kiếm/lọc để thu hẹp kết quả. | Với danh sách trên 10 lựa chọn, người dùng có thể gõ để tìm kiếm và lọc nhanh mục cần chọn. | Cơ bản | WCAG 2.2 (nguyên tắc Perceivable/Operable); ISO 9241-210:2019 – Human-centred design for interactive systems \| Material Design 3 (m3.material.io) – Menus; GOV.UK Design System – Select component |
+| 26 | UX-TC26 | TC-Tính dễ tiếp cận | Nhập liệu | Nhận biết & Phân biệt | Nhãn của ô nhập liệu luôn hiển thị trực quan, không dùng chữ mờ (Placeholder) để thay thế hoàn toàn cho nhãn | Kiểm tra ô nhập liệu có nhãn (label) hiển thị cố định, thường trực; placeholder không được dùng để thay thế hoàn toàn cho label. | Label của ô nhập liệu luôn hiển thị kể cả khi người dùng đã nhập dữ liệu, không biến mất khi ô có nội dung. | Bắt buộc | WCAG 2.2 – 3.3.2 Labels or Instructions (A) \| Material Design 3 (m3.material.io) – Text fields; GOV.UK Design System – Text input |
+| 27 | UX-TC27 | TC-Tính dễ tiếp cận | Nhập liệu | Nhận biết & Phân biệt | Hiển thị định dạng rõ ràng: Nếu ô nhập liệu yêu cầu định dạng đặc biệt (ví dụ: Ngày sinh DD/MM/YYYY), phần hướng dẫn này phải nằm ngoài ô nhập liệu và hiển thị ngay từ đầu. | Kiểm tra ô nhập liệu yêu cầu định dạng đặc biệt (VD: ngày sinh DD/MM/YYYY) có hướng dẫn định dạng hiển thị bên ngoài ô nhập, xuất hiện ngay từ đầu chứ không chỉ khi có lỗi. | Hướng dẫn định dạng luôn hiển thị sẵn bên ngoài ô nhập trước khi người dùng bắt đầu nhập, không phụ thuộc vào việc xảy ra lỗi. | Cơ bản | WCAG 2.2 (nguyên tắc Perceivable/Operable); ISO 9241-210:2019 – Human-centred design for interactive systems \| Material Design 3 (m3.material.io) – Text fields; GOV.UK Design System – Text input |
+| 28 | UX-TC28 | TC-Tính dễ tiếp cận | Nhập liệu | Nhận biết & Phân biệt | Đánh dấu trường bắt buộc (Required Fields) bằng ký hiệu rõ ràng và đi kèm chữ văn bản | Kiểm tra các trường bắt buộc có ký hiệu đánh dấu rõ ràng (VD: dấu *) kèm chú thích bằng văn bản giải thích ý nghĩa ký hiệu. | Mọi trường bắt buộc đều có dấu hiệu nhận biết nhất quán và có chú thích văn bản giải thích, không chỉ dựa vào ký hiệu đơn thuần. | Bắt buộc | WCAG 2.2 (nguyên tắc Perceivable/Operable); ISO 9241-210:2019 – Human-centred design for interactive systems \| Material Design 3 (m3.material.io) – Text fields; GOV.UK Design System – Text input |
+| 29 | UX-TC29 | TC-Tính dễ tiếp cận | Nhập liệu | Tương tác & Thao tác | Cho phép ấm vào nhãn để kích hoạt nhập liệu | Kiểm tra việc tap/click vào label của ô nhập liệu có kích hoạt focus vào ô nhập tương ứng. | Click vào label cũng đưa con trỏ vào ô nhập liệu tương ứng, tăng vùng thao tác hiệu quả. | Cơ bản | WCAG 2.2 (nguyên tắc Perceivable/Operable); ISO 9241-210:2019 – Human-centred design for interactive systems \| Material Design 3 (m3.material.io) – Text fields; GOV.UK Design System – Text input |
+| 30 | UX-TC30 | TC-Tính dễ tiếp cận | Nhập liệu | Nhận biết & Phân biệt | Khi người dùng dùng phím Tab hoặc click vào ô, ô nhập liệu phải có viền nổi bật (Focus Indicator) với độ tương phản cao để họ biết mình đang ở đâu. | Kiểm tra khi dùng phím Tab hoặc click vào ô nhập liệu, ô có viền/hiệu ứng focus nổi bật với độ tương phản đủ cao để nhận biết vị trí hiện tại. | Focus indicator hiển thị rõ ràng, đạt tỷ lệ tương phản tối thiểu 3:1 so với nền khi ô đang được focus bằng bàn phím hoặc chuột. | Bắt buộc | WCAG 2.2 – 1.4.3 Contrast (Minimum) (AA) \| Material Design 3 (m3.material.io) – Text fields; GOV.UK Design System – Text input |
+| 31 | UX-TC31 | TC-Tính dễ tiếp cận | Nhập liệu | Công nghệ và Trình đọc màn hình | Kích hoạt tính năng tự động gợi ý, tự động điền để giúp người dùng giảm bớt thao tác gõ phím vật lý | Kiểm tra ô nhập liệu có hỗ trợ autofill/autocomplete/gợi ý tự động phù hợp với loại dữ liệu (tên, địa chỉ, email, thẻ...) để giảm thao tác gõ phím thủ công. | Trình duyệt/hệ thống gợi ý hoặc tự động điền chính xác cho các trường dữ liệu phổ biến khi được hỗ trợ. | Thông minh | WCAG 2.2 – 4.1.2 Name, Role, Value (A) \| Material Design 3 (m3.material.io) – Text fields; GOV.UK Design System – Text input |
+| 32 | UX-TC32 | TC-Tính dễ tiếp cận | Bàn phím ảo | Bố cục & Tổ chức thông tin | Bàn phím ảo không che khuất trường nhập, nội dung hoặc hành động chính. | Kiểm tra khi bàn phím ảo xuất hiện trên các kích thước màn hình phổ biến, nó không che khuất trường đang nhập liệu, nội dung liên quan hoặc nút hành động chính. | Trường nhập liệu đang active, nội dung liên quan và hành động chính vẫn hiển thị đầy đủ hoặc tự cuộn lên khi bàn phím ảo xuất hiện. | Cơ bản | WCAG 2.2 – 2.1.1 Keyboard (A) \| Apple Human Interface Guidelines (HIG) – Onscreen keyboards |
+| 33 | UX-TC33 | TC-Tính dễ tiếp cận | Bảng | Nhận biết & Phân biệt | Header bảng vẫn có thể nhận biết khi người dùng cuộn qua dữ liệu dài. | Kiểm tra khi cuộn qua bảng dữ liệu dài, phần header/tiêu đề cột vẫn hiển thị cố định (sticky) hoặc dễ nhận biết. | Người dùng luôn nhìn thấy tiêu đề cột tương ứng khi cuộn qua dữ liệu, không phải cuộn ngược lại để đối chiếu. | Cơ bản | WCAG 2.2 (nguyên tắc Perceivable/Operable); ISO 9241-210:2019 – Human-centred design for interactive systems \| GOV.UK Design System – Table component; NN/g – Data Tables |
+| 34 | UX-TC34 | TC-Tính dễ tiếp cận | accordions | Tương tác & Thao tác | Toàn bộ vùng tiêu đề accordion có thể mở/thu gọn | Kiểm tra toàn bộ vùng tiêu đề (header) của accordion có thể click để mở/thu gọn, không chỉ riêng icon mũi tên. | Người dùng mở/đóng được accordion khi click vào bất kỳ đâu trong vùng tiêu đề. | Cơ bản | WCAG 2.2 – 2.5.8 Target Size (Minimum) (AA) \| Material Design 3 (m3.material.io) – Lists; NN/g – Accordions (Progressive Disclosure) |
+| 35 | UX-TC35 | TC-Tính dễ tiếp cận | Scroll | Nhận biết & Phân biệt | Khu vực có thể cuộn phải có dấu hiệu để người dùng nhận biết còn nội dung. | Kiểm tra khu vực có thể cuộn (danh sách ngang, panel...) có dấu hiệu trực quan (thanh cuộn, bóng đổ, cắt phần tử ở mép) cho biết còn nội dung phía sau. | Người dùng nhận biết được còn nội dung chưa hiển thị và biết khu vực đó có thể cuộn tiếp. | Cơ bản | WCAG 2.2 (nguyên tắc Perceivable/Operable); ISO 9241-210:2019 – Human-centred design for interactive systems \| NN/g – Scrolling and Scrollbars |
+| 36 | UX-TC36 | TC-Tính dễ tiếp cận | Điều hướng | Điều hướng & Định hướng | Hệ thống cung cấp cách thức di chuyển dễ dàng giữa các khu vực chính (menu/tab bar/nav rõ ràng). | Kiểm tra hệ thống cung cấp menu/tab bar/thanh điều hướng rõ ràng cho phép di chuyển giữa các khu vực chính. | Người dùng tìm thấy và di chuyển được giữa các khu vực chính của hệ thống thông qua menu/tab bar mà không bị lạc hướng. | Bắt buộc | WCAG 2.2 (nguyên tắc Perceivable/Operable); ISO 9241-210:2019 – Human-centred design for interactive systems \| Material Design 3 (m3.material.io) – Navigation bar/drawer; NN/g – Navigation Design |
+| 37 | UX-TC37 | TC-Tính dễ tiếp cận | Điều hướng | Điều hướng & Định hướng | Hệ thống cung cấp thông tin về vị trí hiện tại và nơi có thể đến (breadcrumb, tab active state, tiêu đề màn hình). | Kiểm tra hệ thống hiển thị vị trí hiện tại của người dùng thông qua breadcrumb, trạng thái active của tab, hoặc tiêu đề màn hình. | Người dùng luôn biết mình đang ở đâu trong cấu trúc hệ thống thông qua ít nhất một trong các dấu hiệu: breadcrumb, tab active, tiêu đề màn hình. | Bắt buộc | WCAG 2.2 – 2.4.2 Page Titled (A) \| Material Design 3 (m3.material.io) – Navigation bar/drawer; NN/g – Navigation Design |
+| 38 | UX-TC38 | TC-Tính dễ tiếp cận | Điều hướng | Điều hướng & Định hướng | Hệ thống cung cấp cách quay lại rõ ràng ở mọi màn hình con (nút đóng/ cancel/quay lại) | Kiểm tra mỗi màn hình con đều có cách quay lại rõ ràng (nút back/close/cancel) và dễ nhận biết. | Người dùng luôn có cách quay lại màn hình trước đó ở mọi màn hình con. | Bắt buộc | WCAG 2.2 (nguyên tắc Perceivable/Operable); ISO 9241-210:2019 – Human-centred design for interactive systems \| Material Design 3 (m3.material.io) – Navigation bar/drawer; NN/g – Navigation Design |
+| 39 | UX-TC39 | TC-Tính dễ tiếp cận | Điều hướng | Điều hướng & Định hướng | Khi người dùng kết thúc một hành động, hệ thống quay lại đúng vị trí kích hoạt (hoặc vị trí hợp lý gần nhất nếu vị trí cũ không còn tồn tại). | Kiểm tra sau khi hoàn tất một hành động, hệ thống đưa người dùng quay lại đúng vị trí đã kích hoạt hành động đó (hoặc vị trí hợp lý gần nhất nếu vị trí cũ không còn). | Người dùng được đưa về đúng ngữ cảnh/vị trí trước khi thực hiện hành động, không bị mất vị trí đang thao tác. | Bắt buộc | WCAG 2.2 (nguyên tắc Perceivable/Operable); ISO 9241-210:2019 – Human-centred design for interactive systems \| Material Design 3 (m3.material.io) – Navigation bar/drawer; NN/g – Navigation Design |
+| 40 | UX-TC40 | TC-Tính dễ tiếp cận | Điều hướng | Kích thước và mục tiêu | Thông tin/control quan trọng nằm trong tầm nhìn của người dùng (above the fold), không cần thao tác thêm mới thấy. | Kiểm tra thông tin/control quan trọng nằm trong vùng nhìn thấy đầu tiên (above the fold) mà không cần cuộn hoặc thao tác thêm. | Thông tin/hành động quan trọng nhất hiển thị ngay khi màn hình được tải, không bị ẩn dưới fold. | Bắt buộc | WCAG 2.2 – 2.5.8 Target Size (Minimum) (AA) \| Material Design 3 (m3.material.io) – Navigation bar/drawer; NN/g – Navigation Design |
+| 41 | UX-TC41 | TC-Tính dễ tiếp cận | Điều hướng | Kích thước và mục tiêu | Người dùng có thể trở về trang chủ từ vị trí bất kỳ. | Kiểm tra người dùng có thể quay về trang chủ từ bất kỳ màn hình nào trong hệ thống. | Có control (logo, nút Home) cho phép quay về trang chủ ở mọi màn hình. | Cơ bản | WCAG 2.2 – 2.5.8 Target Size (Minimum) (AA) \| Material Design 3 (m3.material.io) – Navigation bar/drawer; NN/g – Navigation Design |
+| 42 | UX-TC42 | TC-Tính dễ tiếp cận | Điều hướng | Bố cục & Tổ chức thông tin | Thanh điều hướng vẫn có thể tiếp cận khi người dùng đi vào menu con. | Kiểm tra khi người dùng đi sâu vào menu con, thanh điều hướng chính vẫn có thể truy cập được. | Thanh điều hướng chính vẫn hiển thị hoặc truy cập được khi người dùng đang ở menu con. | Cơ bản | WCAG 2.2 (nguyên tắc Perceivable/Operable); ISO 9241-210:2019 – Human-centred design for interactive systems \| Material Design 3 (m3.material.io) – Navigation bar/drawer; NN/g – Navigation Design |
+| 43 | UX-TC43 | TC-Tính dễ tiếp cận | Điều hướng | Tương tác & Thao tác | Hệ thống cho phép thao tác và điều hướng bằng bàn phím. | Kiểm tra hệ thống cho phép điều hướng và thao tác đầy đủ bằng bàn phím (Tab, Enter, phím mũi tên, Esc) mà không cần chuột. | Toàn bộ chức năng điều hướng và thao tác chính đều thực hiện được bằng bàn phím, thứ tự Tab hợp lý theo luồng thị giác. | Bắt buộc | WCAG 2.2 – 2.1.1 Keyboard (A) \| Material Design 3 (m3.material.io) – Navigation bar/drawer; NN/g – Navigation Design |
+| 44 | UX-TC44 | TC-Tính dễ tiếp cận | Điều hướng | Tương tác & Thao tác | Tương tác phức tạp phải có phương thức thao tác đơn giản thay thế. | Kiểm tra các tương tác điều hướng phức tạp (vuốt, kéo, cử chỉ đa điểm) có phương thức thao tác đơn giản thay thế (nút bấm, click). | Mọi thao tác điều hướng phức tạp đều có cách thực hiện thay thế bằng thao tác cơ bản (tap/click). | Bắt buộc | WCAG 2.2 – 2.5.1 Pointer Gestures (A) \| Material Design 3 (m3.material.io) – Navigation bar/drawer; NN/g – Navigation Design |
+| 45 | UX-TC45 | TC-Tính dễ tiếp cận | Tương tác | Tương tác & Thao tác | Hệ thống cho phép người dùng tương tác tự nhiên khi khả thi (giọng nói, cử chỉ) cho các tác vụ phù hợp. | Kiểm tra hệ thống có hỗ trợ phương thức tương tác tự nhiên (giọng nói, cử chỉ) cho các tác vụ phù hợp khi khả thi. | Với các tác vụ phù hợp, người dùng có thể sử dụng giọng nói hoặc cử chỉ như một cách tương tác bổ sung. | Thông minh | WCAG 2.2 (nguyên tắc Perceivable/Operable); ISO 9241-210:2019 – Human-centred design for interactive systems \| Apple Human Interface Guidelines (HIG) – Gestures; Material Design 3 (m3.material.io) – Interaction states |
+| 46 | UX-TC46 | TC-Tính dễ tiếp cận | Tương tác | Tương tác & Thao tác | Đối tượng sử dụng cách thức tương tác phổ thông, đúng theo quy ước nền tảng (tap/swipe/scroll của iOS/Android/Web). | Kiểm tra các đối tượng sử dụng đúng cách thức tương tác theo quy ước chuẩn của nền tảng (tap/swipe/scroll đúng theo iOS Human Interface Guidelines, Android Material Design hoặc quy ước web). | Tương tác trên từng nền tảng khớp với quy ước và kỳ vọng thói quen người dùng của nền tảng đó. | Bắt buộc | WCAG 2.2 (nguyên tắc Perceivable/Operable); ISO 9241-210:2019 – Human-centred design for interactive systems \| Apple Human Interface Guidelines (HIG) – Gestures; Material Design 3 (m3.material.io) – Interaction states |
+| 47 | UX-TC47 | TC-Tính dễ tiếp cận | Tương tác | Tương tác & Thao tác | Với đối tượng có nhiều cách tương tác, các tương tác không xung đột và dùng tương tác đơn giản nhất cho hành động cơ bản. | Kiểm tra với đối tượng có nhiều cách tương tác, các tương tác không xung đột lẫn nhau và hành động cơ bản luôn dùng cách thao tác đơn giản nhất. | Không có tương tác nào gây nhầm lẫn hoặc chồng chéo chức năng; hành động cơ bản thực hiện được bằng thao tác đơn giản nhất. | Cơ bản | WCAG 2.2 – 2.4.5 Multiple Ways (AA) \| Apple Human Interface Guidelines (HIG) – Gestures; Material Design 3 (m3.material.io) – Interaction states |
+| 48 | UX-TC48 | TC-Tính dễ tiếp cận | Tương tác | Tương tác & Thao tác | Mỗi cách thức tương tác được dùng đúng mục đích của nó (vd swipe để xoá/lưu trữ, không dùng để mở chi tiết). | Kiểm tra mỗi kiểu tương tác (swipe, long press, double tap...) được dùng đúng với mục đích thiết kế chuẩn của nó (VD: swipe để xóa/lưu trữ, không dùng để mở chi tiết). | Từng kiểu tương tác gắn với đúng hành động phù hợp thói quen người dùng, không dùng sai mục đích gây nhầm lẫn. | Cơ bản | WCAG 2.2 (nguyên tắc Perceivable/Operable); ISO 9241-210:2019 – Human-centred design for interactive systems \| Apple Human Interface Guidelines (HIG) – Gestures; Material Design 3 (m3.material.io) – Interaction states |
+| 49 | UX-TC49 | TC-Tính dễ tiếp cận | Tương tác | Tương tác & Thao tác | Đối tượng có tương tác gián tiếp có control đặt gần nhất để điều khiển, và cho phép tương tác trực tiếp nếu khả thi. | Kiểm tra đối tượng có tương tác gián tiếp (VD: điều khiển từ xa/vùng khác) có control đặt gần đối tượng đó, và cho phép tương tác trực tiếp nếu khả thi. | Người dùng có control gần đối tượng để điều khiển gián tiếp và có thể thao tác trực tiếp lên đối tượng khi hệ thống cho phép. | Cơ bản | WCAG 2.2 (nguyên tắc Perceivable/Operable); ISO 9241-210:2019 – Human-centred design for interactive systems \| Apple Human Interface Guidelines (HIG) – Gestures; Material Design 3 (m3.material.io) – Interaction states |
+| 50 | UX-TC50 | TC-Tính dễ tiếp cận | Drag–drop | Nhận biết & Phân biệt | Thành phần kéo–thả có dấu hiệu nhận biết và có cách thao tác thay thế. | Kiểm tra thành phần hỗ trợ kéo–thả có dấu hiệu trực quan (icon, con trỏ, viền) cho biết có thể kéo, và có cách thao tác thay thế (nút, menu) cho người không thể thực hiện thao tác kéo–thả. | Người dùng nhận biết được đối tượng có thể kéo–thả và có cách thực hiện thay thế khi không dùng được thao tác kéo–thả. | Bắt buộc | WCAG 2.2 – 2.5.7 Dragging Movements (AA) \| WCAG 2.2 – 2.5.7 Dragging Movements (AA); NN/g – Drag-and-Drop |
+| 51 | UX-TC51 | TC-Tính dễ tiếp cận | Modal/Dialog/Popup/toast | Điều hướng & Định hướng | Khi đóng, người dùng được đưa về vị trí kích hoạt hoặc một vị trí hợp lý. | Kiểm tra khi đóng modal/dialog/popup, người dùng được đưa về đúng vị trí đã kích hoạt hoặc vị trí hợp lý gần nhất. | Sau khi đóng, focus và vị trí màn hình quay về đúng ngữ cảnh trước khi mở, không làm mất vị trí đang thao tác. | Bắt buộc | WCAG 2.2 (nguyên tắc Perceivable/Operable); ISO 9241-210:2019 – Human-centred design for interactive systems \| Material Design 3 (m3.material.io) – Dialogs & Snackbars; NN/g – Modal & Nonmodal Dialogs |
+| 52 | UX-TC52 | TC-Tính dễ tiếp cận | Modal/Dialog/Popup/toast | Nhận biết & Phân biệt | Không xuất hiện quá nhiều toast khiến người dùng bỏ lỡ hoặc không tiếp cận được thông tin. | Kiểm tra hệ thống không hiển thị quá nhiều toast cùng lúc hoặc liên tiếp khiến người dùng bỏ lỡ hoặc không kịp tiếp nhận thông tin. | Số lượng toast hiển thị tại một thời điểm được kiểm soát hợp lý (thường không quá 1-2), không chồng lấn hoặc lấn át nhau. | Cơ bản | WCAG 2.2 (nguyên tắc Perceivable/Operable); ISO 9241-210:2019 – Human-centred design for interactive systems \| Material Design 3 (m3.material.io) – Dialogs & Snackbars; NN/g – Modal & Nonmodal Dialogs |
+| 53 | UX-TC53 | TC-Tính dễ tiếp cận | Modal/Dialog/Popup/toast | Nhận biết & Phân biệt | Toast không che khuất hoặc cản trở hành động chính. | Kiểm tra vị trí và kích thước của toast không che khuất hoặc cản trở các hành động chính trên màn hình. | Toast xuất hiện ở vị trí không chặn nút/hành động chính; người dùng vẫn thao tác được bình thường khi toast hiển thị. | Cơ bản | WCAG 2.2 (nguyên tắc Perceivable/Operable); ISO 9241-210:2019 – Human-centred design for interactive systems \| Material Design 3 (m3.material.io) – Dialogs & Snackbars; NN/g – Modal & Nonmodal Dialogs |
+| 54 | UX-TC54 | TC-Tính dễ tiếp cận | Modal/Dialog/Popup/toast | Nhận biết & Phân biệt | Toast tự ẩn quá nhanh, cảnh báo xuất hiện liên tục. Hiển thị tối thiểu 4 - 6 giây cho câu ngắn. • Nếu có hành động đi kèm (Undo, View), phải giữ tối thiểu 10 giây hoặc cho phép người dùng tùy chỉnh thời gian trong cài đặt. | Kiểm tra thời gian hiển thị của toast: tối thiểu 4-6 giây cho thông báo ngắn; tối thiểu 10 giây hoặc có thể tùy chỉnh nếu có hành động kèm theo (Undo, View). | Toast không tự ẩn quá nhanh; thông báo có hành động đi kèm hiển thị đủ lâu (≥10 giây) hoặc cho phép người dùng tùy chỉnh thời gian. | Bắt buộc | WCAG 2.2 – 2.2.1 Timing Adjustable (A) \| Material Design 3 (m3.material.io) – Dialogs & Snackbars; NN/g – Modal & Nonmodal Dialogs |
+| 55 | UX-TC55 | TC-Tính dễ tiếp cận | Modal/Dialog/Popup/toast | Nhận biết & Phân biệt | Popup / Tooltip Biến mất ngay khi chuột rời đi hoặc mất tiêu điểm (Blur). | Kiểm tra popup/tooltip biến mất ngay khi con trỏ chuột rời khỏi hoặc phần tử mất tiêu điểm (blur). | Tooltip/popup tự động ẩn khi không còn hover/focus, không tồn tại dai dẳng gây che khuất nội dung khác. | Cơ bản | WCAG 2.2 (nguyên tắc Perceivable/Operable); ISO 9241-210:2019 – Human-centred design for interactive systems \| Material Design 3 (m3.material.io) – Dialogs & Snackbars; NN/g – Modal & Nonmodal Dialogs |
+| 56 | UX-TC56 | TC-Tính dễ tiếp cận | Modal/Dialog/Popup/toast | Nhận biết & Phân biệt | Modal / Dialog chỉ biến mất khi người dùng chủ động bấm nút Đóng (X), Xác nhận, Hủy hoặc bấm ra ngoài màn hình (nếu cho phép). | Kiểm tra modal/dialog chỉ biến mất khi người dùng chủ động bấm nút Đóng (X), Xác nhận, Hủy hoặc click ra ngoài (nếu được phép), không tự đóng ngoài ý muốn. | Modal/dialog duy trì hiển thị cho đến khi người dùng chủ động thực hiện hành động đóng. | Cơ bản | WCAG 2.2 – 3.3.4 Error Prevention (Legal, Financial, Data) (AA) \| Material Design 3 (m3.material.io) – Dialogs & Snackbars; NN/g – Modal & Nonmodal Dialogs |
+| 57 | UX-TC57 | TC-Tính dễ tiếp cận | Dữ liệu | Nhận biết & Phân biệt | Danh sách có số lượng dữ liệu lớn cung cấp công cụ tìm kiếm hoặc thu hẹp dữ liệu. | Kiểm tra danh sách có số lượng dữ liệu lớn có cung cấp công cụ tìm kiếm hoặc bộ lọc để thu hẹp phạm vi dữ liệu. | Người dùng có thể tìm kiếm hoặc lọc để nhanh chóng tiếp cận dữ liệu cần thiết trong danh sách lớn. | Cơ bản | WCAG 2.2 (nguyên tắc Perceivable/Operable); ISO 9241-210:2019 – Human-centred design for interactive systems \| NN/g – Progressive Disclosure |
+| 58 | UX-DH01 | DH-Tính dễ hiểu | Text | Nội dung & Hướng dẫn | Tránh lạm dụng thuật ngữ chuyên ngành (jargon) khó hiểu. Nếu bắt buộc phải dùng từ viết tắt hoặc từ kỹ thuật, hệ thống phải có cơ chế giải thích rõ ràng | Kiểm tra nội dung có lạm dụng thuật ngữ chuyên ngành (jargon) khó hiểu; nếu bắt buộc dùng từ viết tắt/kỹ thuật, kiểm tra có cơ chế giải thích (tooltip, chú thích, glossary). | Nội dung hạn chế tối đa jargon; mọi từ viết tắt/thuật ngữ kỹ thuật bắt buộc dùng đều có giải thích rõ ràng đi kèm. | Cơ bản | WCAG 2.2 – 3.1.4 Abbreviations (AAA) \| NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall |
+| 59 | UX-DH02 | DH-Tính dễ hiểu | Text | Nội dung & Hướng dẫn | Sử dụng câu ngắn gọn nhưng truyền đạt đầy đủ thông tin cần thiết để người dùng hiểu, cung cấp hướng dẫn hoặc action để tiếp tục. | Kiểm tra câu chữ có ngắn gọn nhưng vẫn truyền đạt đầy đủ thông tin, hướng dẫn hoặc hành động cần thiết để người dùng tiếp tục. | Câu văn súc tích, không thiếu thông tin quan trọng; người dùng biết cần làm gì tiếp theo sau khi đọc. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall |
+| 60 | UX-DH03 | DH-Tính dễ hiểu | Text | Nội dung & Hướng dẫn | Từ viết tắt chỉ được sử dụng khi phổ biến với người dùng hoặc có giải thích. | Kiểm tra từ viết tắt sử dụng có phổ biến với người dùng mục tiêu hoặc có giải thích lần đầu xuất hiện. | Từ viết tắt chỉ dùng khi phổ biến hoặc có chú thích khi lần đầu xuất hiện trong ngữ cảnh. | Cơ bản | WCAG 2.2 – 3.1.4 Abbreviations (AAA) \| NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall |
+| 61 | UX-DH04 | DH-Tính dễ hiểu | Text | Nội dung & Hướng dẫn | Nội dung không có lỗi chính tả, lỗi diễn đạt hoặc cách viết có thể gây hiểu sai. | Kiểm tra chính tả, ngữ pháp và cách diễn đạt trong toàn bộ nội dung (rà soát bằng công cụ kiểm tra chính tả và đọc lại thủ công). | Không có lỗi chính tả, lỗi ngữ pháp hoặc cách viết gây hiểu sai trong toàn bộ sản phẩm. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall |
+| 62 | UX-DH05 | DH-Tính dễ hiểu | Text | Nội dung & Hướng dẫn | Ngôn ngữ hiển thị thống nhất với ngôn ngữ người dùng đã chọn. | Kiểm tra toàn bộ nhãn, nội dung, thông báo hiển thị đúng theo ngôn ngữ người dùng đã chọn, không còn sót ngôn ngữ mặc định. | 100% nội dung hiển thị đúng và nhất quán với ngôn ngữ người dùng đã lựa chọn. | Bắt buộc | WCAG 2.2 – 3.1.1 Language of Page (A) \| NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall |
+| 63 | UX-DH06 | DH-Tính dễ hiểu | Text | Nội dung & Hướng dẫn | Nội dung dùng để hướng dẫn, cảnh báo, mô tả và hành động phải được diễn đạt khác nhau, đúng vai trò. | Kiểm tra nội dung hướng dẫn, cảnh báo, mô tả và hành động có cách diễn đạt/giọng văn khác nhau, phù hợp đúng vai trò của từng loại. | Người dùng phân biệt được ngay đâu là hướng dẫn, cảnh báo, mô tả hay lời kêu gọi hành động qua cách diễn đạt. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall |
+| 64 | UX-DH07 | DH-Tính dễ hiểu | Text | Nội dung & Hướng dẫn | Khi yêu cầu quyền truy cập, hệ thống giải thích quyền nào được yêu cầu, lý do và lợi ích đối với nhiệm vụ. | Kiểm tra khi yêu cầu quyền truy cập (camera, vị trí, thông báo...), hệ thống có giải thích rõ quyền nào được yêu cầu, vì sao cần và lợi ích cho nhiệm vụ. | Mỗi yêu cầu cấp quyền đều có giải thích lý do và lợi ích tương ứng trước hoặc tại thời điểm yêu cầu. | Bắt buộc | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall |
+| 65 | UX-DH08 | DH-Tính dễ hiểu | Text | Nội dung & Hướng dẫn | Tiêu đề giúp người dùng hiểu mục đích của trang, màn hình, khu vực, form hoặc biểu đồ. | Kiểm tra tiêu đề của trang, màn hình, khu vực, form hoặc biểu đồ có truyền đạt đúng mục đích của phần nội dung tương ứng. | Người đọc tiêu đề hiểu ngay mục đích/nội dung chính của trang, form hoặc biểu đồ mà không cần đọc thêm. | Cơ bản | WCAG 2.2 – 2.4.6 Headings and Labels (AA) \| NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall |
+| 66 | UX-DH09 | DH-Tính dễ hiểu | Text | Nội dung & Hướng dẫn | Tiêu đề và nội dung thể hiện rõ quan hệ cấp trên–cấp dưới và thứ tự đọc. | Kiểm tra tiêu đề và nội dung có thể hiện đúng cấp bậc (heading levels) và thứ tự đọc hợp lý về mặt thị giác lẫn ngữ nghĩa (DOM order). | Cấu trúc heading và thứ tự đọc phản ánh đúng quan hệ cấp trên–cấp dưới, cả về hiển thị và mã nguồn. | Bắt buộc | WCAG 2.2 – 1.3.2 Meaningful Sequence (A) \| NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall |
+| 67 | UX-DH10 | DH-Tính dễ hiểu | Text | Nội dung & Hướng dẫn | Label mô tả đúng dữ liệu, đối tượng hoặc control mà nó đại diện. | Kiểm tra label có mô tả đúng bản chất của dữ liệu, đối tượng hoặc control mà nó đại diện, không gây hiểu nhầm về nội dung. | Label phản ánh chính xác dữ liệu/đối tượng/control tương ứng. | Cơ bản | WCAG 2.2 – 2.4.6 Headings and Labels (AA) \| NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall |
+| 68 | UX-DH11 | DH-Tính dễ hiểu | Text | Nội dung & Hướng dẫn | Label ngắn gọn, rõ nghĩa và không sử dụng tên kỹ thuật của hệ thống. | Kiểm tra label có ngắn gọn, rõ nghĩa và không sử dụng tên kỹ thuật/tên trường trong database. | Label dễ hiểu với người dùng phổ thông, không lộ thuật ngữ kỹ thuật nội bộ. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall |
+| 69 | UX-DH12 | DH-Tính dễ hiểu | Text | Nội dung & Hướng dẫn | Label của hành động sử dụng động từ; label của dữ liệu hoặc trường nhập sử dụng danh từ phù hợp. | Kiểm tra label của hành động dùng động từ (VD: 'Lưu', 'Xóa'); label của dữ liệu/trường nhập dùng danh từ phù hợp (VD: 'Họ tên'). | Loại từ trong label nhất quán theo vai trò: hành động = động từ, dữ liệu = danh từ. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall |
+| 70 | UX-DH13 | DH-Tính dễ hiểu | Text | Nội dung & Hướng dẫn | Nhóm checkbox, radio hoặc trường liên quan có label mô tả mục đích chung của nhóm. | Kiểm tra nhóm checkbox, radio hoặc các trường liên quan có label chung mô tả đúng mục đích của cả nhóm. | Mỗi nhóm lựa chọn đều có label/tiêu đề nhóm thể hiện rõ mục đích chung. | Cơ bản | WCAG 2.2 – 2.4.6 Headings and Labels (AA) \| NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall |
+| 71 | UX-DH14 | DH-Tính dễ hiểu | Icon | Nhận biết & Phân biệt | Icon có ý nghĩa quen thuộc hoặc có label/tooltip khi người dùng có thể hiểu sai. | Kiểm tra icon có ý nghĩa quen thuộc phổ biến, hoặc có label/tooltip bổ sung khi ý nghĩa có thể gây hiểu sai. | Icon dễ hiểu tự thân hoặc có label/tooltip hỗ trợ khi cần, không để người dùng đoán sai chức năng. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Icons; WCAG 2.2 – 1.1.1 Non-text Content (A) |
+| 72 | UX-DH15 | DH-Tính dễ hiểu | Icon | Nhận biết & Phân biệt | Icon đi kèm hành động phải thể hiện đúng chức năng và kết quả của hành động. | Kiểm tra icon đi kèm hành động có thể hiện đúng chức năng và kết quả sẽ xảy ra khi thực hiện hành động đó. | Icon phản ánh đúng bản chất và kết quả của hành động tương ứng. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Icons; WCAG 2.2 – 1.1.1 Non-text Content (A) |
+| 73 | UX-DH16 | DH-Tính dễ hiểu | Icon | Nhận biết & Phân biệt | Màu sắc trạng thái phù hợp với nhận thức và quy ước quen thuộc của người dùng | Kiểm tra người dùng có nhận biết đúng ý nghĩa của các trạng thái thành công, cảnh báo, lỗi và thông tin thông qua màu sắc kết hợp với nội dung, icon hoặc dấu hiệu trực quan hay không | Người dùng nhận biết đúng loại trạng thái, mức độ nghiêm trọng và hành động cần thực hiện mà không cần suy đoán; tín hiệu không phụ thuộc duy nhất vào màu sắc | Cơ bản | WCAG 2.2 (nguyên tắc Perceivable/Operable); ISO 9241-210:2019 – Human-centred design for interactive systems \| Material Design 3 (m3.material.io) – Icons; WCAG 2.2 – 1.1.1 Non-text Content (A) |
+| 74 | UX-DH17 | DH-Tính dễ hiểu | Icon | Nhận biết & Phân biệt | Icon phải phù hợp với ý nghĩa mà icon đại diện. | Kiểm tra một icon chỉ đại diện cho một ý nghĩa duy nhất và nhất quán xuyên suốt sản phẩm, không tái sử dụng cho ý nghĩa khác. | Không có icon nào được dùng với nhiều ý nghĩa khác nhau trong cùng sản phẩm. | Cơ bản | WCAG 2.2 – 3.2.4 Consistent Identification (AA) \| NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Icons; WCAG 2.2 – 1.1.1 Non-text Content (A) |
+| 75 | UX-DH18 | DH-Tính dễ hiểu | Button | Nội dung & Hướng dẫn | Label button mô tả trực tiếp hành động sẽ được thực hiện. | Kiểm tra label của button mô tả trực tiếp hành động sẽ được thực hiện khi nhấn. | Người dùng biết chính xác điều gì sẽ xảy ra chỉ qua việc đọc label của button. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Buttons; Apple Human Interface Guidelines (HIG) – Buttons |
+| 76 | UX-DH19 | DH-Tính dễ hiểu | Button | Nội dung & Hướng dẫn | Button diễn tả đúng và đủ chức năng, người dùng có thể tiên đoán được điều gì xảy ra sau khi nhấn | Kiểm tra button diễn tả đúng và đủ chức năng để người dùng có thể dự đoán được kết quả sau khi nhấn. | Kết quả thực tế sau khi nhấn button khớp với những gì label mô tả, không gây bất ngờ. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Buttons; Apple Human Interface Guidelines (HIG) – Buttons |
+| 77 | UX-DH20 | DH-Tính dễ hiểu | Button | Nhận biết & Phân biệt | Label button ngắn gọn và mô tả rõ hành động, đích đến, không được mơ hồ như “OK”, “Có” hoặc “Xác nhận” khi chưa rõ đối tượng. | Kiểm tra label button có ngắn gọn, mô tả rõ hành động và đối tượng đích, tránh các nhãn mơ hồ như 'OK', 'Có', 'Xác nhận' khi đối tượng chưa rõ ràng. | Label button cụ thể, không mơ hồ; nếu dùng nhãn chung như 'OK', ngữ cảnh xung quanh phải làm rõ đối tượng tác động. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Buttons; Apple Human Interface Guidelines (HIG) – Buttons |
+| 78 | UX-DH21 | DH-Tính dễ hiểu | Button | Phân cấp | Hành động chính và hành động phụ được xác định rõ theo mục tiêu màn hình. | Kiểm tra hành động chính (primary) và hành động phụ (secondary) trên màn hình có được xác định rõ ràng, phù hợp với mục tiêu chính của màn hình đó. | Người dùng nhận biết ngay hành động chính cần thực hiện, phân biệt trực quan rõ với các hành động phụ. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Buttons; Apple Human Interface Guidelines (HIG) – Buttons |
+| 79 | UX-DH22 | DH-Tính dễ hiểu | Button | Bố cục & Tổ chức thông tin | Button được đặt trong khu vực hoặc gần đối tượng mà nó tác động. | Kiểm tra button được đặt trong khu vực hoặc gần đối tượng/nội dung mà nó tác động. | Vị trí của button gần với đối tượng liên quan, tránh gây nhầm lẫn về phạm vi tác động. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Buttons; Apple Human Interface Guidelines (HIG) – Buttons |
+| 80 | UX-DH23 | DH-Tính dễ hiểu | Button | Nhận biết & Phân biệt | Hành động nguy hiểm phải nêu rõ hành động và đối tượng, ví dụ “Xóa tài khoản” thay vì chỉ “Xóa”. | Kiểm tra label của hành động nguy hiểm (xóa, hủy, chấm dứt) có nêu rõ hành động và đối tượng cụ thể, ví dụ 'Xóa tài khoản' thay vì chỉ 'Xóa'. | Mọi hành động nguy hiểm/khó phục hồi đều có label nêu rõ hành động + đối tượng bị tác động. | Bắt buộc | WCAG 2.2 – 3.3.4 Error Prevention (Legal, Financial, Data) (AA) \| NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Buttons; Apple Human Interface Guidelines (HIG) – Buttons |
+| 81 | UX-DH24 | DH-Tính dễ hiểu | Liên kết | Nhận biết & Phân biệt | Nội dung link cho biết trang, tài liệu hoặc vị trí mà người dùng sẽ được chuyển đến. | Kiểm tra nội dung link cho biết rõ trang, tài liệu hoặc vị trí mà người dùng sẽ được chuyển đến khi click. | Người dùng dự đoán đúng đích đến của link chỉ qua nội dung hiển thị, tránh các cụm mơ hồ như 'xem thêm', 'tại đây' không có ngữ cảnh. | Cơ bản | WCAG 2.2 – 2.4.4 Link Purpose (In Context) (A) \| NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall |
+| 82 | UX-DH25 | DH-Tính dễ hiểu | Liên kết | Nhận biết & Phân biệt | Link dùng cho điều hướng; không sử dụng link để thay thế hành động nghiệp vụ cần button. | Kiểm tra link chỉ được dùng cho mục đích điều hướng, không dùng để thay thế cho hành động nghiệp vụ cần button (submit, xóa, thanh toán...). | Link chỉ dẫn đến nội dung/trang khác; các hành động thay đổi dữ liệu/nghiệp vụ đều dùng button. | Cơ bản | WCAG 2.2 – 2.4.4 Link Purpose (In Context) (A) \| NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall |
+| 83 | UX-DH26 | DH-Tính dễ hiểu | Điều hướng | Điều hướng & Định hướng | Breadcrumb giúp người dùng hiểu vị trí hiện tại trong cấu trúc hệ thống. | Kiểm tra breadcrumb có giúp người dùng hiểu vị trí hiện tại trong cấu trúc phân cấp của hệ thống. | Người dùng xác định được vị trí hiện tại trong cây thông tin thông qua breadcrumb. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Navigation bar/drawer; NN/g – Navigation Design |
+| 84 | UX-DH27 | DH-Tính dễ hiểu | Điều hướng | Điều hướng & Định hướng | Tên từng cấp breadcrumb có nghĩa rõ ràng và tương ứng với cấu trúc nội dung. | Kiểm tra tên từng cấp trong breadcrumb có ý nghĩa rõ ràng, tương ứng đúng với tên và cấu trúc nội dung thực tế. | Mỗi mục breadcrumb có tên khớp với tiêu đề/tên thực của cấp nội dung tương ứng. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Navigation bar/drawer; NN/g – Navigation Design |
+| 85 | UX-DH28 | DH-Tính dễ hiểu | Menu | Nhận biết & Phân biệt | Tên menu giúp người dùng dự đoán đúng nội dung hoặc chức năng phía sau. | Kiểm tra tên các mục menu có giúp người dùng dự đoán đúng nội dung hoặc chức năng ẩn phía sau. | Người dùng đoán đúng nội dung/chức năng của mục menu trước khi click vào. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Menus; NN/g – Navigation Menus |
+| 86 | UX-DH29 | DH-Tính dễ hiểu | Menu | Bố cục & Tổ chức thông tin | Các mục menu được nhóm và sắp xếp theo nhiệm vụ, mức quan trọng hoặc tần suất sử dụng. | Kiểm tra các mục trong menu có được nhóm và sắp xếp theo nhiệm vụ, mức độ quan trọng hoặc tần suất sử dụng. | Cấu trúc menu phản ánh logic nhóm nhiệm vụ/ưu tiên sử dụng, không sắp xếp ngẫu nhiên. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Menus; NN/g – Navigation Menus |
+| 87 | UX-DH30 | DH-Tính dễ hiểu | Menu | Bố cục & Tổ chức thông tin | Cấu trúc menu không quá sâu và không khiến người dùng khó xác định đường đi. | Kiểm tra độ sâu của cấu trúc menu (số cấp con), đảm bảo không quá sâu khiến người dùng khó xác định đường đi. | Cấu trúc menu không quá 3 cấp (khuyến nghị chung), người dùng dễ dàng xác định và ghi nhớ đường đi. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Menus; NN/g – Navigation Menus |
+| 88 | UX-DH31 | DH-Tính dễ hiểu | Menu | Nhận biết & Phân biệt | Người dùng nhận biết rõ mục đang chọn, trang hiện tại và các mục có thể truy cập. | Kiểm tra người dùng có nhận biết rõ mục menu đang được chọn (active state), trang hiện tại, và các mục có thể truy cập. | Trạng thái active/current của menu được thể hiện trực quan rõ ràng, phân biệt với các mục khác. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Menus; NN/g – Navigation Menus |
+| 89 | UX-DH32 | DH-Tính dễ hiểu | Menu | Nội dung & Hướng dẫn | Navigation trên mobile phải kèm có text với những icon không đủ rõ nghĩa. | Kiểm tra trên mobile, các icon điều hướng không đủ rõ nghĩa có được đi kèm với text/nhãn. | Navigation trên mobile có text hỗ trợ cho các icon không phổ biến hoặc dễ gây nhầm lẫn. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Menus; NN/g – Navigation Menus |
+| 90 | UX-DH33 | DH-Tính dễ hiểu | Tab | Bố cục & Tổ chức thông tin | ab được sử dụng để phân chia các nhóm nội dung cùng cấp, không dùng để mô tả tiến trình hoặc thực hiện hành động. | Kiểm tra Tab chỉ được dùng để phân chia các nhóm nội dung cùng cấp, không dùng để mô tả tiến trình (progress) hoặc để thực hiện hành động. | Tab chỉ chứa các nhóm nội dung ngang cấp; không dùng Tab thay cho stepper hoặc button hành động. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Tabs; NN/g – Tabs, Used Right |
+| 91 | UX-DH34 | DH-Tính dễ hiểu | Tab | Nhận biết & Phân biệt | Tên tab giúp người dùng dự đoán đúng nhóm nội dung bên trong. | Kiểm tra tên tab có giúp người dùng dự đoán đúng nhóm nội dung bên trong. | Người dùng đoán đúng nội dung của tab trước khi click vào. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Tabs; NN/g – Tabs, Used Right |
+| 92 | UX-DH35 | DH-Tính dễ hiểu | Nhập liệu | Nội dung & Hướng dẫn | Người dùng biết cần nhập loại dữ liệu gì và dữ liệu phải đáp ứng điều kiện nào. | Kiểm tra người dùng có biết cần nhập loại dữ liệu gì và dữ liệu phải đáp ứng điều kiện nào (qua label, mô tả, hoặc ví dụ). | Người dùng hiểu rõ yêu cầu định dạng/điều kiện dữ liệu trước khi nhập, giảm tỷ lệ nhập sai. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Text fields; GOV.UK Design System – Text input |
+| 93 | UX-DH36 | DH-Tính dễ hiểu | Nhập liệu | Nội dung & Hướng dẫn | Trường có định dạng phức tạp cung cấp mô tả hoặc ví dụ dữ liệu hợp lệ. | Kiểm tra trường có định dạng phức tạp (mã số, công thức...) có cung cấp mô tả hoặc ví dụ dữ liệu hợp lệ. | Trường phức tạp có ví dụ minh họa hoặc mô tả định dạng ngay cạnh trường nhập. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Text fields; GOV.UK Design System – Text input |
+| 94 | UX-DH37 | DH-Tính dễ hiểu | Nhập liệu | Nhận biết & Phân biệt | Người dùng nhận biết được trường bắt buộc, trường không bắt buộc, trường chỉ đọc và trường không thể thao tác. | Kiểm tra người dùng có phân biệt được trực quan trường bắt buộc, trường không bắt buộc, trường chỉ đọc và trường không thể thao tác (disabled). | Bốn loại trạng thái trường (bắt buộc/không bắt buộc/chỉ đọc/disabled) có kiểu hiển thị khác biệt rõ ràng. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Text fields; GOV.UK Design System – Text input |
+| 95 | UX-DH38 | DH-Tính dễ hiểu | Nhập liệu | Nhận biết & Phân biệt | Placeholder cung cấp gợi ý hoặc ví dụ, không lặp lại hoặc thay thế label. | Kiểm tra placeholder chỉ cung cấp gợi ý/ví dụ, không lặp lại hoặc thay thế hoàn toàn cho label. | Placeholder và label có nội dung khác nhau, phục vụ đúng vai trò: label định danh trường, placeholder gợi ý dữ liệu. | Cơ bản | WCAG 2.2 – 3.3.2 Labels or Instructions (A) \| NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Text fields; GOV.UK Design System – Text input |
+| 96 | UX-DH39 | DH-Tính dễ hiểu | Nhập liệu | Nhận biết & Phân biệt | Giá trị chưa có dữ liệu được thể hiện rõ, không để khoảng trống khiến người dùng hiểu là lỗi hiển thị. | Kiểm tra giá trị chưa có dữ liệu (null/rỗng) được thể hiện rõ (VD: dấu '-' hoặc chữ 'Chưa có dữ liệu'), không để khoảng trống gây hiểu nhầm là lỗi hiển thị. | Giá trị rỗng luôn có ký hiệu/nhãn thể hiện rõ ràng trạng thái 'chưa có dữ liệu'. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Text fields; GOV.UK Design System – Text input |
+| 97 | UX-DH40 | DH-Tính dễ hiểu | Nhập liệu | Nhận biết & Phân biệt | Yêu cầu tạo mật khẩu được cung cấp trước hoặc trong khi nhập. | Kiểm tra khi tạo mật khẩu, các yêu cầu về độ mạnh mật khẩu (độ dài, ký tự đặc biệt...) có được cung cấp trước hoặc ngay trong khi nhập. | Yêu cầu mật khẩu hiển thị sẵn trước hoặc song song với quá trình nhập, không chỉ hiện khi có lỗi. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Text fields; GOV.UK Design System – Text input |
+| 98 | UX-DH41 | DH-Tính dễ hiểu | Nhập liệu | Nhận biết & Phân biệt | Người dùng hiểu điều kiện nào của mật khẩu đã đạt và điều kiện nào chưa đạt. | Kiểm tra hệ thống có hiển thị trực quan (checklist, thanh cường độ) cho biết điều kiện nào của mật khẩu đã đạt và điều kiện nào chưa đạt trong thời gian thực. | Người dùng thấy rõ theo thời gian thực từng điều kiện mật khẩu đã đạt/chưa đạt khi đang gõ. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Text fields; GOV.UK Design System – Text input |
+| 99 | UX-DH42 | DH-Tính dễ hiểu | Checkbox | Nội dung & Hướng dẫn | Nhóm checkbox có label mô tả quyết định hoặc nhóm lựa chọn. | Kiểm tra nhóm checkbox có label mô tả rõ quyết định hoặc nhóm lựa chọn mà người dùng đang thực hiện. | Nhóm checkbox có tiêu đề/label chung giải thích rõ mục đích lựa chọn. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Checkbox |
+| 100 | UX-DH43 | DH-Tính dễ hiểu | Checkbox | Nội dung & Hướng dẫn | Câu label nên diễn đạt trực tiếp, hạn chế phủ định kép hoặc cấu trúc khiến trạng thái chọn bị hiểu ngược. | Kiểm tra câu label của checkbox có diễn đạt trực tiếp, hạn chế phủ định kép hoặc cấu trúc câu khiến trạng thái chọn bị hiểu ngược (VD: 'Không nhận thông báo' dễ gây nhầm khi kết hợp với việc tích/bỏ tích). | Label checkbox diễn đạt theo hướng khẳng định, rõ nghĩa, không gây hiểu ngược khi tích/bỏ tích. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Checkbox |
+| 101 | UX-DH44 | DH-Tính dễ hiểu | Checkbox | Nhận biết & Phân biệt | Checkbox dùng cho các lựa chọn độc lập hoặc cho phép chọn nhiều phương án. | Kiểm tra checkbox chỉ được dùng cho các lựa chọn độc lập hoặc cho phép chọn nhiều phương án cùng lúc. | Checkbox không được dùng cho các lựa chọn loại trừ lẫn nhau (trường hợp đó nên dùng radio). | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Checkbox |
+| 102 | UX-DH45 | DH-Tính dễ hiểu | Radio | Nhận biết & Phân biệt | Nhóm radio có câu hỏi hoặc label chung mô tả quyết định người dùng cần đưa ra. | Kiểm tra nhóm radio có câu hỏi hoặc label chung mô tả rõ quyết định người dùng cần đưa ra. | Nhóm radio có tiêu đề/câu hỏi rõ ràng về quyết định cần chọn. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Radio button |
+| 103 | UX-DH46 | DH-Tính dễ hiểu | Radio | Nhận biết & Phân biệt | Radio button được sử dụng khi các lựa chọn loại trừ lẫn nhau và chỉ được chọn một. | Kiểm tra radio button chỉ được sử dụng khi các lựa chọn loại trừ lẫn nhau và chỉ cho phép chọn một. | Radio chỉ xuất hiện ở nhóm lựa chọn 'chọn 1 trong nhiều', không dùng cho lựa chọn đa mục. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Radio button |
+| 104 | UX-DH47 | DH-Tính dễ hiểu | Switch | Nội dung & Hướng dẫn | Biểu hiện rõ trạng ý nghĩa của trạng thái (bằng label, không chỉ màu sắc, minh họa) | Kiểm tra trạng thái của switch có được thể hiện rõ bằng label mô tả ý nghĩa (VD: 'Bật/Tắt thông báo'), không chỉ dựa vào màu sắc hoặc vị trí công tắc. | Ý nghĩa trạng thái ON/OFF của switch được truyền đạt rõ qua text, không chỉ dựa vào màu sắc hoặc minh họa hình ảnh. | Cơ bản | WCAG 2.2 – 1.4.1 Use of Color (A) \| NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Switch; Apple Human Interface Guidelines (HIG) – Toggles |
+| 105 | UX-DH48 | DH-Tính dễ hiểu | Switch | Nhận biết & Phân biệt | Switch chỉ dùng cho lựa chọn nhị phân, không dùng cho hai phương án đối lập có nội dung phức tạp. | Kiểm tra switch chỉ dùng cho lựa chọn nhị phân đơn giản (ON/OFF), không dùng cho hai phương án đối lập có nội dung phức tạp cần giải thích thêm. | Switch chỉ áp dụng cho các cặp trạng thái nhị phân rõ ràng, đơn giản. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Switch; Apple Human Interface Guidelines (HIG) – Toggles |
+| 106 | UX-DH49 | DH-Tính dễ hiểu | Switch | Nhận biết & Phân biệt | Không sử dụng switch như nút gửi form hoặc nút xác nhận. | Kiểm tra switch không được sử dụng thay thế cho nút gửi form (submit) hoặc nút xác nhận hành động. | Switch chỉ thay đổi trạng thái bật/tắt, không đóng vai trò kích hoạt submit/xác nhận. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Switch; Apple Human Interface Guidelines (HIG) – Toggles |
+| 107 | UX-DH50 | DH-Tính dễ hiểu | Dropdown | Nội dung & Hướng dẫn | Label và nội dung lựa chọn giúp người dùng hiểu loại dữ liệu cần chọn. | Kiểm tra label và nội dung các lựa chọn trong dropdown có giúp người dùng hiểu đúng loại dữ liệu cần chọn. | Người dùng hiểu rõ ý nghĩa của dropdown và các lựa chọn bên trong trước khi mở. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Menus; GOV.UK Design System – Select component |
+| 108 | UX-DH51 | DH-Tính dễ hiểu | Dropdown | Nhận biết & Phân biệt | Giá trị mặc định, placeholder và giá trị đã chọn có ý nghĩa khác nhau và dễ nhận biết. | Kiểm tra giá trị mặc định, placeholder và giá trị đã chọn của dropdown có cách hiển thị khác nhau và dễ phân biệt (VD: màu chữ, độ đậm nhạt). | Ba trạng thái (mặc định/placeholder/đã chọn) của dropdown được phân biệt rõ ràng về mặt trực quan. | Cơ bản | WCAG 2.2 – 3.3.2 Labels or Instructions (A) \| NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Menus; GOV.UK Design System – Select component |
+| 109 | UX-DH52 | DH-Tính dễ hiểu | Dropdown | Nhận biết & Phân biệt | Các lựa chọn được sắp xếp theo quy tắc dễ đoán như bảng chữ cái, tần suất hoặc nghiệp vụ. | Kiểm tra các lựa chọn trong dropdown có được sắp xếp theo quy tắc dễ đoán như bảng chữ cái, tần suất sử dụng hoặc logic nghiệp vụ. | Thứ tự lựa chọn tuân theo một quy tắc nhất quán, dễ dự đoán, không sắp xếp ngẫu nhiên. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Menus; GOV.UK Design System – Select component |
+| 110 | UX-DH53 | DH-Tính dễ hiểu | Dropdown | Nhận biết & Phân biệt | Nội dung các lựa chọn rõ nghĩa, phân biệt được và không dùng mã nội bộ không có giải thích. | Kiểm tra nội dung các lựa chọn trong dropdown có rõ nghĩa, phân biệt được với nhau và không dùng mã nội bộ (code) không có giải thích. | Mỗi lựa chọn hiển thị bằng ngôn ngữ tự nhiên, dễ hiểu, không lộ mã hệ thống nội bộ. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Menus; GOV.UK Design System – Select component |
+| 111 | UX-DH54 | DH-Tính dễ hiểu | Dropdown | Nhận biết & Phân biệt | Người dùng nhận biết được những mục đã chọn và tổng số mục đã chọn. | Kiểm tra với dropdown chọn nhiều (multi-select), người dùng có nhận biết được các mục đã chọn và tổng số mục đã chọn. | Dropdown multi-select hiển thị rõ danh sách/số lượng mục đã chọn. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Menus; GOV.UK Design System – Select component |
+| 112 | UX-DH55 | DH-Tính dễ hiểu | Dropdown | Tương tác & Thao tác | Cho phép xóa hoặc bỏ toàn bộ lựa chọn, mô tả bằng nội dung | Kiểm tra dropdown có cho phép xóa/bỏ toàn bộ lựa chọn, và hành động này được mô tả rõ bằng text/icon (VD: nút 'Xóa tất cả'). | Người dùng xóa được toàn bộ lựa chọn bằng một hành động rõ ràng, có mô tả bằng nội dung. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Menus; GOV.UK Design System – Select component |
+| 113 | UX-DH56 | DH-Tính dễ hiểu | Date/Time picker | Nội dung & Hướng dẫn | Định dạng ngày, giờ và múi giờ được thể hiện rõ trước khi nhập hoặc chọn. | Kiểm tra định dạng ngày, giờ và múi giờ có được thể hiện rõ ràng trước khi người dùng nhập hoặc chọn. | Định dạng ngày/giờ/múi giờ hiển thị rõ trước khi thao tác, tránh hiểu nhầm giữa các chuẩn (DD/MM/YYYY vs MM/DD/YYYY). | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Date pickers; NN/g – Date-Input Form Fields |
+| 114 | UX-DH57 | DH-Tính dễ hiểu | Date/Time picker | Nội dung & Hướng dẫn | Người dùng phân biệt được ngày hiện tại, ngày được chọn và ngày không thể chọn. | Kiểm tra date/time picker có phân biệt trực quan rõ ràng giữa ngày hiện tại (today), ngày đã chọn và ngày không thể chọn (disabled). | Ba trạng thái ngày (hiện tại/đã chọn/không thể chọn) được phân biệt rõ bằng màu sắc hoặc kiểu hiển thị khác nhau. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Date pickers; NN/g – Date-Input Form Fields |
+| 115 | UX-DH58 | DH-Tính dễ hiểu | Date/Time picker | Nhận biết & Phân biệt | Các trường “Từ ngày” và “Đến ngày” được đặt và diễn đạt theo trình tự dễ hiểu. | Kiểm tra các trường 'Từ ngày' và 'Đến ngày' được đặt vị trí và diễn đạt theo trình tự logic, dễ hiểu (từ trái sang phải hoặc trên xuống dưới). | Cặp trường Từ ngày/Đến ngày sắp xếp theo trình tự thời gian tự nhiên, không gây nhầm lẫn thứ tự. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Date pickers; NN/g – Date-Input Form Fields |
+| 116 | UX-DH59 | DH-Tính dễ hiểu | Tìm kiếm | Nội dung & Hướng dẫn | Người dùng nhận biết được từ khóa, điều kiện hoặc bộ lọc đang tác động đến kết quả. | Kiểm tra người dùng có nhận biết được từ khóa, điều kiện hoặc bộ lọc nào đang tác động đến kết quả tìm kiếm hiện tại. | Kết quả tìm kiếm hiển thị kèm theo từ khóa/bộ lọc đang áp dụng, giúp người dùng hiểu ngữ cảnh kết quả. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| NN/g – Search UX; Baymard Institute – UX Research – Search |
+| 117 | UX-DH60 | DH-Tính dễ hiểu | Tìm kiếm | Nội dung & Hướng dẫn | Placeholder đưa ra phạm vi hoặc ví dụ tìm kiếm, không chỉ ghi chung chung “Tìm kiếm”. | Kiểm tra placeholder của ô tìm kiếm có đưa ra phạm vi hoặc ví dụ tìm kiếm cụ thể, không chỉ ghi chung chung 'Tìm kiếm'. | Placeholder gợi ý phạm vi/ví dụ tìm kiếm phù hợp với ngữ cảnh (VD: 'Tìm theo tên, mã đơn hàng...'). | Cơ bản | WCAG 2.2 – 3.3.2 Labels or Instructions (A) \| NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| NN/g – Search UX; Baymard Institute – UX Research – Search |
+| 118 | UX-DH61 | DH-Tính dễ hiểu | Tìm kiếm | Nội dung & Hướng dẫn | Người dùng hiểu từ khóa, bộ lọc và phạm vi đang được áp dụng cho kết quả. | Kiểm tra người dùng có hiểu rõ từ khóa, bộ lọc và phạm vi đang được áp dụng cho kết quả hiển thị. | Thông tin về bộ lọc/phạm vi tìm kiếm đang áp dụng được hiển thị minh bạch, dễ thấy. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| NN/g – Search UX; Baymard Institute – UX Research – Search |
+| 119 | UX-DH62 | DH-Tính dễ hiểu | Tải lên | Nội dung & Hướng dẫn | Người dùng biết loại file, kích thước, số lượng và điều kiện file được phép tải lên. | Kiểm tra người dùng có biết trước loại file, kích thước tối đa, số lượng và điều kiện file được phép tải lên. | Điều kiện tải lên (định dạng, dung lượng, số lượng) hiển thị rõ trước khi người dùng chọn file. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| GOV.UK Design System – File upload; NN/g – File Upload UX |
+| 120 | UX-DH63 | DH-Tính dễ hiểu | Tải lên | Nhận biết & Phân biệt | Người dùng nhận biết file nào đã chọn, đang tải, tải thành công hoặc tải thất bại. | Kiểm tra người dùng có nhận biết được file nào đã chọn, đang tải, tải thành công hoặc tải thất bại thông qua trạng thái trực quan. | Mỗi file có chỉ báo trạng thái rõ ràng: đã chọn/đang tải/thành công/thất bại. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| GOV.UK Design System – File upload; NN/g – File Upload UX |
+| 121 | UX-DH64 | DH-Tính dễ hiểu | Tải lên | Trạng thái & Phản hồi | Người dùng có thể xem lại, thay thế hoặc xóa file trước khi xác nhận. | Kiểm tra người dùng có thể xem lại, thay thế hoặc xóa file đã chọn trước khi xác nhận tải lên. | Trước khi xác nhận, người dùng thao tác được xem lại/thay thế/xóa file đã chọn. | Cơ bản | WCAG 2.2 – 3.3.4 Error Prevention (Legal, Financial, Data) (AA) \| NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| GOV.UK Design System – File upload; NN/g – File Upload UX |
+| 122 | UX-DH65 | DH-Tính dễ hiểu | Bảng | Nội dung & Hướng dẫn | Bảng hoặc danh sách có tên giúp người dùng hiểu nội dung và phạm vi dữ liệu. | Kiểm tra bảng hoặc danh sách có tên/tiêu đề giúp người dùng hiểu nội dung và phạm vi dữ liệu đang hiển thị. | Mỗi bảng/danh sách có tiêu đề rõ ràng thể hiện nội dung và phạm vi dữ liệu. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| GOV.UK Design System – Table component; NN/g – Data Tables |
+| 123 | UX-DH66 | DH-Tính dễ hiểu | Bảng | Nhận biết & Phân biệt | Tên cột và dữ liệu giúp người dùng phân biệt đúng các bản ghi. | Kiểm tra tên cột và nội dung dữ liệu có giúp người dùng phân biệt đúng các bản ghi khác nhau. | Tên cột mô tả chính xác dữ liệu bên dưới, không gây nhầm lẫn giữa các bản ghi. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| GOV.UK Design System – Table component; NN/g – Data Tables |
+| 124 | UX-DH67 | DH-Tính dễ hiểu | Bảng | Nhận biết & Phân biệt | Số liệu có đơn vị, kỳ dữ liệu hoặc phạm vi cần thiết để tránh hiểu sai. | Kiểm tra số liệu hiển thị có kèm đơn vị, kỳ dữ liệu hoặc phạm vi cần thiết để tránh hiểu sai. | Mọi số liệu quan trọng đều có đơn vị/kỳ/phạm vi rõ ràng đi kèm. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| GOV.UK Design System – Table component; NN/g – Data Tables |
+| 125 | UX-DH68 | DH-Tính dễ hiểu | Bảng | Bố cục & Tổ chức thông tin | Dữ liệu được sắp xếp theo quy tắc phù hợp với mục tiêu sử dụng. | Kiểm tra dữ liệu trong bảng có được sắp xếp mặc định theo quy tắc phù hợp với mục tiêu sử dụng (VD: mới nhất trước, quan trọng nhất trước). | Thứ tự sắp xếp mặc định của bảng phù hợp với nhu cầu và mục tiêu sử dụng phổ biến nhất. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| GOV.UK Design System – Table component; NN/g – Data Tables |
+| 126 | UX-DH69 | DH-Tính dễ hiểu | Bảng | Nhận biết & Phân biệt | Người dùng nhận biết được bộ lọc hoặc cách sắp xếp đang được áp dụng. | Kiểm tra người dùng có nhận biết được bộ lọc hoặc cách sắp xếp nào đang được áp dụng cho bảng/danh sách. | Trạng thái bộ lọc/sắp xếp hiện tại được hiển thị rõ ràng, dễ nhận biết. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| GOV.UK Design System – Table component; NN/g – Data Tables |
+| 127 | UX-DH70 | DH-Tính dễ hiểu | Bảng | Nhận biết & Phân biệt | Người dùng biết tổng số bản ghi và số bản ghi đang được chọn. | Kiểm tra người dùng có biết tổng số bản ghi và số bản ghi đang được chọn trong bảng/danh sách. | Thông tin tổng số bản ghi và số lượng đang chọn luôn hiển thị khi có dữ liệu. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| GOV.UK Design System – Table component; NN/g – Data Tables |
+| 128 | UX-DH71 | DH-Tính dễ hiểu | Bảng | Nội dung & Hướng dẫn | Khi không có dữ liệu, hệ thống giải thích nguyên nhân hoặc điều kiện và cung cấp bước tiếp theo. | Kiểm tra khi bảng/danh sách không có dữ liệu, hệ thống có giải thích nguyên nhân hoặc điều kiện và cung cấp bước tiếp theo (empty state). | Trạng thái rỗng có thông điệp giải thích rõ nguyên nhân và gợi ý hành động tiếp theo, không để trống trơn. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| GOV.UK Design System – Table component; NN/g – Data Tables |
+| 129 | UX-DH72 | DH-Tính dễ hiểu | Biểu đồ | Nội dung & Hướng dẫn | Biểu đồ có tiêu đề giúp người dùng hiểu nội dung hoặc mục đích của dữ liệu. | Kiểm tra biểu đồ có tiêu đề giúp người dùng hiểu nội dung hoặc mục đích của dữ liệu đang thể hiện. | Mỗi biểu đồ có tiêu đề rõ ràng thể hiện đúng nội dung dữ liệu. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| NN/g – Data Visualization; Tufte, E. – The Visual Display of Quantitative Information |
+| 130 | UX-DH73 | DH-Tính dễ hiểu | Biểu đồ | Nội dung & Hướng dẫn | Trục, đơn vị, thời gian và chú thích cung cấp đủ thông tin để người dùng diễn giải đúng. | Kiểm tra trục, đơn vị, mốc thời gian và chú thích (legend) của biểu đồ có cung cấp đủ thông tin để người dùng diễn giải đúng. | Biểu đồ có đầy đủ nhãn trục, đơn vị, thời gian và legend để đọc hiểu chính xác không cần suy đoán. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| NN/g – Data Visualization; Tufte, E. – The Visual Display of Quantitative Information |
+| 131 | UX-DH74 | DH-Tính dễ hiểu | Biểu đồ | Nhận biết & Phân biệt | Loại biểu đồ phù hợp với mục tiêu: đường cho xu hướng, cột cho so sánh, tròn cho cơ cấu và miền cho thay đổi tỷ phần. | Kiểm tra loại biểu đồ sử dụng có phù hợp với mục tiêu trình bày: đường (line) cho xu hướng, cột (bar) cho so sánh, tròn (pie) cho cơ cấu, miền (area) cho thay đổi tỷ phần theo thời gian. | Loại biểu đồ được chọn đúng theo bản chất dữ liệu và mục tiêu phân tích (xu hướng/so sánh/cơ cấu/tỷ phần). | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| NN/g – Data Visualization; Tufte, E. – The Visual Display of Quantitative Information |
+| 132 | UX-DH75 | DH-Tính dễ hiểu | Biểu đồ | Bố cục & Tổ chức thông tin | Thứ tự chú thích tương ứng với thứ tự dữ liệu hoặc phần biểu đồ liên quan. | Kiểm tra thứ tự chú thích (legend) có tương ứng với thứ tự dữ liệu hoặc phần biểu đồ liên quan. | Thứ tự legend khớp với thứ tự xuất hiện của dữ liệu trên biểu đồ, dễ đối chiếu. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| NN/g – Data Visualization; Tufte, E. – The Visual Display of Quantitative Information |
+| 133 | UX-DH76 | DH-Tính dễ hiểu | Biểu đồ | Lỗi & Khôi phục | Khi không có dữ liệu hoặc có lỗi, hệ thống giải thích trạng thái thay vì để biểu đồ trống. | Kiểm tra khi biểu đồ không có dữ liệu hoặc gặp lỗi tải, hệ thống có giải thích trạng thái thay vì để biểu đồ trống hoặc trắng. | Biểu đồ hiển thị thông điệp rõ ràng khi không có dữ liệu/lỗi, không để trống gây hiểu nhầm là lỗi hệ thống. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| NN/g – Data Visualization; Tufte, E. – The Visual Display of Quantitative Information |
+| 134 | UX-DH77 | DH-Tính dễ hiểu | accordions | Nhận biết & Phân biệt | Người dùng nhận biết được accordion đang mở hay thu gọn. | Kiểm tra người dùng có nhận biết được accordion đang ở trạng thái mở hay thu gọn (qua icon mũi tên xoay, hiệu ứng chuyển động...). | Trạng thái mở/đóng của accordion được thể hiện trực quan rõ ràng. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Lists; NN/g – Accordions (Progressive Disclosure) |
+| 135 | UX-DH78 | DH-Tính dễ hiểu | Carousel | Nhận biết & Phân biệt | Người dùng nhận biết còn nội dung ngoài tầm nhìn và biết cách chuyển tới nội dung đó. | Kiểm tra người dùng có nhận biết còn nội dung nằm ngoài tầm nhìn trong carousel và biết cách chuyển tới nội dung đó (chấm chỉ báo, mũi tên, một phần item kế tiếp lộ ra). | Carousel có chỉ báo rõ ràng về số lượng/mục hiện tại và cách điều hướng đến nội dung tiếp theo. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| NN/g – Carousels and Slideshows |
+| 136 | UX-DH79 | DH-Tính dễ hiểu | Tooltip | Nội dung & Hướng dẫn | Tooltip luôn hiển thị để bổ sung nội dung hoặc hướng dẫn cần thiết | Kiểm tra tooltip có hiển thị đầy đủ, không bị ẩn/cắt xén, khi cần bổ sung nội dung hoặc hướng dẫn quan trọng. | Tooltip cung cấp đủ thông tin bổ sung cần thiết, hiển thị đầy đủ và đúng lúc. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| WCAG 2.2 – 1.4.13 Content on Hover or Focus (AA); Material Design 3 (m3.material.io) – Tooltips |
+| 137 | UX-DH80 | DH-Tính dễ hiểu | Toàn màn hình/Hệ thống | Nhận biết & Phân biệt | Người dùng hiểu mục đích của màn hình dựa trên tiêu đề, nội dung chính và hành động được cung cấp. | Kiểm tra người dùng có hiểu được mục đích của màn hình dựa trên tiêu đề, nội dung chính và các hành động được cung cấp. | Người dùng xác định đúng mục đích màn hình chỉ trong vài giây quan sát đầu tiên. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall |
+| 138 | UX-DH81 | DH-Tính dễ hiểu | Toàn màn hình/Hệ thống | Bố cục & Tổ chức thông tin | Nội dung trên màn hình được tổ chức theo mục tiêu và trình tự xử lý của người dùng. | Kiểm tra nội dung trên màn hình có được tổ chức theo đúng mục tiêu và trình tự xử lý thực tế của người dùng. | Bố cục nội dung phản ánh đúng luồng suy nghĩ/thao tác tự nhiên của người dùng khi thực hiện nhiệm vụ. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall |
+| 139 | UX-DH82 | DH-Tính dễ hiểu | Form | Bố cục & Tổ chức thông tin | Các trường được nhóm và sắp xếp theo trình tự nghiệp vụ hoặc suy nghĩ của người dùng. | Kiểm tra các trường trong form có được nhóm và sắp xếp theo trình tự nghiệp vụ hoặc theo luồng suy nghĩ của người dùng. | Trình tự các trường trong form theo đúng logic nghiệp vụ hoặc thói quen suy nghĩ của người dùng, không sắp xếp tùy tiện. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| GOV.UK Design System – Form design patterns; NN/g – Form Design Guidelines |
+| 140 | UX-DH83 | DH-Tính dễ hiểu | Form | Nhận biết & Phân biệt | Người dùng phân biệt được trường có thể nhập, trường bị khóa và dữ liệu chỉ đọc. | Kiểm tra người dùng có phân biệt được trực quan trường có thể nhập, trường bị khóa (locked) và dữ liệu chỉ đọc (read-only). | Ba loại trường (nhập được/khóa/chỉ đọc) có kiểu hiển thị khác biệt rõ ràng, dễ phân biệt. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| GOV.UK Design System – Form design patterns; NN/g – Form Design Guidelines |
+| 141 | UX-DH84 | DH-Tính dễ hiểu | Form | Điều hướng & Định hướng | Các control được đặt đúng nhóm thông tin hoặc đối tượng mà chúng kiểm soát. | Kiểm tra các control trong form có được đặt đúng nhóm thông tin hoặc gần đối tượng mà chúng kiểm soát. | Vị trí control gắn liền với đúng nhóm dữ liệu/đối tượng mà nó tác động. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| GOV.UK Design System – Form design patterns; NN/g – Form Design Guidelines |
+| 142 | UX-DH85 | DH-Tính dễ hiểu | Form | Tương tác & Thao tác | Người dùng có thể xem lại hoặc sửa dữ liệu đã nhập trước khi gửi nếu nghiệp vụ cho phép. | Kiểm tra khi nghiệp vụ cho phép, người dùng có thể xem lại hoặc sửa dữ liệu đã nhập trước khi gửi (submit) form. | Có bước xem lại/xác nhận cho phép chỉnh sửa trước khi submit khi nghiệp vụ yêu cầu. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| GOV.UK Design System – Form design patterns; NN/g – Form Design Guidelines |
+| 143 | UX-DH86 | DH-Tính dễ hiểu | Form | Nhận biết & Phân biệt | Các hành động với form thể hiện rõ sự khác nhau về hành động và kết quả. | Kiểm tra các hành động với form (Lưu nháp, Gửi, Hủy...) có thể hiện rõ sự khác nhau về hành động và kết quả tương ứng. | Người dùng phân biệt rõ ý nghĩa và kết quả khác nhau giữa các nút hành động trên form. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| GOV.UK Design System – Form design patterns; NN/g – Form Design Guidelines |
+| 144 | UX-DH87 | DH-Tính dễ hiểu | Modal/Dialog/Popup/toast | Trạng thái & Phản hồi | Thông báo cho biết chuyện gì đã xảy ra và có đủ ngữ cảnh để người dùng hiểu kết quả. | Kiểm tra thông báo (dialog/toast) có cho biết chuyện gì đã xảy ra và đủ ngữ cảnh để người dùng hiểu kết quả của hành động. | Thông báo nêu rõ sự kiện đã xảy ra và ngữ cảnh liên quan, không chỉ nói chung chung 'Thành công'/'Thất bại'. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Dialogs & Snackbars; NN/g – Modal & Nonmodal Dialogs |
+| 145 | UX-DH88 | DH-Tính dễ hiểu | Modal/Dialog/Popup/toast | Nội dung & Hướng dẫn | Khi còn nhiệm vụ cần thực hiện, hệ thống thông báo hoặc nhắc người dùng về hành động tiếp theo. | Kiểm tra khi còn nhiệm vụ cần thực hiện tiếp theo, hệ thống có thông báo hoặc nhắc người dùng về hành động cần làm. | Người dùng được nhắc rõ về bước/hành động tiếp theo khi nhiệm vụ chưa hoàn tất. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Dialogs & Snackbars; NN/g – Modal & Nonmodal Dialogs |
+| 146 | UX-DH89 | DH-Tính dễ hiểu | Modal/Dialog/Popup/toast | Nội dung & Hướng dẫn | Một kết quả chỉ sử dụng một hình thức thông báo chính, tránh nhiều thông báo mâu thuẫn. | Kiểm tra một kết quả chỉ dùng một hình thức thông báo chính (toast hoặc dialog), tránh hiển thị nhiều thông báo mâu thuẫn cùng lúc. | Không có tình huống hai thông báo về cùng một sự kiện xuất hiện đồng thời với nội dung mâu thuẫn nhau. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Dialogs & Snackbars; NN/g – Modal & Nonmodal Dialogs |
+| 147 | UX-DH90 | DH-Tính dễ hiểu | Modal/Dialog/Popup/toast | Nội dung & Hướng dẫn | Sau khi hoàn thành, người dùng nhận được xác nhận rõ về trạng thái và đối tượng bị tác động. | Kiểm tra sau khi hoàn thành hành động, người dùng có nhận được xác nhận rõ ràng về trạng thái kết quả và đối tượng bị tác động. | Thông báo xác nhận nêu rõ hành động đã hoàn tất và đối tượng cụ thể bị ảnh hưởng. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Dialogs & Snackbars; NN/g – Modal & Nonmodal Dialogs |
+| 148 | UX-DH91 | DH-Tính dễ hiểu | Tiến trình | Nhận biết & Phân biệt | Người dùng biết đang ở bước nào, còn bao nhiêu bước và mục tiêu của từng bước. | Kiểm tra trong quy trình nhiều bước, người dùng có biết đang ở bước nào, còn bao nhiêu bước và mục tiêu của từng bước (qua stepper/progress indicator). | Có chỉ báo tiến trình (stepper) thể hiện rõ bước hiện tại, tổng số bước và tên/mục tiêu từng bước. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Progress indicators; NN/g – Progress Indicators |
+| 149 | UX-DH92 | DH-Tính dễ hiểu | Tiến trình | Nội dung & Hướng dẫn | Các hành động Next, Back, Submit và Cancel đúng với vai trò và giai đoạn của quy trình. | Kiểm tra các nút Next, Back, Submit và Cancel trong quy trình có đúng với vai trò và giai đoạn hiện tại của quy trình (VD: bước cuối hiển thị 'Hoàn tất' thay vì 'Next'). | Nhãn và chức năng của các nút điều hướng quy trình khớp đúng với giai đoạn hiện tại. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Progress indicators; NN/g – Progress Indicators |
+| 150 | UX-DH93 | DH-Tính dễ hiểu | Tiến trình | Bố cục & Tổ chức thông tin | Các bước thực hiện được sắp xếp theo trình tự phù hợp với nhiệm vụ, không tạo chuyển đổi bất ngờ. | Kiểm tra các bước trong quy trình có được sắp xếp theo trình tự phù hợp với nhiệm vụ, không tạo ra sự chuyển đổi bất ngờ hoặc phi logic. | Trình tự các bước liền mạch, logic, không gây bất ngờ hoặc nhảy cóc khó hiểu cho người dùng. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Progress indicators; NN/g – Progress Indicators |
+| 151 | UX-DH94 | DH-Tính dễ hiểu | Tiến trình | Điều hướng & Định hướng | Người dùng có thể tìm lại trạng thái và kết quả của tác vụ nền sau khi rời màn hình hoặc đăng nhập lại. | Kiểm tra người dùng có thể tìm lại trạng thái và kết quả của tác vụ nền (background task) sau khi rời màn hình hoặc đăng nhập lại. | Trạng thái/kết quả tác vụ nền được lưu trữ và người dùng truy xuất lại được sau khi quay lại hệ thống. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Progress indicators; NN/g – Progress Indicators |
+| 152 | UX-DH95 | DH-Tính dễ hiểu | So Sánh | Hỗ trợ quyết định | Khi cần so sánh hai đối tượng, thông tin của chúng được cung cấp đồng thời để người dùng đối chiếu. | Kiểm tra khi cần so sánh hai đối tượng, thông tin của chúng có được cung cấp đồng thời (side-by-side) để người dùng đối chiếu dễ dàng. | Hai (hoặc nhiều) đối tượng cần so sánh được hiển thị song song, cùng bộ thuộc tính, cùng lúc. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| NN/g – Comparison Tables |
+| 153 | UX-DH96 | DH-Tính dễ hiểu | Nhập liệu | Tương tác & Thao tác | Cung cấp chức năng import hàng loạt cung cấp file mẫu để người dùng hiểu Live format dữ liệu cần nhập. | Kiểm tra chức năng import hàng loạt có cung cấp file mẫu (template) để người dùng hiểu đúng định dạng dữ liệu cần nhập. | Có sẵn file mẫu tải về, thể hiện đúng cấu trúc/định dạng dữ liệu yêu cầu khi import. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Text fields; GOV.UK Design System – Text input |
+| 154 | UX-DH97 | DH-Tính dễ hiểu | Thông báo | Nội dung & Hướng dẫn | Hệ thống yêu cầu quyền truy cập chỉ được yêu cầu tại thời điểm phù hợp với nhu cầu sử dụng, không yêu cầu toàn bộ ngay khi mở ứng dụng. | Kiểm tra hệ thống chỉ yêu cầu quyền truy cập tại đúng thời điểm phù hợp với nhu cầu sử dụng thực tế, không yêu cầu toàn bộ quyền ngay khi mở ứng dụng lần đầu. | Yêu cầu quyền được đưa ra theo ngữ cảnh sử dụng (just-in-time), không dồn tất cả vào lúc mở ứng dụng. | Bắt buộc | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Snackbar/Banner; NN/g – Notification Design |
+| 155 | UX-DH98 | DH-Tính dễ hiểu | QR code | Nội dung & Hướng dẫn | Chức năng QR/barcode có mô tả, hướng dẫn rõ ràng và cách thực hiện thay thế khi cần. | Kiểm tra chức năng quét QR/barcode có mô tả, hướng dẫn rõ ràng về cách thực hiện và có phương thức thay thế khi cần (nhập tay, chọn ảnh). | Người dùng được hướng dẫn rõ cách sử dụng chức năng quét và có lựa chọn thay thế khi không quét được. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| ISO/IEC 18004 (QR Code); NN/g – Mobile UX Guidance |
+| 156 | UX-DH99 | DH-Tính dễ hiểu | QR code | Nội dung & Hướng dẫn | Người dùng hiểu vì sao chưa có dữ liệu hoặc không tìm thấy kết quả. | Kiểm tra khi quét không thành công hoặc không tìm thấy kết quả, hệ thống có giải thích rõ nguyên nhân cho người dùng. | Thông báo lỗi/không tìm thấy kết quả nêu rõ nguyên nhân có thể xảy ra và cách khắc phục. | Cơ bản | WCAG 2.2 – 3.3.1 Error Identification (A) \| NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| ISO/IEC 18004 (QR Code); NN/g – Mobile UX Guidance |
+| 157 | UX-DH100 | DH-Tính dễ hiểu | QR code | Nội dung & Hướng dẫn | Người dùng được hướng dẫn rõ cách quét mã và có phương thức thay thế khi không thể quét. | Kiểm tra người dùng được hướng dẫn rõ cách quét mã (vị trí camera, khoảng cách, ánh sáng...) và có phương thức thay thế khi không thể quét. | Có hướng dẫn quét mã rõ ràng kèm phương án thay thế (nhập mã thủ công, tải ảnh) khi camera không khả dụng. | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| ISO/IEC 18004 (QR Code); NN/g – Mobile UX Guidance |
+| 158 | UX-DH101 | DH-Tính dễ hiểu | Thông báo | Nội dung & Hướng dẫn | Empty state cung cấp hành động phù hợp như tạo mới, đổi bộ lọc hoặc quay lại. | Kiểm tra trạng thái rỗng (empty state) có cung cấp hành động phù hợp như tạo mới, đổi bộ lọc hoặc quay lại. | Empty state luôn đi kèm ít nhất một hành động gợi ý phù hợp với ngữ cảnh (tạo mới/đổi bộ lọc/quay lại). | Cơ bản | NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Snackbar/Banner; NN/g – Notification Design |
+| 159 | UX-DH102 | DH-Tính dễ hiểu | Thông báo | Nội dung & Hướng dẫn | Thông báo lỗi cho biết lỗi gì xảy ra, xảy ra ở đâu và cách khắc phục. | Kiểm tra thông báo lỗi có cho biết lỗi gì xảy ra, xảy ra ở đâu (vị trí/trường cụ thể) và cách khắc phục. | Mỗi thông báo lỗi trả lời đủ 3 câu hỏi: lỗi gì, ở đâu, và cách sửa như thế nào. | Bắt buộc | WCAG 2.2 – 3.3.1 Error Identification (A) \| NN/g Heuristic #2 – Match Between System and the Real World; NN/g Heuristic #6 – Recognition Rather Than Recall \| Material Design 3 (m3.material.io) – Snackbar/Banner; NN/g – Notification Design |
+| 160 | UX-NQ01 | NQ-Tính nhất quán | Text | Nội dung & Hướng dẫn | Nội dung cùng 1 sắc thái tone giọng, văn phong thống nhất cho toàn hệ thống | Kiểm tra toàn bộ nội dung trong sản phẩm có cùng một tone giọng (thân thiện/trang trọng/chuyên nghiệp) và văn phong thống nhất. | Không phát hiện sự khác biệt về tone giọng hoặc văn phong giữa các màn hình/module khác nhau trong cùng sản phẩm. | Cơ bản | NN/g Heuristic #4 – Consistency and Standards; WCAG 2.2 – 3.2.3/3.2.4 Consistent Navigation/Identification (AA) |
+| 161 | UX-NQ02 | NQ-Tính nhất quán | Text | Nội dung & Hướng dẫn | Tên trang của men phải thống nhất với tên mục menu tương ứng, giúp người dùng xác nhận mình đã đến đúng vị trí. | Kiểm tra tên tiêu đề trang khi mở từ menu có thống nhất với tên mục menu tương ứng. | Tên trang/tiêu đề màn hình khớp chính xác với tên mục menu đã click, giúp người dùng xác nhận đúng vị trí. | Cơ bản | WCAG 2.2 – 2.4.2 Page Titled (A) \| NN/g Heuristic #4 – Consistency and Standards; WCAG 2.2 – 3.2.3/3.2.4 Consistent Navigation/Identification (AA) |
+| 162 | UX-NQ03 | NQ-Tính nhất quán | Text | Nội dung & Hướng dẫn | Cùng một đối tượng, khái niệm hoặc nghiệp vụ phải được gọi bằng cùng một thuật ngữ trong toàn bộ sản phẩm; không dùng đồng thời các từ khác nhau như “bệnh nhân” và “người bệnh” cho cùng một đối tượng. | Kiểm tra cùng một đối tượng/khái niệm/nghiệp vụ có được gọi bằng cùng một thuật ngữ xuyên suốt sản phẩm, không dùng lẫn lộn nhiều tên gọi khác nhau cho cùng một đối tượng. | Không tồn tại hai thuật ngữ khác nhau cùng chỉ một đối tượng/khái niệm trong toàn bộ hệ thống. | Cơ bản | WCAG 2.2 – 3.2.4 Consistent Identification (AA) \| NN/g Heuristic #4 – Consistency and Standards; WCAG 2.2 – 3.2.3/3.2.4 Consistent Navigation/Identification (AA) |
+| 163 | UX-NQ04 | NQ-Tính nhất quán | Icon | Nhận biết & Phân biệt | Cùng một icon phải biểu thị cùng một ý nghĩa hoặc hành động trong toàn bộ sản phẩm | Kiểm tra cùng một icon có biểu thị cùng một ý nghĩa hoặc hành động ở mọi nơi xuất hiện trong sản phẩm. | Không có icon nào mang hai ý nghĩa khác nhau ở hai vị trí khác nhau trong cùng sản phẩm. | Cơ bản | WCAG 2.2 – 3.2.4 Consistent Identification (AA) \| NN/g Heuristic #4 – Consistency and Standards; WCAG 2.2 – 3.2.3/3.2.4 Consistent Navigation/Identification (AA) \| Material Design 3 (m3.material.io) – Icons; WCAG 2.2 – 1.1.1 Non-text Content (A) |
+| 164 | UX-NQ05 | NQ-Tính nhất quán | Menu | Điều hướng & Định hướng | Tên trang hoặc title khi mở từ menu phải thống nhất với tên mục menu tương ứng, giúp người dùng xác nhận mình đã đến đúng vị trí. | Kiểm tra tên trang/title khi mở từ menu có thống nhất với tên mục menu tương ứng. | Tên trang hiển thị trùng khớp với tên mục menu đã chọn, xác nhận đúng vị trí điều hướng. | Cơ bản | NN/g Heuristic #4 – Consistency and Standards; WCAG 2.2 – 3.2.3/3.2.4 Consistent Navigation/Identification (AA) \| Material Design 3 (m3.material.io) – Menus; NN/g – Navigation Menus |
+| 165 | UX-NQ06 | NQ-Tính nhất quán | Checkbox | Nội dung & Hướng dẫn | Label của các lựa chọn trong cùng một nhóm checkbox phải sử dụng cấu trúc câu, loại từ và cách diễn đạt nhất quán. | Kiểm tra label của các lựa chọn trong cùng một nhóm checkbox có sử dụng cấu trúc câu, loại từ và cách diễn đạt nhất quán với nhau. | Các label trong cùng nhóm checkbox có cấu trúc ngữ pháp và văn phong đồng nhất. | Cơ bản | NN/g Heuristic #4 – Consistency and Standards; WCAG 2.2 – 3.2.3/3.2.4 Consistent Navigation/Identification (AA) \| Material Design 3 (m3.material.io) – Checkbox |
+| 166 | UX-NQ07 | NQ-Tính nhất quán | Logo | Điều hướng & Định hướng | Logo sản phẩm trên header phải có hành vi thống nhất; khi được sử dụng như một điểm điều hướng, logo dẫn người dùng về trang chủ. | Kiểm tra logo sản phẩm trên header có hành vi nhất quán trên toàn hệ thống; khi dùng như điểm điều hướng, logo phải dẫn về trang chủ. | Click vào logo luôn thực hiện cùng một hành vi (điều hướng về trang chủ) tại mọi màn hình có logo. | Cơ bản | WCAG 2.2 – 3.2.3 Consistent Navigation (AA) \| NN/g Heuristic #4 – Consistency and Standards; WCAG 2.2 – 3.2.3/3.2.4 Consistent Navigation/Identification (AA) \| NN/g – The Logo as Homepage Link Convention |
+| 167 | UX-NQ08 | NQ-Tính nhất quán | Luồng folow | Tương tác & Thao tác | Các luồng tương tự có tính nhất quán | Trải nghiệm kiểm tra logic các luồng | Các luồng tương tự giống nhau | Cơ bản |  |
+| 168 | UX-TU01 | TU-Tính thích ứng | Toàn màn hình/Hệ thống | Thao tác nền tảng | Người dùng có thể hoàn thành nhiệm vụ chính trên tất cả thiết bị và nền tảng nằm trong phạm vi hỗ trợ. | Kiểm tra người dùng có thể hoàn thành nhiệm vụ chính trên tất cả thiết bị và nền tảng nằm trong phạm vi hỗ trợ đã công bố (desktop, tablet, mobile, iOS, Android, web). | Nhiệm vụ chính (core task) thực hiện được đầy đủ, không thiếu bước, trên mọi thiết bị/nền tảng trong phạm vi hỗ trợ. | Bắt buộc | WCAG 2.2 – 1.4.10 Reflow (AA), 1.3.4 Orientation (AA); Material Design 3 (m3.material.io)/Apple Human Interface Guidelines (HIG) – Responsive & Adaptive Layout |
+| 169 | UX-TU02 | TU-Tính thích ứng | Toàn màn hình/Hệ thống | Đa thiết bị | Khi chuyển giữa desktop, tablet và mobile, hệ thống không làm mất chức năng thiết yếu hoặc bước bắt buộc của nhiệm vụ. | Kiểm tra khi chuyển đổi giữa desktop, tablet và mobile, hệ thống có giữ nguyên chức năng thiết yếu và các bước bắt buộc của nhiệm vụ (responsive/adaptive design). | Không có chức năng thiết yếu hoặc bước bắt buộc nào bị lược bỏ khi chuyển kích thước màn hình/thiết bị. | Bắt buộc | WCAG 2.2 – 1.4.10 Reflow (AA), 1.3.4 Orientation (AA); Material Design 3 (m3.material.io)/Apple Human Interface Guidelines (HIG) – Responsive & Adaptive Layout |
+| 170 | UX-TU03 | TU-Tính thích ứng | Toàn màn hình/Hệ thống | Đa thiết bị | Khi nghiệp vụ cho phép, người dùng có thể tiếp tục nhiệm vụ trên thiết bị khác mà không phải thực hiện lại từ đầu. | Kiểm tra khi nghiệp vụ cho phép, người dùng có thể tiếp tục nhiệm vụ đang dang dở trên một thiết bị khác mà không phải thực hiện lại từ đầu (cross-device continuity). | Trạng thái/tiến trình nhiệm vụ được đồng bộ, cho phép tiếp tục trên thiết bị khác khi nghiệp vụ hỗ trợ. | Thông minh | WCAG 2.2 – 1.4.10 Reflow (AA), 1.3.4 Orientation (AA); Material Design 3 (m3.material.io)/Apple Human Interface Guidelines (HIG) – Responsive & Adaptive Layout |
+| 171 | UX-TU04 | TU-Tính thích ứng | Toàn màn hình/Hệ thống | Đa thiết bị | Khi thay đổi hướng màn hình trong phạm vi hỗ trợ, người dùng vẫn duy trì được nội dung và trạng thái nhiệm vụ. | Kiểm tra khi xoay màn hình (portrait/landscape) trong phạm vi hỗ trợ, người dùng có duy trì được nội dung và trạng thái nhiệm vụ đang thực hiện. | Không mất dữ liệu/trạng thái khi xoay màn hình; bố cục tự điều chỉnh hợp lý theo hướng màn hình. | Cơ bản | WCAG 2.2 – 1.4.10 Reflow (AA), 1.3.4 Orientation (AA); Material Design 3 (m3.material.io)/Apple Human Interface Guidelines (HIG) – Responsive & Adaptive Layout |
+| 172 | UX-TU05 | TU-Tính thích ứng | Nhập liệu | Tương tác & Thao tác | Khi người dùng phóng to nội dung, nhiệm vụ chính vẫn thực hiện được và không mất thông tin hoặc hành động thiết yếu. | Kiểm tra khi người dùng phóng to nội dung (zoom, tăng cỡ chữ hệ thống đến 200%), nhiệm vụ chính vẫn thực hiện được, không mất thông tin hoặc hành động thiết yếu. | Ở mức zoom/cỡ chữ tối đa theo hỗ trợ (thường 200%), nội dung không bị cắt, chồng lấn, và nhiệm vụ chính vẫn hoàn thành được. | Bắt buộc | WCAG 2.2 – 1.4.4 Resize Text (AA) \| WCAG 2.2 – 1.4.10 Reflow (AA), 1.3.4 Orientation (AA); Material Design 3 (m3.material.io)/Apple Human Interface Guidelines (HIG) – Responsive & Adaptive Layout \| Material Design 3 (m3.material.io) – Text fields; GOV.UK Design System – Text input |
+| 173 | UX-TU06 | TU-Tính thích ứng | Nhập liệu | Đa thiết bị | Trường nhập hỗ trợ phương thức phù hợp với thiết bị như bàn phím, bàn phím ảo, cảm ứng hoặc thiết bị hỗ trợ. | Kiểm tra trường nhập liệu có hỗ trợ đúng phương thức nhập phù hợp với thiết bị: bàn phím vật lý, bàn phím ảo, cảm ứng hoặc thiết bị hỗ trợ (switch control, eye-tracking...). | Trường nhập liệu hoạt động chính xác với mọi phương thức nhập được thiết bị/nền tảng hỗ trợ. | Cơ bản | WCAG 2.2 – 2.1.1 Keyboard (A) \| WCAG 2.2 – 1.4.10 Reflow (AA), 1.3.4 Orientation (AA); Material Design 3 (m3.material.io)/Apple Human Interface Guidelines (HIG) – Responsive & Adaptive Layout \| Material Design 3 (m3.material.io) – Text fields; GOV.UK Design System – Text input |
+| 174 | UX-TU07 | TU-Tính thích ứng | Nhập liệu | Tương tác & Thao tác | Trên mobile, trường nhập kích hoạt loại bàn phím phù hợp với dữ liệu như số, điện thoại, email hoặc URL. | Kiểm tra trên mobile, trường nhập liệu có kích hoạt đúng loại bàn phím ảo phù hợp với kiểu dữ liệu (số, điện thoại, email, URL). | Bàn phím ảo hiển thị đúng loại (numeric/email/tel/url) tương ứng với loại dữ liệu của trường nhập. | Cơ bản | WCAG 2.2 – 2.1.1 Keyboard (A) \| WCAG 2.2 – 1.4.10 Reflow (AA), 1.3.4 Orientation (AA); Material Design 3 (m3.material.io)/Apple Human Interface Guidelines (HIG) – Responsive & Adaptive Layout \| Material Design 3 (m3.material.io) – Text fields; GOV.UK Design System – Text input |
+| 175 | UX-TU08 | TU-Tính thích ứng | Nhập liệu | Duy trì dữ liệu | Dữ liệu đã nhập được bảo toàn khi xoay màn hình, thay đổi viewport, gián đoạn tạm thời hoặc chuyển bước. | Kiểm tra dữ liệu đã nhập có được bảo toàn khi xoay màn hình, thay đổi viewport, gián đoạn tạm thời (cuộc gọi đến, chuyển app) hoặc chuyển bước trong quy trình. | Không mất dữ liệu đã nhập khi xảy ra các sự kiện gián đoạn hoặc thay đổi kích thước/hướng màn hình. | Bắt buộc | WCAG 2.2 – 1.4.10 Reflow (AA) \| WCAG 2.2 – 1.4.10 Reflow (AA), 1.3.4 Orientation (AA); Material Design 3 (m3.material.io)/Apple Human Interface Guidelines (HIG) – Responsive & Adaptive Layout \| Material Design 3 (m3.material.io) – Text fields; GOV.UK Design System – Text input |
+| 176 | UX-TU09 | TU-Tính thích ứng | Nhập liệu | Tương tác & Thao tác | Nhiệm vụ không phụ thuộc vào một phương thức nhập duy nhất nếu có phương thức thay thế hợp lý. | Kiểm tra nhiệm vụ không phụ thuộc hoàn toàn vào một phương thức nhập duy nhất (VD: chỉ giọng nói hoặc chỉ cảm ứng) khi có phương thức thay thế hợp lý. | Có ít nhất một phương thức thay thế để hoàn thành nhiệm vụ khi phương thức chính không khả dụng. | Bắt buộc | WCAG 2.2 – 1.4.10 Reflow (AA), 1.3.4 Orientation (AA); Material Design 3 (m3.material.io)/Apple Human Interface Guidelines (HIG) – Responsive & Adaptive Layout \| Material Design 3 (m3.material.io) – Text fields; GOV.UK Design System – Text input |
+| 177 | UX-TU10 | TU-Tính thích ứng | Drag–drop | Tương tác & Thao tác | Tương tác gesture, swipe hoặc drag–drop có cách thao tác đơn giản thay thế. | Kiểm tra các tương tác gesture, swipe hoặc drag–drop có cung cấp cách thao tác đơn giản thay thế (nút bấm, menu ngữ cảnh). | Mọi thao tác gesture phức tạp đều có phương án thay thế bằng thao tác đơn giản (tap/click). | Bắt buộc | WCAG 2.2 – 2.5.7 Dragging Movements (AA) \| WCAG 2.2 – 1.4.10 Reflow (AA), 1.3.4 Orientation (AA); Material Design 3 (m3.material.io)/Apple Human Interface Guidelines (HIG) – Responsive & Adaptive Layout \| WCAG 2.2 – 2.5.7 Dragging Movements (AA); NN/g – Drag-and-Drop |
+| 178 | UX-TU11 | TU-Tính thích ứng | Bảng | Nhận biết & Phân biệt | Khi không đủ không gian, hệ thống ưu tiên các cột và thuộc tính cần thiết cho quyết định của người dùng. | Kiểm tra khi không đủ không gian hiển thị (màn hình nhỏ), hệ thống có ưu tiên hiển thị các cột/thuộc tính cần thiết nhất cho quyết định của người dùng, ẩn/gộp các cột phụ. | Trên màn hình nhỏ, các cột/thuộc tính quan trọng nhất luôn hiển thị; cột phụ được ẩn, gộp hoặc chuyển sang xem chi tiết. | Cơ bản | WCAG 2.2 – 1.4.10 Reflow (AA), 1.3.4 Orientation (AA); Material Design 3 (m3.material.io)/Apple Human Interface Guidelines (HIG) – Responsive & Adaptive Layout \| GOV.UK Design System – Table component; NN/g – Data Tables |
+| 179 | UX-TU12 | TU-Tính thích ứng | Tìm kiếm | Bố cục & Tổ chức thông tin | Hệ thống cung cấp tìm kiếm, lọc hoặc phân trang phù hợp khi số lượng dữ liệu tăng. | Kiểm tra hệ thống có cung cấp tìm kiếm, lọc hoặc phân trang phù hợp khi số lượng dữ liệu tăng lên đáng kể. | Khi dữ liệu lớn dần, các công cụ tìm kiếm/lọc/phân trang vẫn đảm bảo hiệu năng và khả năng sử dụng. | Cơ bản | WCAG 2.2 – 1.4.10 Reflow (AA), 1.3.4 Orientation (AA); Material Design 3 (m3.material.io)/Apple Human Interface Guidelines (HIG) – Responsive & Adaptive Layout \| NN/g – Search UX; Baymard Institute – UX Research – Search |
+| 180 | UX-TU13 | TU-Tính thích ứng | Modal/Dialog/Popup/toast | Bố cục & Tổ chức thông tin | Nội dung và hành động chính của modal vẫn có thể tiếp cận khi màn hình hoặc bàn phím ảo làm giảm không gian. | Kiểm tra nội dung và hành động chính của modal vẫn có thể tiếp cận được khi bàn phím ảo hoặc kích thước màn hình nhỏ làm giảm không gian hiển thị. | Modal tự điều chỉnh (cuộn nội bộ, thu gọn) để nội dung và nút hành động chính luôn hiển thị/tiếp cận được. | Cơ bản | WCAG 2.2 – 2.1.1 Keyboard (A) \| WCAG 2.2 – 1.4.10 Reflow (AA), 1.3.4 Orientation (AA); Material Design 3 (m3.material.io)/Apple Human Interface Guidelines (HIG) – Responsive & Adaptive Layout \| Material Design 3 (m3.material.io) – Dialogs & Snackbars; NN/g – Modal & Nonmodal Dialogs |
+| 181 | UX-TU14 | TU-Tính thích ứng | QR code | Đa thiết bị | Khi thiết bị không hỗ trợ camera, quét mã hoặc chọn file theo cách chính, hệ thống cung cấp cách nhập hoặc tải lên thay thế. | Kiểm tra khi thiết bị không hỗ trợ camera hoặc không thể quét mã/chọn file theo cách chính, hệ thống có cung cấp cách nhập hoặc tải lên thay thế. | Có phương án thay thế (nhập tay, tải file) khi thiết bị không hỗ trợ tính năng quét/camera. | Cơ bản | WCAG 2.2 – 1.4.10 Reflow (AA), 1.3.4 Orientation (AA); Material Design 3 (m3.material.io)/Apple Human Interface Guidelines (HIG) – Responsive & Adaptive Layout \| ISO/IEC 18004 (QR Code); NN/g – Mobile UX Guidance |
+| 182 | UX-TU15 | TU-Tính thích ứng | Toàn màn hình/Hệ thống | Hỗ trợ quyết định | Khi phiên làm việc sắp hết, hệ thống cảnh báo để người dùng có thể lưu hoặc tiếp tục nhiệm vụ. | Kiểm tra khi phiên làm việc (session) sắp hết hạn, hệ thống có cảnh báo trước để người dùng kịp lưu hoặc tiếp tục nhiệm vụ. | Người dùng nhận được cảnh báo trước khi phiên hết hạn, có đủ thời gian để lưu hoặc gia hạn phiên. | Bắt buộc | WCAG 2.2 – 1.4.10 Reflow (AA), 1.3.4 Orientation (AA); Material Design 3 (m3.material.io)/Apple Human Interface Guidelines (HIG) – Responsive & Adaptive Layout |
+| 183 | UX-PH01 | PH-Tính phản hồi | Button | Trạng thái & Phản hồi | Sau khi người dùng tương tác, hệ thống phản hồi ngay để xác nhận thao tác đã được tiếp nhận. | Kiểm tra sau khi người dùng nhấn button, hệ thống có phản hồi ngay lập tức (đổi trạng thái, hiệu ứng ripple/press) để xác nhận thao tác đã được tiếp nhận. | Phản hồi trực quan xuất hiện trong vòng dưới 100ms sau khi người dùng nhấn, xác nhận hệ thống đã ghi nhận thao tác. | Cơ bản | NN/g Heuristic #1 – Visibility of System Status; WCAG 2.2 – 4.1.3 Status Messages (AA); Laws of UX – Doherty Threshold \| Material Design 3 (m3.material.io) – Buttons; Apple Human Interface Guidelines (HIG) – Buttons |
+| 184 | UX-PH02 | PH-Tính phản hồi | Điều hướng | Trạng thái & Phản hồi | Sau khi người dùng tương tác, hệ thống phản hồi ngay để xác nhận thao tác đã được tiếp nhận. | Kiểm tra sau khi người dùng tương tác với điều hướng, hệ thống có phản hồi ngay (highlight, chuyển trang, loading indicator) để xác nhận thao tác đã được tiếp nhận. | Có phản hồi tức thời khi người dùng chọn một mục điều hướng, không để khoảng lặng gây nghi ngờ. | Cơ bản | NN/g Heuristic #1 – Visibility of System Status; WCAG 2.2 – 4.1.3 Status Messages (AA); Laws of UX – Doherty Threshold \| Material Design 3 (m3.material.io) – Navigation bar/drawer; NN/g – Navigation Design |
+| 185 | UX-PH03 | PH-Tính phản hồi | Điều hướng | Trạng thái & Phản hồi | Người dùng nhận biết được menu hoặc mục điều hướng đang được chọn. | Kiểm tra người dùng có nhận biết được mục menu/điều hướng nào đang được chọn (active state) một cách trực quan. | Mục điều hướng đang active được đánh dấu rõ ràng, khác biệt với các mục còn lại. | Cơ bản | NN/g Heuristic #1 – Visibility of System Status; WCAG 2.2 – 4.1.3 Status Messages (AA); Laws of UX – Doherty Threshold \| Material Design 3 (m3.material.io) – Navigation bar/drawer; NN/g – Navigation Design |
+| 186 | UX-PH04 | PH-Tính phản hồi | Menu | Trạng thái & Phản hồi | Người dùng nhận biết được menu hoặc mục điều hướng đang được chọn. | Kiểm tra người dùng có nhận biết được mục menu đang được chọn thông qua trạng thái trực quan (màu nền, gạch chân, đậm chữ...). | Trạng thái được chọn của mục menu hiển thị rõ ràng và nhất quán. | Cơ bản | WCAG 2.2 – 3.2.3 Consistent Navigation (AA) \| NN/g Heuristic #1 – Visibility of System Status; WCAG 2.2 – 4.1.3 Status Messages (AA); Laws of UX – Doherty Threshold \| Material Design 3 (m3.material.io) – Menus; NN/g – Navigation Menus |
+| 187 | UX-PH05 | PH-Tính phản hồi | Dropdown | Trạng thái & Phản hồi | Dropdown phản hồi khi được truy cập, chọn hoặc tương tác. | Kiểm tra dropdown có phản hồi trực quan (đổi viền, đổi màu, hiệu ứng mở) khi được truy cập, chọn hoặc tương tác. | Dropdown thể hiện rõ trạng thái focus/hover/selected qua hiệu ứng thị giác tương ứng. | Cơ bản | NN/g Heuristic #1 – Visibility of System Status; WCAG 2.2 – 4.1.3 Status Messages (AA); Laws of UX – Doherty Threshold \| Material Design 3 (m3.material.io) – Menus; GOV.UK Design System – Select component |
+| 188 | UX-PH06 | PH-Tính phản hồi | Nhập liệu | Trạng thái & Phản hồi | Trường nhập phản hồi khi được truy cập, chọn hoặc tương tác. phản hồi khi được truy cập, chọn hoặc tương tác. | Kiểm tra trường nhập liệu có phản hồi trực quan (đổi viền, đổi màu nền) khi được truy cập (focus), chọn hoặc tương tác. | Trường nhập liệu có trạng thái focus/active rõ ràng, khác biệt với trạng thái mặc định. | Cơ bản | NN/g Heuristic #1 – Visibility of System Status; WCAG 2.2 – 4.1.3 Status Messages (AA); Laws of UX – Doherty Threshold \| Material Design 3 (m3.material.io) – Text fields; GOV.UK Design System – Text input |
+| 189 | UX-PH07 | PH-Tính phản hồi | Form | Trạng thái & Phản hồi | Form nhập phản hồi khi được truy cập, chọn hoặc tương tác. phản hồi khi được truy cập, chọn hoặc tương tác. | Kiểm tra các trường trong form có phản hồi trực quan nhất quán khi được truy cập, chọn hoặc tương tác. | Mọi trường trong form đều có phản hồi trạng thái focus/active đồng nhất về mặt thị giác. | Cơ bản | NN/g Heuristic #1 – Visibility of System Status; WCAG 2.2 – 4.1.3 Status Messages (AA); Laws of UX – Doherty Threshold \| GOV.UK Design System – Form design patterns; NN/g – Form Design Guidelines |
+| 190 | UX-PH08 | PH-Tính phản hồi | Danh sách | Trạng thái & Phản hồi | Danh sách phản hồi khi được truy cập, chọn hoặc tương tác. phản hồi khi được truy cập, chọn hoặc tương tác. | Kiểm tra các mục trong danh sách có phản hồi trực quan (hover, pressed) khi được truy cập, chọn hoặc tương tác. | Mục danh sách thể hiện rõ trạng thái hover/pressed/selected khi người dùng tương tác. | Cơ bản | NN/g Heuristic #1 – Visibility of System Status; WCAG 2.2 – 4.1.3 Status Messages (AA); Laws of UX – Doherty Threshold \| Material Design 3 (m3.material.io) – Lists |
+| 191 | UX-PH09 | PH-Tính phản hồi | Card | Trạng thái & Phản hồi | Card phản hồi khi được truy cập, chọn hoặc tương tác. phản hồi khi được truy cập, chọn hoặc tương tác. | Kiểm tra card có phản hồi trực quan (nâng shadow, đổi viền) khi được truy cập, chọn hoặc tương tác. | Card thể hiện rõ trạng thái hover/pressed/selected khi người dùng tương tác. | Cơ bản | NN/g Heuristic #1 – Visibility of System Status; WCAG 2.2 – 4.1.3 Status Messages (AA); Laws of UX – Doherty Threshold \| Material Design 3 (m3.material.io) – Cards |
+| 192 | UX-PH10 | PH-Tính phản hồi | Toàn màn hình/Hệ thống | Trạng thái & Phản hồi | Các thao tác trực tiếp như typing, select, di chuyển con trỏ hoặc chuyển động phản hồi tức thì. | Kiểm tra các thao tác trực tiếp như gõ phím, chọn (select), di chuyển con trỏ hoặc kéo có phản hồi tức thì trên giao diện (VD: ký tự hiện ngay khi gõ, vùng chọn tô sáng ngay khi kéo). | Phản hồi thị giác xuất hiện đồng thời (near real-time) với thao tác trực tiếp của người dùng, độ trễ không nhận biết được (thường dưới 100ms). | Cơ bản | NN/g Heuristic #1 – Visibility of System Status; WCAG 2.2 – 4.1.3 Status Messages (AA); Laws of UX – Doherty Threshold |
+| 193 | UX-PH11 | PH-Tính phản hồi | Toàn màn hình/Hệ thống | Trạng thái & Phản hồi | Tác vụ thông thường phản hồi trong khoảng thời gian phù hợp, không khiến người dùng nghi ngờ hệ thống ngừng hoạt động. | Kiểm tra thời gian phản hồi của các tác vụ thông thường (tải trang, submit, tìm kiếm) có nằm trong ngưỡng phù hợp (thường dưới 1-10 giây tùy tác vụ) và có chỉ báo tiến trình nếu lâu hơn, không khiến người dùng nghi ngờ hệ thống ngừng hoạt động. | Tác vụ hoàn thành trong thời gian hợp lý hoặc có loading indicator xuyên suốt nếu mất trên 1 giây, người dùng không nghi ngờ hệ thống bị treo. | Bắt buộc | NN/g Heuristic #1 – Visibility of System Status; WCAG 2.2 – 4.1.3 Status Messages (AA); Laws of UX – Doherty Threshold |
+| 194 | UX-PH12 | PH-Tính phản hồi | Tải lên | Trạng thái & Phản hồi | Trong thời gian chờ, hệ thống hiển thị trạng thái hoặc chỉ báo cho biết đang tải và không khiến người dùng hiểu nhầm là bị treo. | Kiểm tra trong thời gian chờ (loading), hệ thống có hiển thị trạng thái hoặc chỉ báo (spinner, skeleton, progress bar) cho biết đang xử lý. | Có chỉ báo loading rõ ràng trong suốt thời gian chờ, không để màn hình trắng/đứng im gây hiểu nhầm là bị treo. | Bắt buộc | NN/g Heuristic #1 – Visibility of System Status; WCAG 2.2 – 4.1.3 Status Messages (AA); Laws of UX – Doherty Threshold \| GOV.UK Design System – File upload; NN/g – File Upload UX |
+| 195 | UX-PH13 | PH-Tính phản hồi | Tải lên | Trạng thái & Phản hồi | Chỉ báo loading phản ánh đúng việc hệ thống đang xử lý, không dùng loading giả hoặc chạy không liên quan đến tiến trình. | Kiểm tra chỉ báo loading có phản ánh đúng tiến trình xử lý thực tế của hệ thống, không dùng hiệu ứng loading giả hoặc không liên quan đến tiến trình thực. | Loading indicator (đặc biệt progress bar dạng %) phản ánh trung thực tiến độ xử lý thực tế. | Bắt buộc | NN/g Heuristic #1 – Visibility of System Status; WCAG 2.2 – 4.1.3 Status Messages (AA); Laws of UX – Doherty Threshold \| GOV.UK Design System – File upload; NN/g – File Upload UX |
+| 196 | UX-PH14 | PH-Tính phản hồi | Toàn màn hình/Hệ thống | Nội dung & Hướng dẫn | Khi mất kết nối, hệ thống thông báo rõ trạng thái offline hoặc mất mạng. | Kiểm tra khi mất kết nối mạng, hệ thống có thông báo rõ ràng về trạng thái offline/mất mạng. | Người dùng nhận được thông báo rõ ràng ngay khi hệ thống phát hiện mất kết nối. | Bắt buộc | WCAG 2.2 – 4.1.3 Status Messages (AA) \| NN/g Heuristic #1 – Visibility of System Status; WCAG 2.2 – 4.1.3 Status Messages (AA); Laws of UX – Doherty Threshold |
+| 197 | UX-PH15 | PH-Tính phản hồi | Toàn màn hình/Hệ thống | Trạng thái & Phản hồi | Khi kết nối trở lại, hệ thống cho phép tải lại hoặc tiếp tục nhiệm vụ phù hợp. | Kiểm tra khi kết nối mạng được khôi phục, hệ thống có cho phép tải lại dữ liệu hoặc tiếp tục nhiệm vụ đang dang dở một cách phù hợp. | Hệ thống tự động hoặc cung cấp nút thao tác để tải lại/tiếp tục khi có kết nối trở lại. | Cơ bản | WCAG 2.2 – 4.1.3 Status Messages (AA) \| NN/g Heuristic #1 – Visibility of System Status; WCAG 2.2 – 4.1.3 Status Messages (AA); Laws of UX – Doherty Threshold |
+| 198 | UX-PH16 | PH-Tính phản hồi | Modal/Dialog/Popup/toast | Trạng thái & Phản hồi | Popup hoặc popover xuất hiện ngay sau hành động kích hoạt. | Kiểm tra popup hoặc popover có xuất hiện ngay lập tức sau hành động kích hoạt (click, hover), không có độ trễ gây khó chịu. | Popup/popover hiển thị tức thời sau khi được kích hoạt. | Cơ bản | NN/g Heuristic #1 – Visibility of System Status; WCAG 2.2 – 4.1.3 Status Messages (AA); Laws of UX – Doherty Threshold \| Material Design 3 (m3.material.io) – Dialogs & Snackbars; NN/g – Modal & Nonmodal Dialogs |
+| 199 | UX-PH17 | PH-Tính phản hồi | Toàn màn hình/Hệ thống | Trạng thái & Phản hồi | Thông tin hiển thị phù hợp trên các kích thước màn hình phổ biến, không cắt, chèn, dúm thông tin ảnh hưởng đến khả năng sử dụng | Kiểm tra thông tin hiển thị có phù hợp trên các kích thước màn hình phổ biến, không bị cắt, chèn ép hoặc dúm lại làm ảnh hưởng đến khả năng sử dụng. | Giao diện responsive đúng trên các breakpoint phổ biến, không có hiện tượng vỡ layout/tràn chữ/che khuất nội dung. | Bắt buộc | NN/g Heuristic #1 – Visibility of System Status; WCAG 2.2 – 4.1.3 Status Messages (AA); Laws of UX – Doherty Threshold |
+| 200 | UX-PH18 | PH-Tính phản hồi | Tương tác | Tương tác & Thao tác | Cho phép xem trước kết quả, ví dụ được xem trước đối tượng trước và sau khi merge. | Kiểm tra hệ thống có cho phép xem trước kết quả trước khi thực hiện hành động chính thức, ví dụ xem trước đối tượng trước và sau khi merge/thay đổi. | Người dùng xem được kết quả dự kiến (preview) trước khi xác nhận thao tác có ảnh hưởng lớn. | Thông minh | WCAG 2.2 – 3.3.4 Error Prevention (Legal, Financial, Data) (AA) \| NN/g Heuristic #1 – Visibility of System Status; WCAG 2.2 – 4.1.3 Status Messages (AA); Laws of UX – Doherty Threshold \| Apple Human Interface Guidelines (HIG) – Gestures; Material Design 3 (m3.material.io) – Interaction states |
+| 201 | UX-KD01 | KD-Tính khả dụng | Button | Tương tác & Thao tác | Button thực hiện đúng hành động được mô tả. | Kiểm tra button có thực hiện đúng chính xác hành động được mô tả trong label, không gây tác động ngoài dự kiến. | Kết quả sau khi nhấn button khớp 100% với hành động đã mô tả trong label. | Bắt buộc | ISO 9241-11:2018 – Usability: Definitions and concepts; NN/g Heuristic #1 – Visibility of System Status \| Material Design 3 (m3.material.io) – Buttons; Apple Human Interface Guidelines (HIG) – Buttons |
+| 202 | UX-KD02 | KD-Tính khả dụng | Button | Tương tác & Thao tác | Một lần nhấn Submit chỉ tạo một kết quả; hệ thống không tạo bản ghi hoặc thông báo trùng. | Kiểm tra một lần nhấn Submit chỉ tạo ra một kết quả duy nhất; hệ thống có cơ chế chống double-submit (disable button, debounce) để không tạo bản ghi hoặc thông báo trùng lặp. | Không phát sinh bản ghi/thông báo trùng lặp dù người dùng nhấn Submit nhiều lần liên tiếp hoặc mạng chậm. | Bắt buộc | ISO 9241-11:2018 – Usability: Definitions and concepts; NN/g Heuristic #1 – Visibility of System Status \| Material Design 3 (m3.material.io) – Buttons; Apple Human Interface Guidelines (HIG) – Buttons |
+| 203 | UX-KD03 | KD-Tính khả dụng | Button | Điều hướng & Định hướng | Nút Back đưa người dùng về trang trước mà không tải sang một trang không liên quan. | Kiểm tra nút Back đưa người dùng chính xác về trang/màn hình trước đó, không tải nhầm sang một trang không liên quan. | Nút Back luôn điều hướng đúng về màn hình liền trước trong lịch sử thao tác. | Bắt buộc | ISO 9241-11:2018 – Usability: Definitions and concepts; NN/g Heuristic #1 – Visibility of System Status \| Material Design 3 (m3.material.io) – Buttons; Apple Human Interface Guidelines (HIG) – Buttons |
+| 204 | UX-KD04 | KD-Tính khả dụng | Menu | Tương tác & Thao tác | Menu action thực hiện đúng hành động được mô tả. | Kiểm tra các menu action (trong menu ngữ cảnh, dropdown action) có thực hiện đúng chính xác hành động được mô tả. | Kết quả thực hiện khớp đúng với mô tả của từng action trong menu. | Bắt buộc | ISO 9241-11:2018 – Usability: Definitions and concepts; NN/g Heuristic #1 – Visibility of System Status \| Material Design 3 (m3.material.io) – Menus; NN/g – Navigation Menus |
+| 205 | UX-KD05 | KD-Tính khả dụng | Liên kết | Tương tác & Thao tác | Link mở đúng trang đích phù hợp | Kiểm tra link có mở đúng trang đích phù hợp với nội dung/mô tả của link. | Trang đích khi click link khớp với những gì nội dung link mô tả, không dẫn sai trang hoặc lỗi 404. | Bắt buộc | WCAG 2.2 – 2.4.4 Link Purpose (In Context) (A) \| ISO 9241-11:2018 – Usability: Definitions and concepts; NN/g Heuristic #1 – Visibility of System Status |
+| 206 | UX-KD06 | KD-Tính khả dụng | Checkbox | Tương tác & Thao tác | Lựa chọn checkbox được áp dụng trực tiếp, không tạo loading hoặc yêu cầu Submit nếu không cần thiết. | Kiểm tra lựa chọn checkbox có được áp dụng trực tiếp ngay khi tích chọn, không tạo loading không cần thiết hoặc yêu cầu Submit nếu nghiệp vụ không đòi hỏi. | Trạng thái checkbox được cập nhật/lưu ngay lập tức khi không cần xác nhận bổ sung theo nghiệp vụ. | Cơ bản | ISO 9241-11:2018 – Usability: Definitions and concepts; NN/g Heuristic #1 – Visibility of System Status \| Material Design 3 (m3.material.io) – Checkbox |
+| 207 | UX-KD07 | KD-Tính khả dụng | Radio | Tương tác & Thao tác | Lựa chọn radio được áp dụng trực tiếp, không tạo loading hoặc yêu cầu Submit nếu không cần thiết. | Kiểm tra lựa chọn radio có được áp dụng trực tiếp ngay khi chọn, không tạo loading không cần thiết hoặc yêu cầu Submit nếu nghiệp vụ không đòi hỏi. | Trạng thái radio được cập nhật/lưu ngay lập tức khi không cần xác nhận bổ sung theo nghiệp vụ. | Cơ bản | ISO 9241-11:2018 – Usability: Definitions and concepts; NN/g Heuristic #1 – Visibility of System Status \| Material Design 3 (m3.material.io) – Radio button |
+| 208 | UX-KD08 | KD-Tính khả dụng | Dropdown | Tương tác & Thao tác | Khi mở dropdown, người dùng truy cập được danh sách lựa chọn phù hợp. | Kiểm tra khi mở dropdown, người dùng có truy cập được đầy đủ và chính xác danh sách lựa chọn phù hợp với ngữ cảnh. | Danh sách dropdown hiển thị đầy đủ, đúng dữ liệu, không bị lỗi tải hoặc thiếu mục. | Bắt buộc | ISO 9241-11:2018 – Usability: Definitions and concepts; NN/g Heuristic #1 – Visibility of System Status \| Material Design 3 (m3.material.io) – Menus; GOV.UK Design System – Select component |
+| 209 | UX-KD09 | KD-Tính khả dụng | Điều hướng | Tương tác & Thao tác | Hỗ trợ thao tác bằng bàn phím theo hướng dẫn | Kiểm tra hệ thống có hỗ trợ thao tác bằng bàn phím đúng theo hướng dẫn (Tab, Enter, Space, phím mũi tên, Esc) cho các control chính. | Thao tác bàn phím hoạt động chính xác đúng như quy ước đã công bố/tiêu chuẩn (WAI-ARIA Authoring Practices). | Bắt buộc | WCAG 2.2 – 2.1.1 Keyboard (A) \| ISO 9241-11:2018 – Usability: Definitions and concepts; NN/g Heuristic #1 – Visibility of System Status \| Material Design 3 (m3.material.io) – Navigation bar/drawer; NN/g – Navigation Design |
+| 210 | UX-KD10 | KD-Tính khả dụng | Modal/Dialog/Popup/toast | Tương tác & Thao tác | Sau hành động, hệ thống hiển thị đúng trang hoặc trạng thái kết quả. | Kiểm tra sau khi thực hiện hành động trong modal/dialog/popup/toast, hệ thống có hiển thị đúng trang hoặc trạng thái kết quả tương ứng. | Kết quả hiển thị sau hành động khớp chính xác với những gì đã thực hiện, không gây nhầm lẫn về trạng thái. | Bắt buộc | ISO 9241-11:2018 – Usability: Definitions and concepts; NN/g Heuristic #1 – Visibility of System Status \| Material Design 3 (m3.material.io) – Dialogs & Snackbars; NN/g – Modal & Nonmodal Dialogs |
+| 211 | UX-KD11 | KD-Tính khả dụng | Toàn màn hình/Hệ thống | Nội dung & Hướng dẫn | Phiên làm việc không kết thúc khi người dùng đang thao tác; nếu hết phiên, hệ thống cảnh báo và bảo vệ dữ liệu phù hợp. | Kiểm tra phiên làm việc không tự kết thúc khi người dùng đang thao tác tích cực; nếu phiên hết hạn, hệ thống cảnh báo trước và bảo vệ dữ liệu (lưu tạm/khôi phục) phù hợp. | Người dùng đang thao tác không bị đăng xuất đột ngột; khi hết phiên có cảnh báo và dữ liệu đang nhập được bảo toàn hoặc khôi phục. | Bắt buộc | ISO 9241-11:2018 – Usability: Definitions and concepts; NN/g Heuristic #1 – Visibility of System Status |
+| 212 | UX-KD12 | KD-Tính khả dụng | Điều hướng | Tương tác & Thao tác | Hệ thống thực thi theo đúng lệnh của control, không tạo tác động phụ ngoài dự kiến. | Kiểm tra hệ thống thực thi chính xác theo đúng lệnh của control được kích hoạt, không tạo ra tác động phụ ngoài dự kiến (side effect). | Không phát sinh thay đổi dữ liệu/trạng thái ngoài phạm vi mà control đó được thiết kế để thực hiện. | Bắt buộc | ISO 9241-11:2018 – Usability: Definitions and concepts; NN/g Heuristic #1 – Visibility of System Status \| Material Design 3 (m3.material.io) – Navigation bar/drawer; NN/g – Navigation Design |
+| 213 | UX-KD13 | KD-Tính khả dụng | Modal/Dialog/Popup/toast | Điều hướng & Định hướng | Khi đóng popup, người dùng trở về đúng trang hoặc ngữ cảnh trước đó. | Kiểm tra khi đóng popup, người dùng có trở về đúng trang hoặc ngữ cảnh trước đó, không bị chuyển sang màn hình khác ngoài ý muốn. | Sau khi đóng popup, người dùng ở đúng vị trí/ngữ cảnh như trước khi popup xuất hiện. | Cơ bản | ISO 9241-11:2018 – Usability: Definitions and concepts; NN/g Heuristic #1 – Visibility of System Status \| Material Design 3 (m3.material.io) – Dialogs & Snackbars; NN/g – Modal & Nonmodal Dialogs |
+| 214 | UX-KD14 | KD-Tính khả dụng | Thông báo | Nội dung & Hướng dẫn | Luôn phản hồi kết quả, sau hành động cuối của nhiệm vụ, hệ thống xác nhận nhiệm vụ đã hoàn tất. | Kiểm tra sau hành động cuối cùng của một nhiệm vụ, hệ thống luôn xác nhận nhiệm vụ đã hoàn tất bằng thông báo hoặc trạng thái rõ ràng. | Người dùng luôn nhận được xác nhận rõ ràng khi hoàn tất một nhiệm vụ, không để họ tự đoán kết quả. | Bắt buộc | ISO 9241-11:2018 – Usability: Definitions and concepts; NN/g Heuristic #1 – Visibility of System Status \| Material Design 3 (m3.material.io) – Snackbar/Banner; NN/g – Notification Design |
+| 215 | UX-DG01 | DG-Tính đơn giản | Nhập liệu | Tương tác & Thao tác | Ứng dụng có thể tự nhận diện hoặc điền OTP khi được người dùng cấp quyền phù hợp. | Kiểm tra ứng dụng có tự động nhận diện hoặc điền mã OTP khi được người dùng cấp quyền phù hợp (SMS autofill, one-time-code API). | OTP được tự động điền vào trường nhập khi có quyền và tin nhắn hợp lệ, giảm thao tác gõ tay. | Thông minh | WCAG 2.2 – 3.3.7 Redundant Entry (A) \| NN/g Heuristic #8 – Aesthetic and Minimalist Design; Laws of UX – Hick's Law, Miller's Law \| Material Design 3 (m3.material.io) – Text fields; GOV.UK Design System – Text input |
+| 216 | UX-DG02 | DG-Tính đơn giản | Nhập liệu | Tương tác & Thao tác |  Cung cấp khả năng gợi ý hành động, dữ liệu tối ưu cho thao tác nhập | Kiểm tra hệ thống có cung cấp khả năng gợi ý hành động hoặc dữ liệu tối ưu cho thao tác nhập liệu (autocomplete, gợi ý giá trị thường dùng). | Có gợi ý phù hợp với ngữ cảnh giúp giảm số lượng thao tác nhập thủ công. | Thông minh | NN/g Heuristic #8 – Aesthetic and Minimalist Design; Laws of UX – Hick's Law, Miller's Law \| Material Design 3 (m3.material.io) – Text fields; GOV.UK Design System – Text input |
+| 217 | UX-DG03 | DG-Tính đơn giản | Date/Time picker | Tương tác & Thao tác | Hệ thống ghi nhận nhiều kiểu nhập, tự chuẩn hóa dữ liệu ngày người dùng nhập sang định dạng hợp lệ. | Kiểm tra hệ thống có ghi nhận nhiều kiểu nhập ngày khác nhau và tự động chuẩn hóa dữ liệu người dùng nhập sang định dạng hợp lệ. | Nhiều cách nhập ngày (VD: 1/1/26, 01-01-2026) đều được hệ thống hiểu và chuẩn hóa đúng định dạng. | Thông minh | WCAG 2.2 – 2.4.5 Multiple Ways (AA) \| NN/g Heuristic #8 – Aesthetic and Minimalist Design; Laws of UX – Hick's Law, Miller's Law \| Material Design 3 (m3.material.io) – Date pickers; NN/g – Date-Input Form Fields |
+| 218 | UX-DG04 | DG-Tính đơn giản | Tải lên | Nhận biết & Phân biệt | Cửa sổ chọn file chỉ hiển thị hoặc ưu tiên các định dạng file hợp lệ. | Kiểm tra cửa sổ chọn file (file picker) có chỉ hiển thị hoặc ưu tiên các định dạng file hợp lệ theo yêu cầu của chức năng. | File picker giới hạn/ưu tiên đúng loại định dạng được phép, giảm khả năng người dùng chọn nhầm file không hợp lệ. | Thông minh | NN/g Heuristic #8 – Aesthetic and Minimalist Design; Laws of UX – Hick's Law, Miller's Law \| GOV.UK Design System – File upload; NN/g – File Upload UX |
+| 219 | UX-DG05 | DG-Tính đơn giản | Modal/Dialog/Popup/toast | Nội dung & Hướng dẫn | Cảnh báo cần xử lý cung cấp hành động để người dùng truy cập trực tiếp đến phần cần xử lý. | Kiểm tra cảnh báo cần xử lý có cung cấp hành động (link/button) để người dùng truy cập trực tiếp đến phần cần xử lý, không chỉ hiển thị thông báo chung chung. | Người dùng click trực tiếp từ cảnh báo để đến đúng vị trí/màn hình cần xử lý. | Cơ bản | NN/g Heuristic #8 – Aesthetic and Minimalist Design; Laws of UX – Hick's Law, Miller's Law \| Material Design 3 (m3.material.io) – Dialogs & Snackbars; NN/g – Modal & Nonmodal Dialogs |
+| 220 | UX-DG06 | DG-Tính đơn giản | Form | Tương tác & Thao tác | Khi mở form, người dùng có thể bắt đầu nhập liệu ngay tại trường đầu tiên phù hợp. | Kiểm tra khi mở form, con trỏ có tự động focus vào trường đầu tiên phù hợp để người dùng nhập liệu ngay. | Trường nhập liệu đầu tiên được auto-focus khi form mở, người dùng gõ được ngay không cần click thêm. | Cơ bản | NN/g Heuristic #8 – Aesthetic and Minimalist Design; Laws of UX – Hick's Law, Miller's Law \| GOV.UK Design System – Form design patterns; NN/g – Form Design Guidelines |
+| 221 | UX-DG07 | DG-Tính đơn giản | Dropdown | Bố cục & Tổ chức thông tin | Số lượng lựa chọn nhỏ được hiển thị trực tiếp bằng checkbox hoặc radio thay vì ẩn trong dropdown. | Kiểm tra với số lượng lựa chọn nhỏ (thường dưới 5-7 mục), hệ thống có hiển thị trực tiếp bằng checkbox/radio thay vì ẩn trong dropdown. | Danh sách lựa chọn ít mục được hiển thị trực tiếp trên màn hình, không bắt người dùng phải mở thêm dropdown. | Cơ bản | NN/g Heuristic #8 – Aesthetic and Minimalist Design; Laws of UX – Hick's Law, Miller's Law \| Material Design 3 (m3.material.io) – Menus; GOV.UK Design System – Select component |
+| 222 | UX-DG08 | DG-Tính đơn giản | Dropdown | Hỗ trợ quyết định | Tiên đoán giá trị mặc định an toàn được chọn sẵn khi phù hợp, giúp giảm thao tác lặp lại. | Kiểm tra dropdown/trường lựa chọn có giá trị mặc định an toàn được chọn sẵn khi phù hợp với ngữ cảnh, giúp giảm thao tác lặp lại. | Giá trị mặc định hợp lý được chọn sẵn cho các trường hợp phổ biến, người dùng chỉ cần thay đổi khi cần khác. | Thông minh | NN/g Heuristic #8 – Aesthetic and Minimalist Design; Laws of UX – Hick's Law, Miller's Law \| Material Design 3 (m3.material.io) – Menus; GOV.UK Design System – Select component |
+| 223 | UX-DG09 | DG-Tính đơn giản | Toàn màn hình/Hệ thống | Điều hướng & Định hướng | Cấu trúc cây chỉ dùng khi nhiệm vụ có quan hệ phân nhánh và người dùng cần đi từ nhánh cha đến nhánh con. | Kiểm tra cấu trúc điều hướng dạng cây (tree/hierarchical) chỉ được sử dụng khi nhiệm vụ có quan hệ phân nhánh rõ ràng và người dùng cần đi từ nhánh cha đến nhánh con. | Cấu trúc cây chỉ áp dụng đúng ngữ cảnh phân cấp cha-con, không dùng tùy tiện cho nội dung phẳng. | Cơ bản | NN/g Heuristic #8 – Aesthetic and Minimalist Design; Laws of UX – Hick's Law, Miller's Law |
+| 224 | UX-DG10 | DG-Tính đơn giản | Toàn màn hình/Hệ thống | Điều hướng & Định hướng | Cấu trúc Hub dùng khi một điểm trung tâm dẫn đến nhiều nhóm thông tin hoặc chức năng khác nhau. | Kiểm tra cấu trúc Hub (trung tâm) chỉ được sử dụng khi có một điểm trung tâm dẫn đến nhiều nhóm thông tin hoặc chức năng khác nhau, không liên quan trực tiếp với nhau. | Cấu trúc Hub áp dụng đúng khi các nhóm chức năng độc lập, không có mối liên hệ tuyến tính bắt buộc. | Cơ bản | NN/g Heuristic #8 – Aesthetic and Minimalist Design; Laws of UX – Hick's Law, Miller's Law |
+| 225 | UX-DG11 | DG-Tính đơn giản | Toàn màn hình/Hệ thống | Điều hướng & Định hướng | Cấu trúc Network dùng khi nhiệm vụ cần chuyển đổi hoặc đánh giá các nhánh thông tin linh hoạt. | Kiểm tra cấu trúc Network (mạng lưới) chỉ được sử dụng khi nhiệm vụ cần chuyển đổi hoặc đánh giá linh hoạt giữa các nhánh thông tin liên quan lẫn nhau. | Cấu trúc Network áp dụng đúng ngữ cảnh cần liên kết chéo linh hoạt giữa các nội dung. | Cơ bản | NN/g Heuristic #8 – Aesthetic and Minimalist Design; Laws of UX – Hick's Law, Miller's Law |
+| 226 | UX-DG12 | DG-Tính đơn giản | Toàn màn hình/Hệ thống | Điều hướng & Định hướng | Cấu trúc tuần tự dùng khi nhiệm vụ cần xử lý từng bước theo một thứ tự xác định. | Kiểm tra cấu trúc tuần tự (sequential/wizard) chỉ được sử dụng khi nhiệm vụ cần xử lý từng bước theo một thứ tự xác định, không cho phép bỏ qua tùy ý. | Cấu trúc tuần tự áp dụng đúng khi các bước phụ thuộc lẫn nhau theo thứ tự bắt buộc. | Cơ bản | NN/g Heuristic #8 – Aesthetic and Minimalist Design; Laws of UX – Hick's Law, Miller's Law |
+| 227 | UX-DG13 | DG-Tính đơn giản | Toàn màn hình/Hệ thống | Bố cục & Tổ chức thông tin | Hành động trên một đối tượng được đặt gần đối tượng đó để tránh thao tác nhầm. | Kiểm tra hành động thao tác trên một đối tượng cụ thể (sửa, xóa, xem) có được đặt gần đối tượng đó để tránh thao tác nhầm sang đối tượng khác. | Vị trí các action gắn liền trực quan với đúng đối tượng mà chúng tác động, giảm rủi ro click nhầm. | Cơ bản | NN/g Heuristic #8 – Aesthetic and Minimalist Design; Laws of UX – Hick's Law, Miller's Law |
+| 228 | UX-DG14 | DG-Tính đơn giản | Dữ liệu | Hiệu quả & Nỗ lực | Dữ liệu chỉ cần lưu một lần; hệ thống không yêu cầu Save ở nhiều cấp cho cùng một thay đổi. | Kiểm tra dữ liệu chỉ cần lưu (Save) một lần cho một thay đổi; hệ thống không yêu cầu Save lặp lại ở nhiều cấp/màn hình cho cùng một thay đổi. | Một thay đổi dữ liệu chỉ cần một hành động lưu duy nhất để có hiệu lực trên toàn hệ thống. | Cơ bản | NN/g Heuristic #8 – Aesthetic and Minimalist Design; Laws of UX – Hick's Law, Miller's Law \| NN/g – Progressive Disclosure |
+| 229 | UX-DG15 | DG-Tính đơn giản | Toàn màn hình/Hệ thống | Nhận biết & Phân biệt | Người dùng phân biệt được chế độ xem và chế độ chỉnh sửa, đồng thời dữ liệu sau chỉnh sửa được cập nhật rõ ràng. | Kiểm tra người dùng có phân biệt được trực quan chế độ xem (view mode) và chế độ chỉnh sửa (edit mode), đồng thời dữ liệu sau khi chỉnh sửa được cập nhật và hiển thị rõ ràng. | Hai chế độ xem/chỉnh sửa có giao diện phân biệt rõ ràng; dữ liệu sau khi lưu được phản ánh ngay và chính xác. | Cơ bản | NN/g Heuristic #8 – Aesthetic and Minimalist Design; Laws of UX – Hick's Law, Miller's Law |
+| 230 | UX-DG16 | DG-Tính đơn giản | Toàn màn hình/Hệ thống | Hiệu quả & Nỗ lực | Nhiệm vụ lặp lại nhiều lần có cơ chế rút gọn hoặc giảm số bước thao tác. | Kiểm tra nhiệm vụ lặp lại nhiều lần (tạo hàng loạt, nhập liệu tương tự) có cơ chế rút gọn hoặc giảm số bước thao tác (duplicate, template, bulk action). | Có tính năng hỗ trợ (nhân bản, mẫu, thao tác hàng loạt) giúp giảm đáng kể số bước cho nhiệm vụ lặp lại. | Thông minh | NN/g Heuristic #8 – Aesthetic and Minimalist Design; Laws of UX – Hick's Law, Miller's Law |
+| 231 | UX-DG17 | DG-Tính đơn giản | Toàn màn hình/Hệ thống | Bố cục & Tổ chức thông tin | Hệ thống phân biệt rõ dữ liệu áp dụng toàn hệ thống và dữ liệu chỉ áp dụng tại khu vực hiện tại. | Kiểm tra hệ thống phân biệt rõ dữ liệu/cài đặt áp dụng cho toàn hệ thống (global) và dữ liệu chỉ áp dụng tại khu vực/màn hình hiện tại (local). | Người dùng nhận biết được rõ phạm vi ảnh hưởng (toàn cục/cục bộ) của mỗi thiết lập trước khi thay đổi. | Cơ bản | NN/g Heuristic #8 – Aesthetic and Minimalist Design; Laws of UX – Hick's Law, Miller's Law |
+| 232 | UX-DG18 | DG-Tính đơn giản | Toàn màn hình/Hệ thống | Tương tác & Thao tác | Không yêu lạm dụng yêu cầu xác thực với những thao tác không có ảnh hưởng lớn và quan trọng, khó phục hồi lỗi tránh nhiều thao tác | Kiểm tra hệ thống không lạm dụng yêu cầu xác thực bổ sung đối với các thao tác không có ảnh hưởng lớn, không quan trọng hoặc dễ khôi phục, tránh gây thêm bước thao tác không cần thiết. | Chỉ các hành động có rủi ro cao/khó khôi phục mới yêu cầu xác thực bổ sung; thao tác thông thường không bị chặn bởi bước xác nhận thừa. | Cơ bản | NN/g Heuristic #8 – Aesthetic and Minimalist Design; Laws of UX – Hick's Law, Miller's Law |
+| 233 | UX-DG19 | DG-Tính đơn giản | Toàn màn hình/Hệ thống | Tương tác & Thao tác | Kết hợp AI thông minh đề xuất nội dung và hỗ trợ thao tác đơn giản hiệu quả | Kiểm tra hệ thống có kết hợp AI để đề xuất nội dung hoặc hỗ trợ thao tác một cách thông minh, hiệu quả, phù hợp ngữ cảnh sử dụng. | Tính năng AI đưa ra đề xuất/hỗ trợ thao tác chính xác, thực sự giảm nỗ lực thao tác của người dùng. | Thông minh | NN/g Heuristic #8 – Aesthetic and Minimalist Design; Laws of UX – Hick's Law, Miller's Law |
+| 234 | UX-DG20 | DG-Tính đơn giản | Luồng folow | Tương tác & Thao tác | Số bước ở mức tối thiểu, không dư thừa, trình tự bước theo tư duy tự nhiên | Kiểm tra luồng có bước thừa không cần thiết hay không, trình tự luồng đã theo logic tự nhiên chưa | Lý tưởng là 3 thao tác cho 1 luồng | Cơ bản |  |
+| 235 | UX-XL01 | XL-Ngăn chặn và xử lý lỗi | Text | Nội dung & Hướng dẫn | Tiêu đề dialog hoặc alert ngắn gọn, giúp người dùng hiểu nội dung chính mà không cần đọc toàn bộ mô tả. | Kiểm tra tiêu đề dialog hoặc alert có ngắn gọn, giúp người dùng hiểu nội dung chính mà không cần đọc toàn bộ phần mô tả. | Tiêu đề dialog truyền đạt được ý chính chỉ trong vài từ, không cần đọc thêm mô tả mới hiểu bối cảnh. | Cơ bản | WCAG 2.2 – 2.4.2 Page Titled (A) \| NN/g Heuristic #5 – Error Prevention; NN/g Heuristic #9 – Help Users Recognize, Diagnose, and Recover from Errors; WCAG 2.2 – nhóm 3.3.x Input Assistance |
+| 236 | UX-XL02 | XL-Ngăn chặn và xử lý lỗi | Text | Nội dung & Hướng dẫn | Label button trong dialog mô tả đúng hành động cụ thể, tránh các nhãn chung chung như “Có”, “Không” hoặc “OK”. | Kiểm tra label button trong dialog có mô tả đúng hành động cụ thể, tránh các nhãn chung chung như 'Có', 'Không' hoặc 'OK'. | Label button trong dialog nêu rõ hành động cụ thể (VD: 'Xóa file', 'Giữ lại') thay vì Có/Không/OK mơ hồ. | Cơ bản | WCAG 2.2 – 2.4.6 Headings and Labels (AA) \| NN/g Heuristic #5 – Error Prevention; NN/g Heuristic #9 – Help Users Recognize, Diagnose, and Recover from Errors; WCAG 2.2 – nhóm 3.3.x Input Assistance |
+| 237 | UX-XL03 | XL-Ngăn chặn và xử lý lỗi | Text | Lỗi & Khôi phục | Thông báo lỗi sử dụng ngôn ngữ dễ hiểu và cung cấp đường đi hoặc hành động khắc phục, không dùng mã lỗi, mã code | Kiểm tra thông báo lỗi có sử dụng ngôn ngữ dễ hiểu, không dùng mã lỗi/mã code kỹ thuật, và cung cấp đường đi hoặc hành động khắc phục cụ thể. | Thông báo lỗi bằng ngôn ngữ tự nhiên, không lộ mã lỗi hệ thống, kèm hướng dẫn khắc phục rõ ràng. | Bắt buộc | WCAG 2.2 – 3.3.1 Error Identification (A) \| NN/g Heuristic #5 – Error Prevention; NN/g Heuristic #9 – Help Users Recognize, Diagnose, and Recover from Errors; WCAG 2.2 – nhóm 3.3.x Input Assistance |
+| 238 | UX-XL04 | XL-Ngăn chặn và xử lý lỗi | Nhập liệu | Lỗi & Khôi phục | Trường số không cho nhập ký tự không hợp lệ, giới hạn ký tự phù hợp với dữ liệu đời thực và thông báo phù hợp. | Kiểm tra trường số không cho phép nhập ký tự không hợp lệ, có giới hạn ký tự phù hợp với dữ liệu thực tế (VD: số điện thoại tối đa 10-11 số) và có thông báo phù hợp khi vượt giới hạn. | Trường số chặn nhập ký tự không hợp lệ ngay tại thời điểm nhập (input masking/validation), không đợi đến khi submit mới báo lỗi. | Bắt buộc | WCAG 2.2 – 3.3.1 Error Identification (A) \| NN/g Heuristic #5 – Error Prevention; NN/g Heuristic #9 – Help Users Recognize, Diagnose, and Recover from Errors; WCAG 2.2 – nhóm 3.3.x Input Assistance \| Material Design 3 (m3.material.io) – Text fields; GOV.UK Design System – Text input |
+| 239 | UX-XL05 | XL-Ngăn chặn và xử lý lỗi | Nhập liệu | Lỗi & Khôi phục | Khi chỉ có một tập giá trị hợp lệ, hệ thống cung cấp lựa chọn thay vì yêu cầu người dùng tự nhập. | Kiểm tra khi chỉ có một tập giá trị hợp lệ xác định trước, hệ thống có cung cấp lựa chọn (dropdown/radio) thay vì yêu cầu người dùng tự nhập tự do. | Trường có tập giá trị cố định luôn dùng control lựa chọn (không phải nhập tự do) để loại bỏ khả năng nhập sai. | Cơ bản | NN/g Heuristic #5 – Error Prevention; NN/g Heuristic #9 – Help Users Recognize, Diagnose, and Recover from Errors; WCAG 2.2 – nhóm 3.3.x Input Assistance \| Material Design 3 (m3.material.io) – Text fields; GOV.UK Design System – Text input |
+| 240 | UX-XL06 | XL-Ngăn chặn và xử lý lỗi | Tương tác | Lỗi & Khôi phục | Hành động có ảnh hưởng lớn yêu cầu xác nhận và mô tả rõ đối tượng cùng hậu quả trước khi thực hiện. | Kiểm tra hành động có ảnh hưởng lớn (xóa hàng loạt, hủy giao dịch, chấm dứt hợp đồng) có yêu cầu xác nhận và mô tả rõ đối tượng cùng hậu quả trước khi thực hiện. | Có bước xác nhận nêu rõ đối tượng bị tác động và hậu quả (không thể hoàn tác nếu có) trước khi hành động lớn được thực thi. | Bắt buộc | WCAG 2.2 – 3.3.4 Error Prevention (Legal, Financial, Data) (AA) \| NN/g Heuristic #5 – Error Prevention; NN/g Heuristic #9 – Help Users Recognize, Diagnose, and Recover from Errors; WCAG 2.2 – nhóm 3.3.x Input Assistance \| Apple Human Interface Guidelines (HIG) – Gestures; Material Design 3 (m3.material.io) – Interaction states |
+| 241 | UX-XL07 | XL-Ngăn chặn và xử lý lỗi | Thông báo | Trạng thái & Phản hồi | Nếu trường phụ thuộc chưa chính xác, hệ thống thông báo rõ điều kiện cần sửa trước khi tiếp tục. | Kiểm tra khi trường phụ thuộc (VD: quận/huyện phụ thuộc tỉnh/thành) chưa được chọn đúng, hệ thống có thông báo rõ điều kiện cần sửa trước khi tiếp tục. | Hệ thống chỉ rõ trường phụ thuộc nào cần sửa và điều kiện hợp lệ trước khi cho phép tiếp tục. | Bắt buộc | NN/g Heuristic #5 – Error Prevention; NN/g Heuristic #9 – Help Users Recognize, Diagnose, and Recover from Errors; WCAG 2.2 – nhóm 3.3.x Input Assistance \| Material Design 3 (m3.material.io) – Snackbar/Banner; NN/g – Notification Design |
+| 242 | UX-XL08 | XL-Ngăn chặn và xử lý lỗi | Toàn màn hình/Hệ thống | Tương tác & Thao tác | Khi người dùng chuyển trang hoặc rời form chưa hoàn tất, hệ thống cảnh báo hoặc xác nhận phù hợp. | Kiểm tra khi người dùng cố gắng rời khỏi trang hoặc chuyển hướng khi form chưa hoàn tất/chưa lưu, hệ thống có cảnh báo hoặc yêu cầu xác nhận phù hợp. | Có cảnh báo 'dữ liệu chưa lưu sẽ bị mất' khi người dùng cố thoát khỏi form đang dang dở. | Bắt buộc | NN/g Heuristic #5 – Error Prevention; NN/g Heuristic #9 – Help Users Recognize, Diagnose, and Recover from Errors; WCAG 2.2 – nhóm 3.3.x Input Assistance |
+| 243 | UX-XL09 | XL-Ngăn chặn và xử lý lỗi | Toàn màn hình/Hệ thống | Lỗi & Khôi phục | Trước khi xóa, hệ thống xác nhận rõ đối tượng sẽ bị xóa. | Kiểm tra trước khi thực hiện thao tác xóa, hệ thống có xác nhận rõ đối tượng cụ thể sẽ bị xóa. | Dialog xác nhận xóa nêu rõ tên/thông tin đối tượng cụ thể sẽ bị xóa, không chỉ hỏi chung chung. | Bắt buộc | WCAG 2.2 – 3.3.4 Error Prevention (Legal, Financial, Data) (AA) \| NN/g Heuristic #5 – Error Prevention; NN/g Heuristic #9 – Help Users Recognize, Diagnose, and Recover from Errors; WCAG 2.2 – nhóm 3.3.x Input Assistance |
+| 244 | UX-XL10 | XL-Ngăn chặn và xử lý lỗi | Thông báo | Lỗi & Khôi phục | Thông báo lỗi được đặt gần trường hoặc khu vực phát sinh lỗi để người dùng xác định đúng nơi cần sửa. | Kiểm tra thông báo lỗi có được đặt gần trường hoặc khu vực phát sinh lỗi (inline error) để người dùng xác định đúng nơi cần sửa. | Lỗi hiển thị ngay tại/cạnh trường bị lỗi, không chỉ hiển thị chung ở đầu/cuối form. | Bắt buộc | WCAG 2.2 – 3.3.1 Error Identification (A) \| NN/g Heuristic #5 – Error Prevention; NN/g Heuristic #9 – Help Users Recognize, Diagnose, and Recover from Errors; WCAG 2.2 – nhóm 3.3.x Input Assistance \| Material Design 3 (m3.material.io) – Snackbar/Banner; NN/g – Notification Design |
+| 245 | UX-XL11 | XL-Ngăn chặn và xử lý lỗi | Toàn màn hình/Hệ thống | Lỗi & Khôi phục | Hành động xóa hoặc hủy dữ liệu quan trọng yêu cầu xác nhận và có thể yêu cầu xác minh bổ sung phù hợp với mức rủi ro. | Kiểm tra hành động xóa hoặc hủy dữ liệu quan trọng có yêu cầu xác nhận, và có thể yêu cầu xác minh bổ sung (nhập lại tên đối tượng, mật khẩu, OTP) phù hợp với mức độ rủi ro. | Mức độ xác minh (đơn giản/xác nhận kép/xác thực bổ sung) tương xứng với mức độ rủi ro và khả năng khôi phục của hành động. | Bắt buộc | WCAG 2.2 – 3.3.4 Error Prevention (Legal, Financial, Data) (AA) \| NN/g Heuristic #5 – Error Prevention; NN/g Heuristic #9 – Help Users Recognize, Diagnose, and Recover from Errors; WCAG 2.2 – nhóm 3.3.x Input Assistance |
+| 246 | UX-XL12 | XL-Ngăn chặn và xử lý lỗi | Thông báo | Lỗi & Khôi phục | Khi xóa nhiều đối tượng, hệ thống nêu rõ số lượng hoặc phạm vi đối tượng bị tác động. | Kiểm tra khi xóa nhiều đối tượng cùng lúc (bulk delete), hệ thống có nêu rõ số lượng hoặc phạm vi đối tượng sẽ bị tác động. | Dialog xác nhận nêu chính xác số lượng/phạm vi bản ghi sẽ bị xóa trước khi thực hiện. | Bắt buộc | WCAG 2.2 – 3.3.1 Error Identification (A) \| NN/g Heuristic #5 – Error Prevention; NN/g Heuristic #9 – Help Users Recognize, Diagnose, and Recover from Errors; WCAG 2.2 – nhóm 3.3.x Input Assistance \| Material Design 3 (m3.material.io) – Snackbar/Banner; NN/g – Notification Design |
+| 247 | UX-XL13 | XL-Ngăn chặn và xử lý lỗi | Toàn màn hình/Hệ thống | Lỗi & Khôi phục | Người dùng có thể hoàn tác thao tác thêm hoặc xóa khi nghiệp vụ cho phép. | Kiểm tra người dùng có thể hoàn tác (Undo) thao tác thêm hoặc xóa khi nghiệp vụ cho phép. | Có chức năng Undo khả dụng trong khoảng thời gian hợp lý sau khi thêm/xóa, khi nghiệp vụ không cấm. | Bắt buộc | NN/g Heuristic #5 – Error Prevention; NN/g Heuristic #9 – Help Users Recognize, Diagnose, and Recover from Errors; WCAG 2.2 – nhóm 3.3.x Input Assistance |
+| 248 | UX-XL14 | XL-Ngăn chặn và xử lý lỗi | Toàn màn hình/Hệ thống | Tương tác & Thao tác | Người dùng có thể chỉnh sửa lại bản ghi hoặc đối tượng đã lưu. | Kiểm tra người dùng có thể chỉnh sửa lại bản ghi hoặc đối tượng đã lưu trước đó khi nghiệp vụ cho phép. | Chức năng chỉnh sửa (Edit) khả dụng và hoạt động đúng cho các bản ghi đã lưu, trong phạm vi nghiệp vụ cho phép. | Cơ bản | NN/g Heuristic #5 – Error Prevention; NN/g Heuristic #9 – Help Users Recognize, Diagnose, and Recover from Errors; WCAG 2.2 – nhóm 3.3.x Input Assistance |
+| 249 | UX-XL15 | XL-Ngăn chặn và xử lý lỗi | Tải lên | Trạng thái & Phản hồi | Khi import có bản ghi lỗi, hệ thống nêu số lượng dòng hợp lệ, dòng lỗi và cho phép sửa dữ liệu. | Kiểm tra khi import dữ liệu có bản ghi lỗi, hệ thống có nêu rõ số lượng dòng hợp lệ, dòng lỗi cụ thể và cho phép người dùng sửa dữ liệu trước khi import lại. | Kết quả import phân loại rõ số dòng thành công/lỗi, chỉ rõ vị trí lỗi và cho phép sửa/import lại phần lỗi. | Bắt buộc | NN/g Heuristic #5 – Error Prevention; NN/g Heuristic #9 – Help Users Recognize, Diagnose, and Recover from Errors; WCAG 2.2 – nhóm 3.3.x Input Assistance \| GOV.UK Design System – File upload; NN/g – File Upload UX |
+| 250 | UX-XL16 | XL-Ngăn chặn và xử lý lỗi | Tải lên | Lỗi & Khôi phục | File mẫu chỉ cho nhập dữ liệu tại vùng quy định và bảo vệ cấu trúc không được sửa. | Kiểm tra file mẫu (template) import chỉ cho phép nhập dữ liệu tại vùng quy định và có bảo vệ (protect) cấu trúc để tránh người dùng sửa nhầm. | File mẫu khóa cấu trúc cột/tiêu đề, chỉ mở vùng nhập dữ liệu cho người dùng chỉnh sửa. | Cơ bản | NN/g Heuristic #5 – Error Prevention; NN/g Heuristic #9 – Help Users Recognize, Diagnose, and Recover from Errors; WCAG 2.2 – nhóm 3.3.x Input Assistance \| GOV.UK Design System – File upload; NN/g – File Upload UX |
+| 251 | UX-XL17 | XL-Ngăn chặn và xử lý lỗi | Toàn màn hình/Hệ thống | Trạng thái & Phản hồi | Nếu việc thêm hoặc chỉnh sửa ảnh hưởng đến dữ liệu khác, hệ thống cảnh báo và yêu cầu xác nhận trước khi tiếp tục. | Kiểm tra nếu việc thêm hoặc chỉnh sửa một đối tượng ảnh hưởng đến dữ liệu khác (dữ liệu liên quan, phụ thuộc), hệ thống có cảnh báo và yêu cầu xác nhận trước khi tiếp tục. | Cảnh báo tác động chéo được hiển thị rõ ràng trước khi lưu thay đổi có ảnh hưởng đến dữ liệu liên quan. | Bắt buộc | NN/g Heuristic #5 – Error Prevention; NN/g Heuristic #9 – Help Users Recognize, Diagnose, and Recover from Errors; WCAG 2.2 – nhóm 3.3.x Input Assistance |
+| 252 | UX-XL18 | XL-Ngăn chặn và xử lý lỗi | Form | Duy trì dữ liệu | Khi form có dữ liệu chưa hợp lệ, người dùng có thể sửa hoặc thay đổi mà không mất toàn bộ dữ liệu đã nhập. | Kiểm tra khi form có dữ liệu chưa hợp lệ (lỗi validate), người dùng có thể sửa hoặc thay đổi mà không bị mất toàn bộ dữ liệu đã nhập ở các trường khác. | Chỉ trường bị lỗi cần sửa lại; dữ liệu hợp lệ đã nhập ở các trường khác được giữ nguyên, không bị xóa/reset. | Bắt buộc | NN/g Heuristic #5 – Error Prevention; NN/g Heuristic #9 – Help Users Recognize, Diagnose, and Recover from Errors; WCAG 2.2 – nhóm 3.3.x Input Assistance \| GOV.UK Design System – Form design patterns; NN/g – Form Design Guidelines |
+| 253 | UX-XL19 | XL-Ngăn chặn và xử lý lỗi | Luồng folow | Tương tác & Thao tác | Lưu tạm & tiếp tục, chia bước với luồng dài | Kiểm tra xem các luồng dài, nhiều bước đã có chức năng lưu tạm, tiếp tục hay chưa, đã chia bước để giảm tải cho quá trình thao tác đồng thời hạn chế lỗi nhập lại | Luồng dài đã có bước lưu tạm, tiếp tục chỉnh sửa. luồng dài được chia bước theo phạm trù và nội dung | Cơ bản |  |
+| 254 | UX-LH01 | LH-Tính linh hoạt và cá nhân hoá | Dropdown | Tương tác & Thao tác | Người dùng có thể lựa chọn mở dropdown và chọn item bằng bàn phím. | Kiểm tra người dùng có thể mở dropdown và chọn item bằng thao tác bàn phím (Enter/Space để mở, phím mũi tên để di chuyển, Enter để chọn). | Dropdown thao tác được đầy đủ bằng bàn phím theo đúng chuẩn WAI-ARIA Combobox/Listbox pattern. | Bắt buộc | WCAG 2.2 – 2.1.1 Keyboard (A) \| NN/g Heuristic #7 – Flexibility and Efficiency of Use; NN/g Heuristic #3 – User Control and Freedom \| Material Design 3 (m3.material.io) – Menus; GOV.UK Design System – Select component |
+| 255 | UX-LH02 | LH-Tính linh hoạt và cá nhân hoá | Date/Time picker | Tương tác & Thao tác | Người dùng có thể nhập ngày bằng bàn phím hoặc chọn bằng date picker. | Kiểm tra người dùng có thể nhập ngày trực tiếp bằng bàn phím (gõ số) hoặc chọn bằng giao diện date picker. | Cả hai cách nhập (gõ tay và chọn từ picker) đều hoạt động chính xác và cho ra cùng kết quả. | Cơ bản | WCAG 2.2 – 2.1.1 Keyboard (A) \| NN/g Heuristic #7 – Flexibility and Efficiency of Use; NN/g Heuristic #3 – User Control and Freedom \| Material Design 3 (m3.material.io) – Date pickers; NN/g – Date-Input Form Fields |
+| 256 | UX-LH03 | LH-Tính linh hoạt và cá nhân hoá | Toàn màn hình/Hệ thống | Hiệu quả & Nỗ lực | Người dùng có thể xóa nhanh các mục đã chọn và trở về trạng thái ban đầu. | Kiểm tra người dùng có thể xóa nhanh các mục đã chọn (lựa chọn, bộ lọc, tag) và trở về trạng thái ban đầu bằng một thao tác. | Có nút/hành động 'Xóa tất cả' hoặc tương đương giúp reset nhanh về trạng thái mặc định. | Cơ bản | NN/g Heuristic #7 – Flexibility and Efficiency of Use; NN/g Heuristic #3 – User Control and Freedom |
+| 257 | UX-LH04 | LH-Tính linh hoạt và cá nhân hoá | Tìm kiếm | Hiệu quả & Nỗ lực | Người dùng có thể xóa nhanh nội dung tìm kiếm hoặc điều kiện lọc. | Kiểm tra người dùng có thể xóa nhanh nội dung tìm kiếm hoặc điều kiện lọc đang áp dụng (nút 'x' trong ô search, nút xóa bộ lọc). | Có control rõ ràng (icon x, nút 'Xóa bộ lọc') để xóa nhanh từ khóa/điều kiện lọc hiện tại. | Cơ bản | NN/g Heuristic #7 – Flexibility and Efficiency of Use; NN/g Heuristic #3 – User Control and Freedom \| NN/g – Search UX; Baymard Institute – UX Research – Search |
+| 258 | UX-LH05 | LH-Tính linh hoạt và cá nhân hoá | Tìm kiếm | Cá nhân hóa | Cho phép tủy biến các lựa chọn và lưu cấu hình cá nhân | Kiểm tra hệ thống có cho phép tùy biến các lựa chọn tìm kiếm/lọc và lưu lại thành cấu hình cá nhân để dùng lại. | Người dùng lưu và tái sử dụng được bộ lọc/tìm kiếm đã tùy chỉnh cho những lần sau. | Thông minh | NN/g Heuristic #7 – Flexibility and Efficiency of Use; NN/g Heuristic #3 – User Control and Freedom \| NN/g – Search UX; Baymard Institute – UX Research – Search |
+| 259 | UX-LH06 | LH-Tính linh hoạt và cá nhân hoá | Tìm kiếm | Tương tác & Thao tác | Người dùng có thể tải file bằng drag-and-drop hoặc cửa sổ chọn file. | Kiểm tra người dùng có thể tải file lên bằng cả thao tác kéo–thả (drag-and-drop) và cửa sổ chọn file truyền thống. | Cả hai phương thức tải file (kéo-thả và chọn file) đều hoạt động chính xác. | Cơ bản | WCAG 2.2 – 2.5.7 Dragging Movements (AA) \| NN/g Heuristic #7 – Flexibility and Efficiency of Use; NN/g Heuristic #3 – User Control and Freedom \| NN/g – Search UX; Baymard Institute – UX Research – Search |
+| 260 | UX-LH07 | LH-Tính linh hoạt và cá nhân hoá | Tải lên | Tương tác & Thao tác | Người dùng có thể hủy một file đang tải khi hệ thống cho phép. | Kiểm tra người dùng có thể hủy một file đang trong quá trình tải lên khi hệ thống cho phép. | Có nút hủy khả dụng trong lúc file đang upload, và thao tác hủy dừng đúng quá trình tải. | Cơ bản | NN/g Heuristic #7 – Flexibility and Efficiency of Use; NN/g Heuristic #3 – User Control and Freedom \| GOV.UK Design System – File upload; NN/g – File Upload UX |
+| 261 | UX-LH08 | LH-Tính linh hoạt và cá nhân hoá | Điều hướng | Tương tác & Thao tác | Người dùng có thể thao tác bằng click chuột hoặc bàn phím mobile | Kiểm tra người dùng có thể thao tác điều hướng bằng click chuột (desktop) hoặc chạm/gõ trên bàn phím ảo (mobile) một cách nhất quán. | Điều hướng hoạt động chính xác trên cả hai phương thức tương tác theo từng nền tảng. | Cơ bản | WCAG 2.2 – 2.1.1 Keyboard (A) \| NN/g Heuristic #7 – Flexibility and Efficiency of Use; NN/g Heuristic #3 – User Control and Freedom \| Material Design 3 (m3.material.io) – Navigation bar/drawer; NN/g – Navigation Design |
+| 262 | UX-LH09 | LH-Tính linh hoạt và cá nhân hoá | Điều hướng | Tương tác & Thao tác | Phím Submit hoặc hoàn tất xuất hiện tại trường nhập cuối cùng. | Kiểm tra phím Submit/hoàn tất (Enter, Go, Done) trên bàn phím ảo có xuất hiện đúng tại trường nhập liệu cuối cùng của form. | Nút bàn phím ảo tại trường cuối cùng hiển thị đúng nhãn hành động hoàn tất (Submit/Done/Go) thay vì 'Next'. | Cơ bản | WCAG 2.2 – 2.1.1 Keyboard (A) \| NN/g Heuristic #7 – Flexibility and Efficiency of Use; NN/g Heuristic #3 – User Control and Freedom \| Material Design 3 (m3.material.io) – Navigation bar/drawer; NN/g – Navigation Design |
+| 263 | UX-LH10 | LH-Tính linh hoạt và cá nhân hoá | Modal/Dialog/Popup/toast | Tương tác & Thao tác | Modal có thể đóng bằng hành động hiển thị và các phương thức quen thuộc phù hợp với nền tảng. | Kiểm tra modal có thể đóng được bằng các phương thức quen thuộc phù hợp với nền tảng (nút X, phím Esc, click ra ngoài nếu cho phép). | Modal đóng được bằng ít nhất một trong các cách quen thuộc theo quy ước nền tảng. | Cơ bản | NN/g Heuristic #7 – Flexibility and Efficiency of Use; NN/g Heuristic #3 – User Control and Freedom \| Material Design 3 (m3.material.io) – Dialogs & Snackbars; NN/g – Modal & Nonmodal Dialogs |
+| 264 | UX-LH11 | LH-Tính linh hoạt và cá nhân hoá | Form | Tương tác & Thao tác | Người dùng có thể chuyển qua các trường bằng phím Tab và Shift+Tab. | Kiểm tra người dùng có thể chuyển qua lại giữa các trường trong form bằng phím Tab và Shift+Tab theo đúng thứ tự logic. | Thứ tự Tab đi qua các trường theo đúng trình tự thị giác/logic của form, hỗ trợ cả Tab tiến và Shift+Tab lùi. | Bắt buộc | WCAG 2.2 – 2.4.3 Focus Order (A) \| NN/g Heuristic #7 – Flexibility and Efficiency of Use; NN/g Heuristic #3 – User Control and Freedom \| GOV.UK Design System – Form design patterns; NN/g – Form Design Guidelines |
+| 265 | UX-LH12 | LH-Tính linh hoạt và cá nhân hoá | Toàn màn hình/Hệ thống | Điều hướng & Định hướng | Sau khi xem chi tiết và quay lại, danh sách giữ trạng thái và vị trí trước đó. | Kiểm tra sau khi xem chi tiết một mục và quay lại danh sách, hệ thống có giữ nguyên trạng thái và vị trí cuộn trước đó. | Danh sách giữ đúng vị trí cuộn, bộ lọc và trạng thái đã chọn khi người dùng quay lại từ trang chi tiết. | Cơ bản | NN/g Heuristic #7 – Flexibility and Efficiency of Use; NN/g Heuristic #3 – User Control and Freedom |
+| 266 | UX-LH13 | LH-Tính linh hoạt và cá nhân hoá | Toàn màn hình/Hệ thống | Tương tác & Thao tác | Người dùng có thể hủy thao tác thêm mới trước khi lưu. | Kiểm tra người dùng có thể hủy thao tác thêm mới một đối tượng trước khi lưu (Cancel/Discard). | Có tùy chọn hủy rõ ràng, và khi hủy, dữ liệu đang nhập không được lưu lại. | Cơ bản | NN/g Heuristic #7 – Flexibility and Efficiency of Use; NN/g Heuristic #3 – User Control and Freedom |
+| 267 | UX-LH14 | LH-Tính linh hoạt và cá nhân hoá | Toàn màn hình/Hệ thống | Tương tác & Thao tác | Người dùng có thể hủy hoặc hoàn nguyên thay đổi chưa lưu. | Kiểm tra người dùng có thể hủy hoặc hoàn nguyên (revert) các thay đổi chưa lưu về trạng thái trước đó. | Có chức năng hoàn tác thay đổi chưa lưu, đưa dữ liệu về đúng trạng thái ban đầu. | Cơ bản | NN/g Heuristic #7 – Flexibility and Efficiency of Use; NN/g Heuristic #3 – User Control and Freedom |
+| 268 | UX-LH15 | LH-Tính linh hoạt và cá nhân hoá | Toàn màn hình/Hệ thống | Tương tác & Thao tác | Người dùng có thể lưu trạng thái để tiếp tục nhiệm vụ sau khi bị gián đoạn hoặc chủ động tạm dừng. | Kiểm tra người dùng có thể lưu trạng thái hiện tại để tiếp tục nhiệm vụ sau khi bị gián đoạn hoặc chủ động tạm dừng (Save draft/Save & exit). | Có chức năng lưu tạm cho phép tiếp tục đúng nội dung/tiến trình đã dừng lại trước đó. | Thông minh | NN/g Heuristic #7 – Flexibility and Efficiency of Use; NN/g Heuristic #3 – User Control and Freedom |
+| 269 | UX-LH16 | LH-Tính linh hoạt và cá nhân hoá | Toàn màn hình/Hệ thống | Cá nhân hóa | Người dùng có thể đưa cấu hình giao diện trở về trạng thái mặc định. | Kiểm tra người dùng có thể đưa cấu hình giao diện (theme, layout, tùy chỉnh) trở về trạng thái mặc định ban đầu (Reset to default). | Có tùy chọn khôi phục cài đặt giao diện về mặc định của hệ thống. | Thông minh | NN/g Heuristic #7 – Flexibility and Efficiency of Use; NN/g Heuristic #3 – User Control and Freedom |
+| 270 | UX-LH17 | LH-Tính linh hoạt và cá nhân hoá | Toàn màn hình/Hệ thống | Cá nhân hóa | Người dùng có thể thay đổi các thuộc tính giao diện được hệ thống cho phép như màu sắc, hình ảnh hoặc loại giao diện. | Kiểm tra người dùng có thể thay đổi các thuộc tính giao diện được hệ thống cho phép tùy chỉnh như màu sắc, hình ảnh nền hoặc loại giao diện (sáng/tối). | Các tùy chọn cá nhân hóa giao diện hoạt động chính xác và được áp dụng ngay/lưu lại. | Thông minh | WCAG 2.2 – 1.4.1 Use of Color (A) \| NN/g Heuristic #7 – Flexibility and Efficiency of Use; NN/g Heuristic #3 – User Control and Freedom |
+| 271 | UX-LH18 | LH-Tính linh hoạt và cá nhân hoá | Toàn màn hình/Hệ thống | Cá nhân hóa | Chỉ yêu cầu thông tin cá nhân cần thiết; thông tin không bắt buộc được ghi rõ là tùy chọn. | Kiểm tra hệ thống chỉ yêu cầu thông tin cá nhân thực sự cần thiết; các thông tin không bắt buộc được ghi rõ là 'tùy chọn' (optional). | Trường thông tin cá nhân không bắt buộc luôn được đánh dấu rõ 'Tùy chọn'; không thu thập dữ liệu ngoài nhu cầu. | Bắt buộc | NN/g Heuristic #7 – Flexibility and Efficiency of Use; NN/g Heuristic #3 – User Control and Freedom |
+| 272 | UX-LH19 | LH-Tính linh hoạt và cá nhân hoá | Toàn màn hình/Hệ thống | Cá nhân hóa | Người dùng có quyền quyết định chia sẻ thông tin cá nhân và có thể thay đổi quyết định sau đó. | Kiểm tra người dùng có quyền quyết định việc chia sẻ thông tin cá nhân (consent) và có thể thay đổi quyết định đó sau này (thu hồi sự đồng ý). | Có cơ chế cấp/thu hồi sự đồng ý chia sẻ dữ liệu cá nhân rõ ràng, dễ tiếp cận trong phần cài đặt. | Bắt buộc | NN/g Heuristic #7 – Flexibility and Efficiency of Use; NN/g Heuristic #3 – User Control and Freedom |
+| 273 | UX-LH20 | LH-Tính linh hoạt và cá nhân hoá | Toàn màn hình/Hệ thống | Cá nhân hóa | Hệ thống duy trì cấu hình cá nhân của người dùng sau khi cài đặt hoặc đăng nhập lại. | Kiểm tra hệ thống có duy trì cấu hình cá nhân của người dùng (ngôn ngữ, giao diện, bộ lọc đã lưu) sau khi cài đặt lại ứng dụng hoặc đăng nhập lại. | Cấu hình cá nhân được lưu trữ và khôi phục chính xác sau khi đăng nhập lại trên cùng tài khoản. | Thông minh | NN/g Heuristic #7 – Flexibility and Efficiency of Use; NN/g Heuristic #3 – User Control and Freedom |
+| 274 | UX-LH21 | LH-Tính linh hoạt và cá nhân hoá | Toàn màn hình/Hệ thống | Cá nhân hóa | Người dùng có thể chỉnh sửa các dữ liệu cá nhân được phép thay đổi. | Kiểm tra người dùng có thể chỉnh sửa các dữ liệu cá nhân được phép thay đổi (tên hiển thị, ảnh đại diện, số điện thoại...). | Chức năng chỉnh sửa thông tin cá nhân hoạt động chính xác cho các trường được phép sửa. | Cơ bản | NN/g Heuristic #7 – Flexibility and Efficiency of Use; NN/g Heuristic #3 – User Control and Freedom |
+| 275 | UX-LH22 | LH-Tính linh hoạt và cá nhân hoá | Toàn màn hình/Hệ thống | Cá nhân hóa | Người dùng có quyền phù hợp đối với dữ liệu do mình làm chủ, chẳng hạn xóa hoặc chỉnh sửa. | Kiểm tra người dùng có quyền phù hợp đối với dữ liệu do mình làm chủ, chẳng hạn quyền xóa hoặc chỉnh sửa dữ liệu cá nhân theo quy định bảo vệ dữ liệu. | Người dùng thực hiện được quyền xóa/chỉnh sửa/xuất dữ liệu cá nhân của mình theo đúng quy định pháp lý áp dụng (VD: GDPR, Nghị định bảo vệ dữ liệu cá nhân). | Bắt buộc | NN/g Heuristic #7 – Flexibility and Efficiency of Use; NN/g Heuristic #3 – User Control and Freedom |
+| 276 | UX-LH23 | LH-Tính linh hoạt và cá nhân hoá | Nhập liệu | Cá nhân hóa | Cho phép tủy biến các lựa chọn và lưu dữ liệu cá nhân cho phiên làm việc tiếp | Kiểm tra hệ thống có cho phép tùy biến các lựa chọn nhập liệu và lưu dữ liệu cá nhân đó cho phiên làm việc tiếp theo. | Tùy chỉnh nhập liệu của người dùng được ghi nhớ và áp dụng lại ở phiên làm việc kế tiếp. | Thông minh | NN/g Heuristic #7 – Flexibility and Efficiency of Use; NN/g Heuristic #3 – User Control and Freedom \| Material Design 3 (m3.material.io) – Text fields; GOV.UK Design System – Text input |
+| 277 | UX-LH24 | LH-Tính linh hoạt và cá nhân hoá | Bảng | Cá nhân hóa | Cho phép tủy biến các lựa chọn và lưu cấu hình cá nhân theo hành vi | Kiểm tra bảng có cho phép tùy biến các lựa chọn hiển thị (cột, thứ tự, độ rộng) và lưu cấu hình cá nhân theo hành vi sử dụng. | Tùy chỉnh hiển thị bảng (ẩn/hiện cột, sắp xếp) được lưu lại và áp dụng lại cho những lần truy cập sau. | Thông minh | NN/g Heuristic #7 – Flexibility and Efficiency of Use; NN/g Heuristic #3 – User Control and Freedom \| GOV.UK Design System – Table component; NN/g – Data Tables |
+| 278 | UX-HD01 | HD-Hướng dẫn và trợ  giúp | Text | Học và làm quen | Nội dung trợ giúp hiển thị đầy đủ, không bị mất hoặc che khuất khi người dùng cần đọc. | Kiểm tra nội dung trợ giúp (help text, tooltip, hướng dẫn) có hiển thị đầy đủ, không bị mất, cắt hoặc che khuất khi người dùng cần đọc. | Nội dung trợ giúp hiển thị trọn vẹn, dễ đọc, không bị tràn/cắt trên các kích thước màn hình khác nhau. | Cơ bản | NN/g Heuristic #10 – Help and Documentation; WCAG 2.2 – 3.3.5 Help (AAA), 3.2.6 Consistent Help (A) |
+| 279 | UX-HD02 | HD-Hướng dẫn và trợ  giúp | Trợ giúp/Onboarding | Học và làm quen | Sản phẩm cung cấp onboarding hoặc playbook cho chức năng mới, chức năng khó hoặc nhiệm vụ có rủi ro cao. | Kiểm tra sản phẩm có cung cấp onboarding hoặc hướng dẫn (playbook) cho chức năng mới, chức năng khó hoặc nhiệm vụ có rủi ro cao. | Có luồng onboarding/hướng dẫn xuất hiện đúng lúc cho các chức năng mới, phức tạp hoặc rủi ro cao. | Cơ bản | NN/g Heuristic #10 – Help and Documentation; WCAG 2.2 – 3.3.5 Help (AAA), 3.2.6 Consistent Help (A) \| NN/g – Onboarding & In-Product Help |
+| 280 | UX-HD03 | HD-Hướng dẫn và trợ  giúp | Trợ giúp/Onboarding | Học và làm quen | Có hướng dẫn sử dụng cho các chức năng chính và quan trọng của sản phẩm. | Kiểm tra hệ thống có tài liệu hướng dẫn sử dụng cho các chức năng chính và quan trọng của sản phẩm. | Tài liệu hướng dẫn tồn tại và bao phủ đầy đủ các chức năng cốt lõi, dễ tìm thấy khi cần. | Cơ bản | NN/g Heuristic #10 – Help and Documentation; WCAG 2.2 – 3.3.5 Help (AAA), 3.2.6 Consistent Help (A) \| NN/g – Onboarding & In-Product Help |
+| 281 | UX-HD04 | HD-Hướng dẫn và trợ  giúp | Trợ giúp/Onboarding | Học và làm quen | Cung cấp nhiều dạng tài liệu hướng dẫn | Kiểm tra hệ thống có cung cấp nhiều dạng tài liệu hướng dẫn khác nhau (video, bài viết, FAQ, hình ảnh minh họa) để phù hợp với các phong cách học khác nhau của người dùng. | Có ít nhất hai định dạng hướng dẫn khác nhau (VD: văn bản + video) cho các chức năng quan trọng. | Thông minh | NN/g Heuristic #10 – Help and Documentation; WCAG 2.2 – 3.3.5 Help (AAA), 3.2.6 Consistent Help (A) \| NN/g – Onboarding & In-Product Help |
+| 282 | UX-HD05 | HD-Hướng dẫn và trợ  giúp | Tìm kiếm | Tương tác & Thao tác | Khu vực trợ giúp cung cấp chức năng tìm kiếm để người dùng tìm đúng nội dung cần thiết. | Kiểm tra khu vực trợ giúp (help center) có cung cấp chức năng tìm kiếm để người dùng tìm đúng nội dung cần thiết. | Người dùng tìm được bài hướng dẫn liên quan bằng từ khóa trong khu vực trợ giúp. | Cơ bản | NN/g Heuristic #10 – Help and Documentation; WCAG 2.2 – 3.3.5 Help (AAA), 3.2.6 Consistent Help (A) \| NN/g – Search UX; Baymard Institute – UX Research – Search |
+| 283 | UX-HD06 | HD-Hướng dẫn và trợ  giúp | Trợ giúp/Onboarding | Nội dung & Hướng dẫn | Khi đăng nhập xảy ra lỗi, hệ thống cung cấp thông tin hỗ trợ hoặc hướng dẫn xử lý. | Kiểm tra khi đăng nhập xảy ra lỗi, hệ thống có cung cấp thông tin hỗ trợ hoặc hướng dẫn xử lý (quên mật khẩu, liên hệ hỗ trợ, khôi phục tài khoản). | Màn hình lỗi đăng nhập luôn kèm theo lối thoát rõ ràng: quên mật khẩu, liên hệ hỗ trợ hoặc hướng dẫn khắc phục. | Bắt buộc | WCAG 2.2 – 3.3.8 Accessible Authentication (Minimum) (AA) \| NN/g Heuristic #10 – Help and Documentation; WCAG 2.2 – 3.3.5 Help (AAA), 3.2.6 Consistent Help (A) \| NN/g – Onboarding & In-Product Help |
+| 284 | UX-HD07 | HD-Hướng dẫn và trợ  giúp | Trợ giúp/Onboarding | Nhận biết & Phân biệt | Có đường dẫn mở trang hoặc panel trợ giúp tại vị trí dễ nhận thấy. | Kiểm tra có đường dẫn mở trang hoặc panel trợ giúp được đặt ở vị trí dễ nhận thấy, nhất quán trên toàn hệ thống. | Nút/link truy cập trợ giúp hiển thị ở vị trí cố định, dễ tìm thấy tại mọi màn hình. | Cơ bản | WCAG 2.2 – 3.2.6 Consistent Help (A) \| NN/g Heuristic #10 – Help and Documentation; WCAG 2.2 – 3.3.5 Help (AAA), 3.2.6 Consistent Help (A) \| NN/g – Onboarding & In-Product Help |
+| 285 | UX-HD08 | HD-Hướng dẫn và trợ  giúp | Toàn màn hình/Hệ thống | Tương tác & Thao tác | Sản phẩm cung cấp chức năng để người dùng gửi phản hồi hoặc góp ý về hệ thống. | Kiểm tra sản phẩm có cung cấp chức năng để người dùng gửi phản hồi hoặc góp ý về hệ thống (feedback form, rating, liên hệ hỗ trợ). | Người dùng gửi được phản hồi/góp ý dễ dàng thông qua một kênh chính thức trong sản phẩm. | Cơ bản | NN/g Heuristic #10 – Help and Documentation; WCAG 2.2 – 3.3.5 Help (AAA), 3.2.6 Consistent Help (A) |
+| 286 | UX-HD09 | HD-Hướng dẫn và trợ  giúp | Toàn màn hình/Hệ thống | Lỗi & Khôi phục | Hệ thống nhận diện điểm đứt gãy trong tương tác và cung cấp sự trợ giúp vào đúng thời điểm người dùng cần. | Kiểm tra hệ thống có khả năng nhận diện các điểm đứt gãy trong tương tác (lỗi lặp lại, dừng giữa chừng, thao tác thất bại nhiều lần) và chủ động cung cấp trợ giúp đúng thời điểm người dùng cần. | Khi phát hiện dấu hiệu người dùng gặp khó khăn (lặp lại thao tác, dừng lâu tại một bước), hệ thống chủ động gợi ý trợ giúp phù hợp. | Thông minh | NN/g Heuristic #10 – Help and Documentation; WCAG 2.2 – 3.3.5 Help (AAA), 3.2.6 Consistent Help (A) |
+
+## Mẫu output khi tra cứu
+
+| ID | Tiêu chí | Thành phần | Phân loại vấn đề | Mô tả tiêu chí | Nội dung kiểm tra | Pass khi | Nhãn |
+|---|---|---|---|---|---|---|---|
+| UX-... | ... | ... | ... | ... | ... | ... | ... |
+
+## Mẫu câu lệnh
+
+- `List toàn bộ checklist UX`
+- `List checklist UX nhóm Navigation`
+- `Tìm checklist UX liên quan đến usability`
+- `Lấy checklist UX áp dụng cho màn hình Login`
+- `Tìm checklist UX có nhãn Bắt buộc`
+- `Đánh giá màn hình theo toàn bộ checklist UX trong skill này`
+
+# UI/UX Scoring Formula Skill
+
+## 1. Mục tiêu
+
+Tính điểm chất lượng UI/UX dựa trên dữ liệu audit:
+
+- Tổng checklist áp dụng.
+- Số checklist FAIL.
+- Số issue theo Severity.
+- Issue Penalty.
+- Điểm UI.
+- Điểm UX.
+- Điểm Experience tổng thể.
+- Dữ liệu nhiều màn hình để tính System Score.
+
+Không tự ý thay đổi công thức nếu người dùng chưa yêu cầu.
+
+## 2. Quy tắc dữ liệu
+
+### Checklist
+
+Mỗi checklist có một trong các trạng thái:
+
+- PASS
+- FAIL
+- N/A
+- NEEDS VALIDATION
+
+Quy tắc:
+
+- Chỉ checklist áp dụng mới được tính vào mẫu số.
+- N/A không tính vào mẫu số.
+- Checklist FAIL được tính là một checklist FAIL, dù checklist có nhiều issue.
+- Một checklist có nhiều issue vẫn chỉ tính một lần vào số checklist FAIL.
+- NEEDS VALIDATION phải báo cáo riêng. Không tự động chuyển thành FAIL nếu chưa có bằng chứng.
+
+### Issue
+
+Mỗi issue có:
+
+- Issue ID.
+- Checklist ID.
+- Type: UI hoặc UX.
+- Severity: Minor / Major / Critical.
+- Priority: P0 / P1 / P2 / P3.
+- Vấn đề.
+- Giải pháp đề xuất.
+
+Một checklist có thể có nhiều issue.
+
+## 3. Severity Weight
+
+| Severity | Weight | Ý nghĩa |
+|---|---:|---|
+| Minor | 1 | Lỗi nhỏ, ảnh hưởng hạn chế đến visual, consistency hoặc polish |
+| Major | 3 | Ảnh hưởng đáng kể đến UI/UX, thao tác hoặc hiệu quả thực hiện task |
+| Critical | 5 | Lỗi nghiêm trọng, có thể chặn task, gây hiểu sai lớn hoặc vi phạm yêu cầu bắt buộc/accessibility |
+
+Severity Weight là trọng số phạt, không phải điểm chất lượng.
+
+## 4. Công thức Checklist Compliance Score
+
+```text
+Checklist Compliance Score =
+(Tổng checklist áp dụng − Số checklist FAIL)
+ / Tổng checklist áp dụng × 100
+```
+
+Trong đó:
+
+```text
+Tổng checklist áp dụng =
+PASS + FAIL
+```
+
+Không đưa N/A vào mẫu số.
+
+Ví dụ:
+
+```text
+Tổng checklist áp dụng = 20
+Checklist FAIL = 4
+
+Checklist Score =
+(20 − 4) / 20 × 100
+= 80
+```
+
+## 5. Công thức Issue Penalty
+
+```text
+Issue Penalty =
+Σ(Số issue theo Severity × Severity Weight)
+```
+
+Chi tiết:
+
+```text
+Issue Penalty =
+(Số Minor × 1)
++ (Số Major × 3)
++ (Số Critical × 5)
+```
+
+Ví dụ:
+
+```text
+Minor = 3
+Major = 1
+Critical = 1
+
+Issue Penalty =
+(3 × 1) + (1 × 3) + (1 × 5)
+= 11
+```
+
+## 6. Công thức Issue Score
+
+```text
+Issue Score =
+MAX(0, 100 ×
+(1 − Issue Penalty /
+(Tổng checklist áp dụng × 5)))
+```
+
+Số 5 là Severity Weight tối đa của Critical.
+
+Ví dụ:
+
+```text
+Tổng checklist áp dụng = 20
+Issue Penalty = 11
+
+Issue Score =
+MAX(0, 100 × (1 − 11 / (20 × 5)))
+= 89
+```
+
+Luôn giới hạn điểm thấp nhất là 0.
+
+## 7. Công thức UI/UX Quality Score
+
+```text
+UI/UX Quality Score =
+Checklist Score × 70%
++ Issue Score × 30%
+```
+
+Tính riêng:
+
+```text
+UI Quality Score =
+UI Checklist Score × 70%
++ UI Issue Score × 30%
+
+UX Quality Score =
+UX Checklist Score × 70%
++ UX Issue Score × 30%
+```
+
+Ví dụ UI:
+
+```text
+UI Checklist Score = 80
+UI Issue Score = 89
+
+UI Quality Score =
+80 × 70% + 89 × 30%
+= 82.7 / 100
+```
+
+Ví dụ UX:
+
+```text
+UX Checklist Score = 70
+UX Issue Score = 86
+
+UX Quality Score =
+70 × 70% + 86 × 30%
+= 74.8 / 100
+```
+
+## 8. Công thức Experience Quality Score
+
+```text
+Experience Quality Score =
+UI Score × 40%
++ UX Score × 60%
+```
+
+Ví dụ:
+
+```text
+UI Score = 82.7
+UX Score = 74.8
+
+Experience Quality Score =
+82.7 × 40% + 74.8 × 60%
+= 78.0 / 100
+```
+
+UI có trọng số 40%, UX có trọng số 60%.
+
+Nếu chỉ có UI hoặc chỉ có UX:
+
+- Không tự tạo điểm Experience đầy đủ.
+- Ghi `N/A — thiếu điểm UI hoặc UX`.
+- Báo cáo phần còn thiếu.
+
+## 9. System Score cho nhiều màn hình
+
+Không chỉ lấy trung bình điểm màn hình khi số checklist áp dụng giữa các màn hình khác nhau.
+
+### System Checklist Score
+
+```text
+System Checklist Score =
+(Tổng checklist áp dụng − Tổng checklist FAIL)
+ / Tổng checklist áp dụng × 100
+```
+
+### System Issue Score
+
+```text
+System Issue Score =
+MAX(0, 100 ×
+(1 − Tổng Issue Penalty /
+(Tổng checklist áp dụng × 5)))
+```
+
+### System UI/UX Score
+
+```text
+System UI/UX Score =
+System Checklist Score × 70%
++ System Issue Score × 30%
+```
+
+### System Experience Quality Score
+
+```text
+Experience Quality Score =
+System UI Score × 40%
++ System UX Score × 60%
+```
+
+## 10. Mandatory Gate
+
+Critical issue và checklist bắt buộc không được bị che khuất bởi điểm tổng.
+
+Bảng Gate:
+
+| Gate | Kết quả | Chi tiết |
+|---|---|---|
+| Có Critical issue | PASS / FAIL | ... |
+| Checklist bắt buộc đạt ngưỡng | PASS / FAIL / NEEDS VALIDATION | ... |
+| Có issue chặn task | PASS / FAIL | ... |
+| Có issue accessibility nghiêm trọng | PASS / FAIL | ... |
+| Được xếp hạng Excellent | PASS / FAIL | ... |
+
+Quy tắc:
+
+- Nếu còn Critical issue, không xếp Excellent.
+- Nếu checklist bắt buộc chưa đạt ngưỡng, không xếp Excellent.
+- Nếu tài liệu chưa cung cấp ngưỡng cụ thể, ghi `Chưa cấu hình ngưỡng`.
+- Không tự bịa ngưỡng xếp hạng.
+
+## 11. Bảng output bắt buộc
+
+### Bảng 1 — Score Summary
+
+| Chỉ số | Giá trị |
+|---|---:|
+| Tổng checklist áp dụng | ... |
+| Checklist PASS | ... |
+| Checklist FAIL | ... |
+| N/A | ... |
+| NEEDS VALIDATION | ... |
+| Tổng issue | ... |
+| Critical | ... |
+| Major | ... |
+| Minor | ... |
+| Issue Penalty | ... |
+| Checklist Compliance Score | ... / 100 |
+| Issue Score | ... / 100 |
+| UI Quality Score | ... / 100 |
+| UX Quality Score | ... / 100 |
+| Experience Quality Score | ... / 100 |
+
+### Bảng 2 — Calculation Detail
+
+| Chỉ số | Giá trị đầu vào | Công thức | Kết quả |
+|---|---|---|---:|
+| Checklist Score | ... | ... | ... |
+| Issue Penalty | ... | ... | ... |
+| Issue Score | ... | ... | ... |
+| UI Quality Score | ... | ... | ... |
+| UX Quality Score | ... | ... | ... |
+| Experience Quality Score | ... | ... | ... |
+
+### Bảng 3 — Severity Summary
+
+| Severity | Weight | Số issue | Penalty |
+|---|---:|---:|---:|
+| Critical | 5 | ... | ... |
+| Major | 3 | ... | ... |
+| Minor | 1 | ... | ... |
+| Total | | ... | ... |
+
+### Bảng 4 — Mandatory Gate
+
+| Gate | Kết quả | Lý do | Hành động |
+|---|---|---|---|
+| Critical issue | ... | ... | ... |
+| Mandatory checklist | ... | ... | ... |
+| Task blocker | ... | ... | ... |
+| Accessibility | ... | ... | ... |
+| Excellent eligibility | ... | ... | ... |
+
+## 12. Kiểm tra tính đúng đắn
+
+Trước khi trả kết quả:
+
+1. Kiểm tra tổng checklist áp dụng > 0.
+2. Kiểm tra số checklist FAIL không lớn hơn tổng checklist áp dụng.
+3. Kiểm tra Issue Penalty không âm.
+4. Kiểm tra Severity chỉ gồm Minor, Major, Critical.
+5. Kiểm tra Checklist Score nằm trong 0–100.
+6. Kiểm tra Issue Score nằm trong 0–100.
+7. Kiểm tra UI/UX Quality Score nằm trong 0–100.
+8. Làm tròn hiển thị 1 chữ số thập phân hoặc 2 chữ số khi người dùng yêu cầu.
+9. Không làm tròn các giá trị trung gian trước khi tính tổng.
+10. Đối chiếu tổng số issue với bảng Severity Summary.
+11. Đối chiếu tổng checklist FAIL với danh sách checklist FAIL.
+12. Nếu dữ liệu thiếu, báo rõ dữ liệu cần bổ sung thay vì đoán.
+
+## 13. Ví dụ đầy đủ
+
+Input:
+
+```text
+UI:
+- Tổng checklist áp dụng: 20
+- Checklist FAIL: 4
+- Minor: 3
+- Major: 1
+- Critical: 1
+
+UX:
+- Tổng checklist áp dụng: 10
+- Checklist FAIL: 3
+- Minor: 1
+- Major: 2
+- Critical: 0
+```
+
+Tính UI:
+
+```text
+UI Checklist Score = (20 − 4) / 20 × 100 = 80
+
+UI Issue Penalty = 3×1 + 1×3 + 1×5 = 11
+
+UI Issue Score =
+100 × (1 − 11 / (20×5)) = 89
+
+UI Quality Score =
+80×70% + 89×30% = 82.7
+```
+
+Tính UX:
+
+```text
+UX Checklist Score = (10 − 3) / 10 × 100 = 70
+
+UX Issue Penalty = 1×1 + 2×3 + 0×5 = 7
+
+UX Issue Score =
+100 × (1 − 7 / (10×5)) = 86
+
+UX Quality Score =
+70×70% + 86×30% = 74.8
+```
+
+Tính Experience:
+
+```text
+Experience Quality Score =
+82.7×40% + 74.8×60%
+= 78.0 / 100
+```
+
+## 14. Kết nối với các Skill khác
+
+### UI Checklist Skill
+
+Cung cấp checklist UI và trạng thái PASS / FAIL / N/A / NEEDS VALIDATION.
+
+### UX Checklist Skill
+
+Cung cấp checklist UX và trạng thái PASS / FAIL / N/A / NEEDS VALIDATION.
+
+### UI/UX Audit Skill
+
+Cung cấp issue, Severity, Priority, bằng chứng và giải pháp.
+
+### UI/UX Scoring Formula Skill
+
+Nhận các dữ liệu trên để tính điểm và xuất bảng Calculation.
+
+### Improvement Roadmap
+
+Sử dụng issue và Priority để tạo roadmap cải tiến. Roadmap không được làm thay đổi điểm số đã tính.
+
+
+# UI/UX Quality Audit Skill
+
+## 1. Mục đích
+
+Bộ Skill này dùng để thực hiện đánh giá chất lượng giao diện và trải nghiệm người dùng theo 3 thành phần:
+
+1. **UI Checklist Library** — thư viện tiêu chí kiểm tra giao diện.
+2. **UX Checklist Library** — thư viện tiêu chí kiểm tra trải nghiệm người dùng.
+3. **Scoring Formula** — công thức tính điểm checklist, điểm issue, điểm UI/UX và điểm Experience Quality.
+
+## 2. Quy trình sử dụng
+
+### Bước 1 — Xác định phạm vi
+
+* Checklist được đọc cố định từ `UI Checklist Library Skill` và `UX Checklist Library Skill`.
+
+* Không tự tạo checklist mới.
+
+* Không sửa nội dung.
+
+* Không gộp, tách hoặc đổi thứ tự.
+
+* Giữ nguyên Checklist ID.
+
+* Xác định sản phẩm, màn hình, nền tảng và trạng thái cần đánh giá.
+* Phân biệt phạm vi UI, UX hoặc đánh giá tổng hợp UI/UX.
+* Không tự suy đoán các trạng thái không xuất hiện trong nguồn đánh giá.
+
+### Bước 2 — Chọn checklist
+
+- Chọn các checklist UI phù hợp từ `UI Checklist Library Skill`.
+- Chọn các checklist UX phù hợp từ `UX Checklist Library Skill`.
+- Chỉ tính các checklist có trạng thái **Applicable**.
+- Ghi rõ các checklist **Not Applicable** và lý do loại trừ.
+
+### Bước 3 — Đánh giá từng tiêu chí
+
+Mỗi checklist cần có:
+
+- ID checklist
+- Trạng thái: PASS / FAIL / N/A / UNKNOWN
+- Bằng chứng quan sát được
+- Mô tả vấn đề nếu FAIL
+- Severity nếu có vấn đề
+- Khuyến nghị cải thiện
+- Tham chiếu tiêu chuẩn/cơ sở liên quan nếu có
+
+Không đánh dấu PASS nếu chưa có đủ bằng chứng.
+
+### Bước 4 — Phân loại issue
+
+Sử dụng mức độ nghiêm trọng:
+
+- **Minor = 1**
+- **Major = 3**
+- **Critical = 5**
+
+Critical hoặc các lỗi bắt buộc phải được nêu riêng, không để điểm tổng che khuất.
+
+### Bước 5 — Tính điểm
+
+Sử dụng chính xác công thức trong `UI/UX Scoring Formula Skill`.
+
+### Bước 6 — Xuất báo cáo
+
+Báo cáo cần có:
+
+1. Executive Summary
+2. Phạm vi và giả định
+3. Tổng quan điểm số
+4. Checklist PASS/FAIL/N/A
+5. Danh sách issue theo Severity
+6. Critical findings / Mandatory Gate
+7. Khuyến nghị ưu tiên
+8. Roadmap cải thiện
+9. Phụ lục bằng chứng
+
+## 3. Quy tắc chất lượng
+
+- Không tự tạo checklist ngoài thư viện nếu người dùng yêu cầu đánh giá theo bộ checklist này.
+- Không tự thay đổi trọng số hoặc công thức.
+- Không tính trung bình đơn giản giữa các màn hình nếu số checklist áp dụng khác nhau; ưu tiên tổng hợp từ dữ liệu gốc theo công thức.
+- Tách rõ **điểm số** và **nhận định chuyên môn**.
+- Nếu thiếu ảnh, thiếu trạng thái hoặc thiếu dữ liệu, phải ghi rõ là **UNKNOWN** thay vì suy đoán.
+- Mọi issue phải có bằng chứng hoặc chỉ rõ giới hạn bằng chứng.
+- Khuyến nghị phải gắn với issue/checklist cụ thể.
+
+## 4. Mục thành phần
+
+- `UI Checklist Library Skill`
+- `UX Checklist Library Skill`
+- `UI/UX Scoring Formula Skill`
+
+## 5. Cách gọi bộ Skill
+
+Khi người dùng yêu cầu audit UI/UX, hãy:
+
+1. Đọc `UI Checklist Library Skill` nếu có phạm vi UI.
+2. Đọc `UX Checklist Library Skill` nếu có phạm vi UX.
+3. Đọc `UI/UX Scoring Formula Skill` trước khi tính điểm.
+4. Trả về bảng checklist, issue log, điểm số và roadmap.
+5. Nêu rõ dữ liệu nào được quan sát trực tiếp, dữ liệu nào chưa đủ và dữ liệu nào là giả định.
+
+
+
+## 6. Cấu trúc file đầu ra theo workbook Tổng Hợp
+
+### Bảng Tổng quan điểm số
+1. Chỉ số
+2. UI (Giao diện)
+3. UX (Trải nghiệm)
+4. Toàn diện (Experience Quality)
+
+### Bảng: Kết quả đầu ra
+Khi kiểm tra màn hình phải sắp xếp theo đúng thứ tự kiểm tra từ trên xuống dưới, từ trái qua phải.
+
+Các cột bắt buộc theo đúng thứ tự:
+
+1. Issue ID
+2. Phân loại(UI/UX)
+3. Mã checklist
+4. Tên luồng
+5. Chức năng
+6. Bước thao tác
+7. Thiết bị
+8. Mức độ ảnh hưởng
+9. Hình ảnh
+10. Vấn đề
+11. Đề xuất giải pháp
+12. Hiệu quả sau cải tiến
+13. Xếp loại Issue
+14. Xếp loại Checklist
+15. Effort
+16. Urgency
+17. Priority points
+
+Chỉ tạo issue khi checklist có trạng thái `FAIL`. Trạng thái `UNKNOWN` không được chuyển thành `PASS`.
+
+### Bảng: Improverment Roadmap
+
+Roadmap được tạo bằng cách lọc các dòng `Xếp loại Issue = Fail` từ sheet `Kết quả đầu ra`, sau đó ánh xạ theo đúng thứ tự:
+
+1. Issue ID
+2. Phân loại(UI/UX)
+3. Mã checklist
+4. Chức năng
+5. Bước thao tác
+6. Thiết bị
+7. Mức độ ảnh hưởng
+8. Hình ảnh
+9. Vấn đề
+10. Đề xuất giải pháp
+11. Hiệu quả sau cải tiến
+12. Priority
+
+Roadmap phải giữ nguyên Issue ID, không tạo ID mới. Sắp xếp theo `P1 → P2 → P3 → P4`, trong đó Critical + High bắt buộc là `P1`.
+
+### Quy tắc Priority
+
+- Minor = 1
+- Major = 3
+- Critical = 5
+- Urgency: Low=1, Medium=2, High=3
+- Effort: Thấp=1, Trung bình=2, Cao=3, Rất cao=4
+- Priority points = Impact × Urgency weight / Effort weight
+- Critical + High → P1
+- Priority points >= 5 → P1
+- Priority points >= 2 → P2
+- Priority points >= 1 → P3
+- Còn lại → P4
+
+Trình bày dưới dạng bảng và tạo 1 file log  lưu vào thư mục `output` với `[tên-sản-phẩm]-cx-[YYYY-MM-DD].md`
